@@ -1,0 +1,84 @@
+html, body {
+	position: relative;
+	width: 100%;
+	height: 100%;
+	padding: 0;
+	margin:0;
+	color:#223d4f;
+}
+h1,h2,h3,p{
+	padding: 0;
+        margin:0;
+}
+
+body {
+	font-family: 'Open Sans' , Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+}
+
+a {
+	color: #549C79;
+	text-decoration: underline;
+}
+
+a:visited {
+	color:  #67c095;
+}
+
+label {
+	display: block;
+}
+
+input, textarea {
+	font-family: inherit;
+	font-size: inherit;
+	-webkit-padding: 0.4em 0;
+	padding: 0.4em;
+	margin: 0 0 0.5em 0;
+	box-sizing: border-box;
+	border: none;
+	background-color: white;
+	box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25);
+	font-weight: 300;
+	color: #223D4F;
+	border-radius: 0;
+}
+input:focus{
+	outline: none;
+	border: 0.5px solid #223D4F;
+}
+input:disabled {
+	color: #ccc;
+}
+
+button{
+	font-weight: 400;
+	border-radius: 0;
+	cursor: pointer;
+	transition: 0.5s;
+
+}
+button:focus{
+	outline: none;
+}
+.main-button{
+	background: #549C79;
+	box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.25);
+	color:white;
+	border: none;
+	
+}
+.secondary-button{
+	border: 1px solid #549C79;
+	box-sizing: border-box;
+	background-color: transparent;
+	color:#549C79;
+}
+
+.main-button:hover{
+	box-shadow: none;
+	background-color: #67c095;
+}
+.secondary-button:hover{
+	background: #549C79;
+	color:white;
+}

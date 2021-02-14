@@ -41,21 +41,34 @@ input, textarea {
 	font-weight: 300;
 	color: #223D4F;
 	border-radius: 0;
+	resize: none;
 }
 input:focus{
 	outline: none;
-	border: 0.5px solid #223D4F;
+	border: 0.5px solid #223D4F !important;
 }
+textarea:focus{
+	outline: none;
+	border: 0.5px solid #223D4F !important;
+}
+
 input:disabled {
-	color: #ccc;
+	background-color: #ddd;
+	border:none;
 }
 
 button{
+	font-family: 'Open Sans' , Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
 	font-weight: 400;
 	border-radius: 0;
 	cursor: pointer;
 	transition: 0.5s;
 
+}
+button:disabled{
+	box-shadow: none;
+	cursor:not-allowed;
+	background-color: #ddd;
 }
 button:focus{
 	outline: none;
@@ -81,4 +94,44 @@ button:focus{
 .secondary-button:hover{
 	background: #549C79;
 	color:white;
+}
+
+.form-section {
+	width: 100%;
+	margin: 20px;
+	padding: 10px 20px;
+	border: 1px solid #549c79;
+	display: flex;
+	flex-direction: column;
+}
+.section-title {
+	font-weight: bold;
+	font-size: 28px;
+	color: #549c79;
+	margin-bottom: 20px;
+}
+.form-row {
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-evenly;
+}
+
+.invalid-form {
+	border: 2px solid red;
+}
+.valid-form {
+	border: 2px solid #549c79;
+}
+.half-row {
+	width: 49%;
+}
+.quarter-row {
+	width: 29%;
+}
+.three-quarter-row {
+	width: 69%;
+}
+.full-row {
+	width: 99%;
 }

@@ -1,11 +1,20 @@
 <script>
 	import { Router, Route, Link } from "svelte-routing";
 	import Login from "./Pages/Auth/Login.svelte";
+	import LoginPending from "./Pages/Auth/LoginPending.svelte";
 	import Register from "./Pages/Auth/Register.svelte";
+	export let url = "";
 </script>
 
 <main>
-	<Register />
+	<Router {url}>
+		<div>
+			<Route path="loginPending" component={LoginPending} />
+			<Route path="login" component={Login} />
+			<Route path="register" component={Register} />
+			<Route path="/"><Login /></Route>
+		</div>
+	</Router>
 </main>
 
 <style>

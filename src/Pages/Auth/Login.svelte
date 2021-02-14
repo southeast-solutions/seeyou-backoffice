@@ -1,4 +1,5 @@
 <script>
+    import { navigate } from "svelte-routing";
     const invalidLogin = "Username or password are invalid";
 
     let inputLogin = "";
@@ -8,9 +9,12 @@
 
     const signInClicked = () => {
         console.log({ inputLogin, inputPassword });
+        navigate("/loginPending");
     };
 
-    const signUpClicked = () => {};
+    const signUpClicked = () => {
+        navigate("/register");
+    };
 </script>
 
 <div class="page-container">

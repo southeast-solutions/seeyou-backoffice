@@ -1,4 +1,12 @@
 <script>
+    import { navigate } from "svelte-routing";
+    import { fade } from "svelte/transition";
+    import PromoterSection from "./FormComponents/PromoterSection.svelte";
+    import TourOperatorSection from "./FormComponents/TourOperatorSection.svelte";
+    import TourBusinessSection from "./FormComponents/TourBusinessSection.svelte";
+    import ContentCreatorSection from "./FormComponents/ContentCreatorSection.svelte";
+    import ConciergeSection from "./FormComponents/ConciergeSection.svelte";
+
     const userTypes = [
         {
             id: 1,
@@ -26,17 +34,86 @@
         },
     ];
 
-    $: selectedTypeId = 1;
+    let promoterData = undefined;
+    let tourOperatorData = undefined;
+    let tourBusinessData = undefined;
+    let contentCreatorData = undefined;
+    let conciergeData = undefined;
 
+    let registrationHasErrors = true;
+
+    $: selectedTypeId = 1;
+    const cancelClicked = () => {
+        navigate("/login");
+    };
     const typeSelectorClicked = (id) => {
         selectedTypeId = id;
+        registrationHasErrors = true;
+    };
+
+    const onPromoterData = (event) => {
+        promoterData = event.detail;
+        registrationHasErrors = false;
+    };
+    const onTourOperatorData = (event) => {
+        if (event.detail.cui) {
+            tourBusinessData = event.detail;
+        } else {
+            tourOperatorData = event.detail;
+        }
+        if (tourBusinessData && tourOperatorData) {
+            registrationHasErrors = false;
+        }
+    };
+    const onContentCreatorData = (event) => {
+        contentCreatorData = event.detail;
+        registrationHasErrors = false;
+    };
+    const onConciergeData = (event) => {
+        conciergeData = event.detail;
+        registrationHasErrors = false;
+    };
+
+    const invalidateRegister = (_) => {
+        registrationHasErrors = true;
+    };
+
+    const registerClicked = () => {
+        let payload = undefined;
+        switch (selectedTypeId) {
+            case 1:
+                if (!promoterData) return;
+                payload = promoterData;
+                payload["userTypeId"] = 1;
+                break;
+            case 2:
+                if (!tourOperatorData || !tourBusinessData) return;
+                payload = { tourBusinessData, tourOperatorData, userTypeId: 1 };
+                break;
+            case 3:
+                if (!contentCreatorData) return;
+                payload = contentCreatorData;
+                payload["userTypeId"] = 3;
+                break;
+            case 4:
+                if (!conciergeData) return;
+                payload = conciergeData;
+                payload["userTypeId"] = 4;
+                break;
+            default:
+                return;
+        }
+        console.log(payload);
     };
 </script>
 
-<div class="page-container">
+<div class="page-container" in:fade>
     <div class="form-container">
         <div class="inputs-container">
-            <button class="secondary-button back-button">Cancel</button>
+            <button
+                class="secondary-button back-button"
+                on:click={cancelClicked}>Cancel</button
+            >
             <h2>Register as</h2>
             {#each userTypes as type}
                 <div
@@ -55,7 +132,43 @@
             {/each}
         </div>
     </div>
-    <div class="info-container" />
+    <div class="info-container">
+        {#if selectedTypeId === 1}
+            <PromoterSection
+                on:validSection={onPromoterData}
+                on:notValid={invalidateRegister}
+            />
+        {/if}
+        {#if selectedTypeId === 2}
+            <TourBusinessSection
+                on:validSection={onTourOperatorData}
+                on:notValid={invalidateRegister}
+            />
+            <TourOperatorSection
+                on:validSection={onTourOperatorData}
+                on:notValid={invalidateRegister}
+            />
+        {/if}
+        {#if selectedTypeId === 3}
+            <ContentCreatorSection
+                on:validSection={onContentCreatorData}
+                on:notValid={invalidateRegister}
+            />
+        {/if}
+        {#if selectedTypeId === 4}
+            <ConciergeSection
+                on:validSection={onConciergeData}
+                on:notValid={invalidateRegister}
+            />
+        {/if}
+        <div class="info-row">
+            <button
+                class="main-button register-button"
+                disabled={registrationHasErrors}
+                on:click={registerClicked}>Register</button
+            >
+        </div>
+    </div>
 </div>
 
 <style>
@@ -81,9 +194,8 @@
         background-color: white;
         display: flex;
         flex-direction: column;
-        align-items: flex-end;
-        justify-content: center;
-        padding: 0 40px;
+        align-items: center;
+        padding: 0 50px;
         overflow-y: auto;
     }
 
@@ -111,7 +223,7 @@
         cursor: pointer;
     }
     .type-selector:hover {
-        background-color: white;
+        background-color: rgb(241, 241, 241);
     }
     .selector-title {
         font-weight: bold;
@@ -134,5 +246,18 @@
         height: 40px;
         width: 80px;
         font-size: 16px;
+    }
+    .info-row {
+        display: flex;
+        width: 100%;
+        flex-direction: row;
+        justify-content: flex-end;
+    }
+    .register-button {
+        height: 40px;
+        width: 120px;
+        font-size: 20px;
+        font-weight: 300 !important;
+        margin-bottom: 20px;
     }
 </style>

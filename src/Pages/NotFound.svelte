@@ -3,25 +3,27 @@
 </script>
 
 <div class="page-container" in:fade>
-    <div class="page-title">Pending account</div>
+    <div class="page-title">404 <i class="fi fi-rr-cross-circle" /></div>
     <div class="page-description">
-        Your account is still in review. Please check your inbox for any mail
-        from us.
-        <br />If you think this is a mistake then contact us at
-        <a href="mailto:admin@seeyouromania.com">admin@seeyouromania.com</a>
+        There's nothing here. The page you are searching for does not exist
+        (yet, at least)
     </div>
 </div>
 
 <style>
     .page-title {
-        font-size: 42px;
+        font-size: 48px;
         font-weight: bold;
         color: #549c79;
         margin-bottom: 10px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
     }
     .page-description {
-        font-size: 24px;
-        font-weight: 300;
+        font-size: 32px;
+        font-weight: 200;
         color: #223d4f;
     }
     .page-container {
@@ -32,5 +34,12 @@
         justify-content: center;
         align-items: center;
         background-color: #e8e7e2;
+    }
+    i {
+        margin-left: 10px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 </style>

@@ -6,7 +6,8 @@
     import TourBusinessSection from "./FormComponents/TourBusinessSection.svelte";
     import ContentCreatorSection from "./FormComponents/ContentCreatorSection.svelte";
     import ConciergeSection from "./FormComponents/ConciergeSection.svelte";
-
+    import { onMount } from "svelte";
+    import { register, guardUnsignedUser } from "../../Services/AuthService";
     const userTypes = [
         {
             id: 1,
@@ -34,6 +35,8 @@
         },
     ];
 
+    let errorMessage = "Email of invalid type";
+
     let promoterData = undefined;
     let tourOperatorData = undefined;
     let tourBusinessData = undefined;
@@ -41,6 +44,10 @@
     let conciergeData = undefined;
 
     let registrationHasErrors = true;
+
+    onMount(() => {
+        guardUnsignedUser();
+    });
 
     $: selectedTypeId = 1;
     const cancelClicked = () => {
@@ -103,6 +110,8 @@
             default:
                 return;
         }
+
+        register(payload);
         console.log(payload);
     };
 </script>
@@ -161,6 +170,12 @@
                 on:notValid={invalidateRegister}
             />
         {/if}
+        {#if errorMessage !== ""}
+            <div class="info-row error-message">
+                {errorMessage}
+            </div>
+        {/if}
+
         <div class="info-row">
             <button
                 class="main-button register-button"
@@ -259,5 +274,10 @@
         font-size: 20px;
         font-weight: 300 !important;
         margin-bottom: 20px;
+    }
+    .error-message {
+        color: red;
+        font-size: 18px;
+        margin-bottom: 10px;
     }
 </style>

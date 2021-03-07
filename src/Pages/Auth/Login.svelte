@@ -1,16 +1,46 @@
 <script>
+    import { navigate } from "svelte-routing";
+    import { onMount } from "svelte";
+    import {
+        login,
+        guardUnsignedUser,
+        setAuthLocalStorage,
+    } from "../../Services/AuthService";
     const invalidLogin = "Username or password are invalid";
+
+    const loginMessage = "Sign in";
+    const loadingMessage = "Loading";
+
+    let loginButtonMessage = loginMessage;
 
     let inputLogin = "";
     let inputPassword = "";
 
     let errorMessage = "";
 
+    onMount(() => {
+        guardUnsignedUser();
+    });
+
     const signInClicked = () => {
         console.log({ inputLogin, inputPassword });
+        loginButtonMessage = loadingMessage;
+        errorMessage = "";
+        login({ email: inputLogin, password: inputPassword })
+            .then(() => {
+                loginButtonMessage = loginMessage;
+                errorMessage = "";
+                setAuthLocalStorage("tourOperator", "token");
+            })
+            .catch(() => {
+                loginButtonMessage = loginMessage;
+                errorMessage = invalidLogin;
+            });
     };
 
-    const signUpClicked = () => {};
+    const signUpClicked = () => {
+        navigate("/register");
+    };
 </script>
 
 <div class="page-container">
@@ -37,7 +67,7 @@
             <div class="error-message">{errorMessage}</div>
         {/if}
         <button class="main-button cta-button" on:click={signInClicked}
-            >Sign in</button
+            >{loginButtonMessage}</button
         >
         <button class="secondary-button cta-button" on:click={signUpClicked}
             >Sign Up</button

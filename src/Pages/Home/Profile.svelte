@@ -7,6 +7,12 @@
     } from "../../Services/AuthService";
     import { getUserData } from "../../Services/ProfileService";
     import NavBar from "./NavBar.svelte";
+    import { 
+        tourOperator, 
+        promoter, 
+        contentCreator, 
+        concierge 
+    } from "../../Enums/UserTypes";
 
     let user = undefined;
 
@@ -58,6 +64,147 @@
                     />
                 </div>
             </div>
+        {/if}
+
+        {#if user.phoneNumber && user.city}
+            <div class="center-row">
+                <div class="form-row">
+                    <input
+                    type="text"
+                    class="half-row"
+                    placeholder="Phone number"
+                    />
+                    <input
+                        type="text"
+                        class="half-row"
+                        placeholder="City"
+                    />
+                </div>
+            </div>
+        {/if}
+
+        {#if user.country && user.foreignLanguages}
+            <div class="center-row">
+                <div class="form-row">
+                    <input
+                        type="text"
+                        class="half-row"
+                        placeholder="Country"
+                    />
+                    <input
+                            type="text"
+                            class="half-row"
+                            placeholder="Foreign Languages"
+                        />
+                </div>
+            </div>
+        {/if}
+
+        {#if user.userType == tourOperator}
+            {#if user.business.businessName && user.business.website}
+            <div class="center-row">
+                <div class="form-row">
+                    <input
+                        type="text"
+                        class="half-row"
+                        placeholder="Business name"
+                    />
+                    <input
+                            type="text"
+                            class="half-row"
+                            placeholder="Business website"
+                        />
+                </div>
+            </div>
+            {/if}
+            {#if user.business.cui && user.business.address}
+            <div class="center-row">
+                <div class="form-row">
+                    <input
+                        type="text"
+                        class="half-row"
+                        placeholder="CUI"
+                    />
+                    <input
+                            type="text"
+                            class="half-row"
+                            placeholder="Address"
+                        />
+                </div>
+            </div>
+            {/if}
+            {#if user.business.socialLinks}
+            <div class="center-row">
+                <div class="form-row">
+                    <input
+                        type="text"
+                        class="half-row"
+                        placeholder="Social links"
+                    />
+                </div>
+            </div>
+            {/if}
+        {/if}
+
+        {#if user.userType == promoter}
+            {#if user.currentJob && user.socialLinks}
+            <div class="center-row">
+                <div class="form-row">
+                    <input
+                        type="text"
+                        class="half-row"
+                        placeholder="Current job"
+                    />
+                    <input
+                            type="text"
+                            class="half-row"
+                            placeholder="Social links"
+                        />
+                </div>
+            </div>
+            {/if}
+            {#if user.disponibilityDescription}
+            <div class="center-row">
+                <div class="form-row">
+                    <input
+                        type="text"
+                        class="half-row"
+                        placeholder="Disponibility description"
+                    />
+                </div>
+            </div>
+            {/if}
+        {/if}
+        {#if user.userType == contentCreator}
+            {#if user.socialLinks && user.disponibilityDescription}
+            <div class="center-row">
+                <div class="form-row">
+                    <input
+                        type="text"
+                        class="half-row"
+                        placeholder="Social links"
+                    />
+                    <input
+                            type="text"
+                            class="half-row"
+                            placeholder="Disponibility description"
+                        />
+                </div>
+            </div>
+            {/if}
+        {/if}
+        {#if user.userType == concierge}
+            {#if user.socialLinks}
+            <div class="center-row">
+                <div class="form-row">
+                    <input
+                        type="text"
+                        class="half-row"
+                        placeholder="Social links"
+                    />
+                </div>
+            </div>
+            {/if}
         {/if}
     {:else}
         <PageLoader />

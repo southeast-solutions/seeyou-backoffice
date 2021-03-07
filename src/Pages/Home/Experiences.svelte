@@ -1,6 +1,9 @@
 <script>
     import { onMount } from "svelte";
-    import { guardSignedUser } from "../../Services/AuthService";
+    import {
+        guardSignedUser,
+        guardTourOperator,
+    } from "../../Services/AuthService";
     import { getExpereinces } from "../../Services/ExperiencesService";
     import NavBar from "./NavBar.svelte";
     import PageLoader from "./PageLoader.svelte";
@@ -11,6 +14,7 @@
 
     onMount(async () => {
         guardSignedUser();
+        guardTourOperator();
         experiences = (await getExpereinces()).experiences;
         isLoaded = true;
     });

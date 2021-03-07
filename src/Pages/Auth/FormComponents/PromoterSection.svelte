@@ -1,5 +1,9 @@
 <script>
     import { createEventDispatcher } from "svelte";
+    import {
+        validateEmail,
+        validatePhoneNumber,
+    } from "../../../Validators/UserValidators";
 
     const dispatch = createEventDispatcher();
 
@@ -33,16 +37,8 @@
     $: {
         vFirstName = firstName ? true : false;
         vLastName = lastName ? true : false;
-        if (email) {
-            if (email.includes("@")) {
-                vEmail = true;
-            } else {
-                vEmail = false;
-            }
-        } else {
-            vEmail = false;
-        }
-        vPhoneNumber = /^\d+$/.test(phoneNumber);
+        vEmail = validateEmail(email);
+        vPhoneNumber = validatePhoneNumber(phoneNumber);
         vPassword = password ? true : false;
 
         vPasswordRepeat = password === passwordRepeat;

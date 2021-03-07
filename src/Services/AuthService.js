@@ -1,4 +1,5 @@
 import { navigate } from "svelte-routing";
+import { promoter, tourOperator, concierge, contentCreator, admin } from "../Enums/UserTypes"
 
 const LS_AUTH_TOKEN_KEY = "seeyou_auth_token";
 const LS_USER_TYPE_KEY = "seeyou_user_type";
@@ -58,4 +59,14 @@ const guardSignedUser = () => {
 const guardUnsignedUser = () => {
     if (isAuthentified()) navigate('/profile', { replace: true });
 }
-export { login, register, guardSignedUser, guardUnsignedUser, setAuthLocalStorage, clearAuthLocalStorage };
+
+const isAdmin = () => getUserType() == admin
+const isTourOperator = () => getUserType() == admin || getUserType() == tourOperator
+
+const guardAdmin = () => {
+    if (!isAdmin()) navigate('/profile', { replace: true });
+}
+const guardTourOperator = () => {
+    if (!isTourOperator()) navigate('/profile', { replace: true });
+}
+export { login, register, guardSignedUser, guardUnsignedUser, setAuthLocalStorage, clearAuthLocalStorage, guardAdmin, guardTourOperator, isAdmin, isTourOperator };

@@ -1,5 +1,10 @@
 <script>
     import { navigate } from "svelte-routing";
+    import { isAdmin, isTourOperator } from "../../Services/AuthService";
+    import { onMount } from "svelte";
+
+    let showExperiences = false;
+    let showUsers = false;
 
     const onUsersPressed = () => {
         navigate("/users", { replace: false });
@@ -10,6 +15,11 @@
     const onProfilePressed = () => {
         navigate("/profile", { replace: false });
     };
+
+    onMount(() => {
+        showExperiences = isTourOperator();
+        showUsers = isAdmin();
+    });
 </script>
 
 <div class="nav-container">
@@ -17,12 +27,17 @@
         <img src="logo.png" alt="page-logo" class="logo" />
     </div>
     <div class="buttons-container">
-        <div class="nav-button" on:click={onUsersPressed}>
-            <i class="fi fi-rr-user-add" /> Users
-        </div>
-        <div class="nav-button" on:click={onExperiencesPressed}>
-            <i class="fi fi-rr-world" />Experiences
-        </div>
+        {#if showUsers}
+            <div class="nav-button" on:click={onUsersPressed}>
+                <i class="fi fi-rr-user-add" /> Users
+            </div>
+        {/if}
+        {#if showExperiences}
+            <div class="nav-button" on:click={onExperiencesPressed}>
+                <i class="fi fi-rr-world" />Experiences
+            </div>
+        {/if}
+
         <div class="nav-button" on:click={onProfilePressed}>
             <i class="fi fi-rr-user" />Profile
         </div>

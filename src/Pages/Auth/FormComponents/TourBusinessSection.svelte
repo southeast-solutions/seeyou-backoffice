@@ -1,5 +1,6 @@
 <script>
     import { createEventDispatcher } from "svelte";
+    import { validateEmail } from "../../../Validators/UserValidators";
 
     const dispatch = createEventDispatcher();
 
@@ -20,15 +21,7 @@
     $: {
         vCui = cui ? true : false;
         vBusinessName = businessName ? true : false;
-        if (email) {
-            if (email.includes("@")) {
-                vEmail = true;
-            } else {
-                vEmail = false;
-            }
-        } else {
-            vEmail = false;
-        }
+        vEmail = validateEmail(email);
 
         vSocialLinks = socialLinks ? true : false;
         vWebsite = website ? true : false;

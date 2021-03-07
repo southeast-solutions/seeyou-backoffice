@@ -30,7 +30,7 @@
             .then(() => {
                 loginButtonMessage = loginMessage;
                 errorMessage = "";
-                setAuthLocalStorage("boss", "token");
+                setAuthLocalStorage("tourOperator", "token");
             })
             .catch(() => {
                 loginButtonMessage = loginMessage;

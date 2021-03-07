@@ -8,27 +8,33 @@
     import ConciergeSection from "./FormComponents/ConciergeSection.svelte";
     import { onMount } from "svelte";
     import { register, guardUnsignedUser } from "../../Services/AuthService";
+    import {
+        promoter,
+        concierge,
+        tourOperator,
+        contentCreator,
+    } from "../../Enums/UserTypes";
     const userTypes = [
         {
-            id: 1,
+            id: promoter,
             name: "Promoter",
             description:
                 "Promote incredible experiences and grow the SeeYouRomania userbase",
         },
         {
-            id: 2,
+            id: tourOperator,
             name: "Tour operator",
             description:
                 "Promote incredible experiences and grow the SeeYouRomania userbase",
         },
         {
-            id: 3,
+            id: contentCreator,
             name: "Content creator",
             description:
                 "Promote incredible experiences and grow the SeeYouRomania userbase",
         },
         {
-            id: 4,
+            id: concierge,
             name: "Concierge",
             description:
                 "Promote incredible experiences and grow the SeeYouRomania userbase",
@@ -49,7 +55,7 @@
         guardUnsignedUser();
     });
 
-    $: selectedTypeId = 1;
+    $: selectedTypeId = promoter;
     const cancelClicked = () => {
         navigate("/login");
     };
@@ -88,24 +94,28 @@
     const registerClicked = () => {
         let payload = undefined;
         switch (selectedTypeId) {
-            case 1:
+            case promoter:
                 if (!promoterData) return;
                 payload = promoterData;
-                payload["userTypeId"] = 1;
+                payload["userType"] = promoter;
                 break;
-            case 2:
+            case tourOperator:
                 if (!tourOperatorData || !tourBusinessData) return;
-                payload = { tourBusinessData, tourOperatorData, userTypeId: 1 };
+                payload = {
+                    tourBusinessData,
+                    tourOperatorData,
+                    userType: tourOperator,
+                };
                 break;
-            case 3:
+            case contentCreator:
                 if (!contentCreatorData) return;
                 payload = contentCreatorData;
-                payload["userTypeId"] = 3;
+                payload["userType"] = contentCreator;
                 break;
-            case 4:
+            case concierge:
                 if (!conciergeData) return;
                 payload = conciergeData;
-                payload["userTypeId"] = 4;
+                payload["userType"] = concierge;
                 break;
             default:
                 return;
@@ -142,13 +152,13 @@
         </div>
     </div>
     <div class="info-container">
-        {#if selectedTypeId === 1}
+        {#if selectedTypeId === promoter}
             <PromoterSection
                 on:validSection={onPromoterData}
                 on:notValid={invalidateRegister}
             />
         {/if}
-        {#if selectedTypeId === 2}
+        {#if selectedTypeId === tourOperator}
             <TourBusinessSection
                 on:validSection={onTourOperatorData}
                 on:notValid={invalidateRegister}
@@ -158,13 +168,13 @@
                 on:notValid={invalidateRegister}
             />
         {/if}
-        {#if selectedTypeId === 3}
+        {#if selectedTypeId === contentCreator}
             <ContentCreatorSection
                 on:validSection={onContentCreatorData}
                 on:notValid={invalidateRegister}
             />
         {/if}
-        {#if selectedTypeId === 4}
+        {#if selectedTypeId === concierge}
             <ConciergeSection
                 on:validSection={onConciergeData}
                 on:notValid={invalidateRegister}

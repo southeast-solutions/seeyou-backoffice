@@ -1,6 +1,7 @@
 <script>
     import { onMount } from "svelte";
     import PageLoader from "./PageLoader.svelte";
+    import Input from '../../SharedComponents/Input.svelte';
     import {
         guardSignedUser,
         clearAuthLocalStorage,
@@ -20,6 +21,13 @@
         guardSignedUser();
         user = await getUserData("abc");
     });
+
+    let userInfo = {
+        firstName: '',
+        lastName: '',
+    }
+
+    console.log(userInfo)
 </script>
 
 <svelte:head>
@@ -27,7 +35,11 @@
 </svelte:head>
 <NavBar />
 
+
 <div class="home-page-container">
+
+<Input hasErr={false} name="pla" onChange={() => console.log("typing....")} />
+
     {#if user}
         <div class="right-row">
             <button
@@ -52,16 +64,12 @@
         {#if user.firstName && user.lastName}
             <div class="center-row">
                 <div class="form-row">
-                    <input
-                        type="text"
-                        class="half-row"
-                        placeholder="First name"
-                    />
-                    <input
-                        type="text"
-                        class="half-row"
-                        placeholder="Last name"
-                    />
+                    <div class="half-row">
+                    <Input  label={'First name'} value={userInfo.firstName} className="half-row" name="pla" onChange={(e) => {userInfo['firstName'] = e.target.value; console.log(userInfo);}} />
+                    </div>
+                    <div class="half-row">
+                    <Input hasErr={false} label={'Last name'} className="half-row" name="pla" onChange={(e) => userInfo['lastName'] = e.target.value} />
+                    </div>
                 </div>
             </div>
         {/if}
@@ -69,16 +77,12 @@
         {#if user.phoneNumber && user.city}
             <div class="center-row">
                 <div class="form-row">
-                    <input
-                    type="text"
-                    class="half-row"
-                    placeholder="Phone number"
-                    />
-                    <input
-                        type="text"
-                        class="half-row"
-                        placeholder="City"
-                    />
+                    <div class="half-row">
+                        <Input  label={'Phone number'} className="half-row" name="pla" onChange={() => console.log("typing....")} />
+                    </div>
+                    <div class="half-row">
+                        <Input  label={'City'} className="half-row" name="pla" onChange={() => console.log("typing....")} />
+                    </div>
                 </div>
             </div>
         {/if}
@@ -86,16 +90,12 @@
         {#if user.country && user.foreignLanguages}
             <div class="center-row">
                 <div class="form-row">
-                    <input
-                        type="text"
-                        class="half-row"
-                        placeholder="Country"
-                    />
-                    <input
-                            type="text"
-                            class="half-row"
-                            placeholder="Foreign Languages"
-                        />
+                    <div class="half-row">
+                        <Input  label={'Country'} className="half-row" name="pla" onChange={() => console.log("typing....")} />
+                    </div>
+                    <div class="half-row">
+                        <Input  label={'Foreign Languages'} className="half-row" name="pla" onChange={() => console.log("typing....")} />
+                    </div>
                 </div>
             </div>
         {/if}
@@ -104,43 +104,33 @@
             {#if user.business.businessName && user.business.website}
             <div class="center-row">
                 <div class="form-row">
-                    <input
-                        type="text"
-                        class="half-row"
-                        placeholder="Business name"
-                    />
-                    <input
-                            type="text"
-                            class="half-row"
-                            placeholder="Business website"
-                        />
+                    <div class="half-row">
+                        <Input  label={'Business Name'} className="half-row" name="pla" onChange={() => console.log("typing....")} />
+                    </div>
+                    <div class="half-row">
+                        <Input  label={'Business Website'} className="half-row" name="pla" onChange={() => console.log("typing....")} />
+                    </div>
                 </div>
             </div>
             {/if}
             {#if user.business.cui && user.business.address}
             <div class="center-row">
                 <div class="form-row">
-                    <input
-                        type="text"
-                        class="half-row"
-                        placeholder="CUI"
-                    />
-                    <input
-                            type="text"
-                            class="half-row"
-                            placeholder="Address"
-                        />
+                    <div class="half-row">
+                        <Input  label={'Cui'} className="half-row" name="pla" onChange={() => console.log("typing....")} />
+                    </div>
+                    <div class="half-row">
+                        <Input  label={'Adress'} className="half-row" name="pla" onChange={() => console.log("typing....")} />
+                    </div>
                 </div>
             </div>
             {/if}
             {#if user.business.socialLinks}
             <div class="center-row">
                 <div class="form-row">
-                    <input
-                        type="text"
-                        class="half-row"
-                        placeholder="Social links"
-                    />
+                    <div class="half-row">
+                        <Input  label={'Social Links'} className="half-row" name="pla" onChange={() => console.log("typing....")} />
+                    </div>
                 </div>
             </div>
             {/if}
@@ -150,27 +140,19 @@
             {#if user.currentJob && user.socialLinks}
             <div class="center-row">
                 <div class="form-row">
-                    <input
-                        type="text"
-                        class="half-row"
-                        placeholder="Current job"
-                    />
-                    <input
-                            type="text"
-                            class="half-row"
-                            placeholder="Social links"
-                        />
+                    <div class="half-row">
+                        <Input  label={'Current Job'} className="half-row" name="pla" onChange={() => console.log("typing....")} />
+                    </div>
+                    <div class="half-row">
+                        <Input  label={'Social Links'} className="half-row" name="pla" onChange={() => console.log("typing....")} />
+                    </div>
                 </div>
             </div>
             {/if}
             {#if user.disponibilityDescription}
             <div class="center-row">
                 <div class="form-row">
-                    <input
-                        type="text"
-                        class="half-row"
-                        placeholder="Disponibility description"
-                    />
+                    <Input  label={'Disponibility Description'} className="half-row" name="pla" onChange={() => console.log("typing....")} />
                 </div>
             </div>
             {/if}
@@ -179,16 +161,12 @@
             {#if user.socialLinks && user.disponibilityDescription}
             <div class="center-row">
                 <div class="form-row">
-                    <input
-                        type="text"
-                        class="half-row"
-                        placeholder="Social links"
-                    />
-                    <input
-                            type="text"
-                            class="half-row"
-                            placeholder="Disponibility description"
-                        />
+                   <div class="half-row">
+                        <Input  label={'Social Links'} className="half-row" name="pla" onChange={() => console.log("typing....")} />
+                    </div>
+                    <div class="half-row">
+                        <Input  label={'Disponibility Description'} className="half-row" name="pla" onChange={() => console.log("typing....")} />
+                    </div>
                 </div>
             </div>
             {/if}
@@ -197,11 +175,7 @@
             {#if user.socialLinks}
             <div class="center-row">
                 <div class="form-row">
-                    <input
-                        type="text"
-                        class="half-row"
-                        placeholder="Social links"
-                    />
+                        <Input  label={'Social Links'} className="half-row" name="pla" onChange={() => console.log("typing....")} />
                 </div>
             </div>
             {/if}
@@ -257,6 +231,20 @@
         justify-content: center;
         align-items: center;
     }
+
+    .form-row {
+        margin-bottom: 5px;
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    
+    .half-row {
+        width: 45%;
+    }
+
+    /* .half */
     .profile-picture-button {
         object-fit: cover;
         cursor: pointer;

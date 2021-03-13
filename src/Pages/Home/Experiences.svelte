@@ -7,10 +7,13 @@
     import { getExpereinces } from "../../Services/ExperiencesService";
     import NavBar from "./NavBar.svelte";
     import PageLoader from "./PageLoader.svelte";
+    import ExperienceInfo from "./ExperienceComponents/ExperienceInfo.svelte";
+    import AddExperience from "./ExperienceComponents/AddExperience.svelte";
 
     let experiences = [];
     let selectedExperience = undefined;
     let isLoaded = false;
+    let addExperienceMode = false;
 
     onMount(async () => {
         guardSignedUser();
@@ -21,6 +24,10 @@
 
     const highlightExperience = (experience) => {
         selectedExperience = experience;
+        addExperienceMode = false;
+    };
+    const addExperienceClicked = () => {
+        addExperienceMode = true;
     };
 </script>
 
@@ -32,28 +39,28 @@
     <div class="filters-container">
         {#each experiences as experience}
             <div
-                class="experience-title center-content"
+                class="experience-title"
                 on:click={highlightExperience(experience)}
             >
                 {experience.title}
             </div>
-        {:else}
-            {#if isLoaded}
-                <div class="center-content">
-                    <h3>Add an experience to start</h3>
-                </div>
-            {/if}
         {/each}
+        <button
+            class="main-button add-experience-button"
+            on:click={addExperienceClicked}>Add Experience</button
+        >
     </div>
     <div class="content-container">
         {#if !isLoaded}
             <PageLoader />
+        {:else if addExperienceMode}
+            <AddExperience />
         {:else if !selectedExperience}
             <div class="center-content">
                 <h3>No experience selected</h3>
             </div>
         {:else}
-            <h1>{selectedExperience.title}</h1>
+            <ExperienceInfo data={selectedExperience} />
         {/if}
     </div>
 </div>
@@ -80,12 +87,17 @@
 
     .experience-title {
         width: 100%;
-        height: 80px !important;
-        display: flex;
+        min-height: 80px;
         cursor: pointer;
         user-select: none;
-        font-size: 24px;
+        font-size: 20px;
         transition: 0.5s;
+        padding: 10px;
+        overflow: hidden;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
     .experience-title:hover {
         background-color: #223d4f;
@@ -93,8 +105,8 @@
     }
 
     .center-content {
-        height: 100%;
         width: 100%;
+        height: 100%;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -109,5 +121,11 @@
         align-items: center;
         overflow-y: auto;
         padding-bottom: 20px;
+    }
+    .add-experience-button {
+        width: 100%;
+        font-size: 20px;
+        font-weight: 200;
+        height: 80px;
     }
 </style>

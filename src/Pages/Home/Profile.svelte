@@ -7,11 +7,11 @@
     } from "../../Services/AuthService";
     import { getUserData } from "../../Services/ProfileService";
     import NavBar from "./NavBar.svelte";
-    import { 
-        tourOperator, 
-        promoter, 
-        contentCreator, 
-        concierge 
+    import {
+        tourOperator,
+        promoter,
+        contentCreator,
+        concierge,
     } from "../../Enums/UserTypes";
 
     let user = undefined;
@@ -70,15 +70,11 @@
             <div class="center-row">
                 <div class="form-row">
                     <input
-                    type="text"
-                    class="half-row"
-                    placeholder="Phone number"
-                    />
-                    <input
                         type="text"
                         class="half-row"
-                        placeholder="City"
+                        placeholder="Phone number"
                     />
+                    <input type="text" class="half-row" placeholder="City" />
                 </div>
             </div>
         {/if}
@@ -86,126 +82,125 @@
         {#if user.country && user.foreignLanguages}
             <div class="center-row">
                 <div class="form-row">
+                    <input type="text" class="half-row" placeholder="Country" />
                     <input
                         type="text"
                         class="half-row"
-                        placeholder="Country"
+                        placeholder="Foreign Languages"
                     />
-                    <input
-                            type="text"
-                            class="half-row"
-                            placeholder="Foreign Languages"
-                        />
                 </div>
             </div>
         {/if}
 
         {#if user.userType == tourOperator}
             {#if user.business.businessName && user.business.website}
-            <div class="center-row">
-                <div class="form-row">
-                    <input
-                        type="text"
-                        class="half-row"
-                        placeholder="Business name"
-                    />
-                    <input
+                <div class="center-row">
+                    <div class="form-row">
+                        <input
+                            type="text"
+                            class="half-row"
+                            placeholder="Business name"
+                        />
+                        <input
                             type="text"
                             class="half-row"
                             placeholder="Business website"
                         />
+                    </div>
                 </div>
-            </div>
             {/if}
             {#if user.business.cui && user.business.address}
-            <div class="center-row">
-                <div class="form-row">
-                    <input
-                        type="text"
-                        class="half-row"
-                        placeholder="CUI"
-                    />
-                    <input
+                <div class="center-row">
+                    <div class="form-row">
+                        <input type="text" class="half-row" placeholder="CUI" />
+                        <input
                             type="text"
                             class="half-row"
                             placeholder="Address"
                         />
+                    </div>
                 </div>
-            </div>
             {/if}
             {#if user.business.socialLinks}
-            <div class="center-row">
-                <div class="form-row">
-                    <input
-                        type="text"
-                        class="half-row"
-                        placeholder="Social links"
-                    />
+                <div class="center-row">
+                    <div class="form-row">
+                        <input
+                            type="text"
+                            class="half-row"
+                            placeholder="Social links"
+                        />
+                    </div>
                 </div>
-            </div>
             {/if}
         {/if}
 
         {#if user.userType == promoter}
             {#if user.currentJob && user.socialLinks}
-            <div class="center-row">
-                <div class="form-row">
-                    <input
-                        type="text"
-                        class="half-row"
-                        placeholder="Current job"
-                    />
-                    <input
+                <div class="center-row">
+                    <div class="form-row">
+                        <input
+                            type="text"
+                            class="half-row"
+                            placeholder="Current job"
+                        />
+                        <input
                             type="text"
                             class="half-row"
                             placeholder="Social links"
                         />
+                    </div>
                 </div>
-            </div>
             {/if}
             {#if user.disponibilityDescription}
-            <div class="center-row">
-                <div class="form-row">
-                    <input
-                        type="text"
-                        class="half-row"
-                        placeholder="Disponibility description"
-                    />
-                </div>
-            </div>
-            {/if}
-        {/if}
-        {#if user.userType == contentCreator}
-            {#if user.socialLinks && user.disponibilityDescription}
-            <div class="center-row">
-                <div class="form-row">
-                    <input
-                        type="text"
-                        class="half-row"
-                        placeholder="Social links"
-                    />
-                    <input
+                <div class="center-row">
+                    <div class="form-row">
+                        <input
                             type="text"
                             class="half-row"
                             placeholder="Disponibility description"
                         />
+                    </div>
                 </div>
-            </div>
+            {/if}
+        {/if}
+        {#if user.userType == contentCreator}
+            {#if user.socialLinks && user.disponibilityDescription}
+                <div class="center-row">
+                    <div class="form-row">
+                        <input
+                            type="text"
+                            class="half-row"
+                            placeholder="Social links"
+                        />
+                        <input
+                            type="text"
+                            class="half-row"
+                            placeholder="Disponibility description"
+                        />
+                    </div>
+                </div>
             {/if}
         {/if}
         {#if user.userType == concierge}
             {#if user.socialLinks}
-            <div class="center-row">
-                <div class="form-row">
-                    <input
-                        type="text"
-                        class="half-row"
-                        placeholder="Social links"
-                    />
+                <div class="center-row">
+                    <div class="form-row">
+                        <textarea
+                            type="text"
+                            class="full-row"
+                            placeholder="Social links"
+                        />
+                    </div>
                 </div>
-            </div>
             {/if}
         {/if}
+        <div class="center-row">
+            <div class="form-row">
+                <div class="end-row">
+                    <button class="main-button">Save changes</button>
+                </div>
+            </div>
+        </div>
     {:else}
         <PageLoader />
     {/if}
@@ -284,5 +279,22 @@
     .profile-picture-button > i {
         color: white;
         font-size: 42px;
+    }
+    .end-row {
+        margin-top: 15px;
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+    }
+    input,
+    textarea {
+        border: solid 1px #549c79;
+    }
+    button {
+        width: 180px;
+        height: 50px;
+        font-weight: 200;
+        font-size: 20px;
     }
 </style>

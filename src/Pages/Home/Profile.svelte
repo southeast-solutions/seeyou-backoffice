@@ -1,7 +1,7 @@
 <script>
     import { onMount } from "svelte";
     import PageLoader from "./PageLoader.svelte";
-    import Input from '../../SharedComponents/Input.svelte';
+    import Input from "../../SharedComponents/Input.svelte";
     import {
         guardSignedUser,
         clearAuthLocalStorage,
@@ -23,11 +23,11 @@
     });
 
     let userInfo = {
-        firstName: '',
-        lastName: '',
-    }
+        firstName: "",
+        lastName: "",
+    };
 
-    console.log(userInfo)
+    console.log(userInfo);
 </script>
 
 <svelte:head>
@@ -35,10 +35,12 @@
 </svelte:head>
 <NavBar />
 
-
 <div class="home-page-container">
-
-<Input hasErr={false} name="pla" onChange={() => console.log("typing....")} />
+    <Input
+        hasErr={false}
+        name="pla"
+        onChange={() => console.log("typing....")}
+    />
 
     {#if user}
         <div class="right-row">
@@ -65,10 +67,26 @@
             <div class="center-row">
                 <div class="form-row">
                     <div class="half-row">
-                    <Input  label={'First name'} value={userInfo.firstName} className="half-row" name="pla" onChange={(e) => {userInfo['firstName'] = e.target.value; console.log(userInfo);}} />
+                        <Input
+                            label={"First name"}
+                            value={userInfo.firstName}
+                            className="half-row"
+                            name="pla"
+                            onChange={(e) => {
+                                userInfo["firstName"] = e.target.value;
+                                console.log(userInfo);
+                            }}
+                        />
                     </div>
                     <div class="half-row">
-                    <Input hasErr={false} label={'Last name'} className="half-row" name="pla" onChange={(e) => userInfo['lastName'] = e.target.value} />
+                        <Input
+                            hasErr={false}
+                            label={"Last name"}
+                            className="half-row"
+                            name="pla"
+                            onChange={(e) =>
+                                (userInfo["lastName"] = e.target.value)}
+                        />
                     </div>
                 </div>
             </div>
@@ -78,10 +96,20 @@
             <div class="center-row">
                 <div class="form-row">
                     <div class="half-row">
-                        <Input  label={'Phone number'} className="half-row" name="pla" onChange={() => console.log("typing....")} />
+                        <Input
+                            label={"Phone number"}
+                            className="half-row"
+                            name="pla"
+                            onChange={() => console.log("typing....")}
+                        />
                     </div>
                     <div class="half-row">
-                        <Input  label={'City'} className="half-row" name="pla" onChange={() => console.log("typing....")} />
+                        <Input
+                            label={"City"}
+                            className="half-row"
+                            name="pla"
+                            onChange={() => console.log("typing....")}
+                        />
                     </div>
                 </div>
             </div>
@@ -91,10 +119,20 @@
             <div class="center-row">
                 <div class="form-row">
                     <div class="half-row">
-                        <Input  label={'Country'} className="half-row" name="pla" onChange={() => console.log("typing....")} />
+                        <Input
+                            label={"Country"}
+                            className="half-row"
+                            name="pla"
+                            onChange={() => console.log("typing....")}
+                        />
                     </div>
                     <div class="half-row">
-                        <Input  label={'Foreign Languages'} className="half-row" name="pla" onChange={() => console.log("typing....")} />
+                        <Input
+                            label={"Foreign Languages"}
+                            className="half-row"
+                            name="pla"
+                            onChange={() => console.log("typing....")}
+                        />
                     </div>
                 </div>
             </div>
@@ -102,32 +140,60 @@
 
         {#if user.userType == tourOperator}
             {#if user.business.businessName && user.business.website}
-            <div class="center-row">
-                <div class="form-row">
-                    <div class="half-row">
-                        <Input  label={'Business Name'} className="half-row" name="pla" onChange={() => console.log("typing....")} />
-                    </div>
-                    <div class="half-row">
-                        <Input  label={'Business Website'} className="half-row" name="pla" onChange={() => console.log("typing....")} />
+                <div class="center-row">
+                    <div class="form-row">
+                        <div class="half-row">
+                            <Input
+                                label={"Business Name"}
+                                className="half-row"
+                                name="pla"
+                                onChange={() => console.log("typing....")}
+                            />
+                        </div>
+                        <div class="half-row">
+                            <Input
+                                label={"Business Website"}
+                                className="half-row"
+                                name="pla"
+                                onChange={() => console.log("typing....")}
+                            />
+                        </div>
                     </div>
                 </div>
             {/if}
             {#if user.business.cui && user.business.address}
-            <div class="center-row">
-                <div class="form-row">
-                    <div class="half-row">
-                        <Input  label={'Cui'} className="half-row" name="pla" onChange={() => console.log("typing....")} />
-                    </div>
-                    <div class="half-row">
-                        <Input  label={'Adress'} className="half-row" name="pla" onChange={() => console.log("typing....")} />
+                <div class="center-row">
+                    <div class="form-row">
+                        <div class="half-row">
+                            <Input
+                                label={"Cui"}
+                                className="half-row"
+                                name="pla"
+                                onChange={() => console.log("typing....")}
+                            />
+                        </div>
+                        <div class="half-row">
+                            <Input
+                                label={"Adress"}
+                                className="half-row"
+                                name="pla"
+                                onChange={() => console.log("typing....")}
+                            />
+                        </div>
                     </div>
                 </div>
             {/if}
             {#if user.business.socialLinks}
-            <div class="center-row">
-                <div class="form-row">
-                    <div class="half-row">
-                        <Input  label={'Social Links'} className="half-row" name="pla" onChange={() => console.log("typing....")} />
+                <div class="center-row">
+                    <div class="form-row">
+                        <div class="half-row">
+                            <Input
+                                label={"Social Links"}
+                                className="half-row"
+                                name="pla"
+                                onChange={() => console.log("typing....")}
+                            />
+                        </div>
                     </div>
                 </div>
             {/if}
@@ -135,41 +201,75 @@
 
         {#if user.userType == promoter}
             {#if user.currentJob && user.socialLinks}
-            <div class="center-row">
-                <div class="form-row">
-                    <div class="half-row">
-                        <Input  label={'Current Job'} className="half-row" name="pla" onChange={() => console.log("typing....")} />
-                    </div>
-                    <div class="half-row">
-                        <Input  label={'Social Links'} className="half-row" name="pla" onChange={() => console.log("typing....")} />
+                <div class="center-row">
+                    <div class="form-row">
+                        <div class="half-row">
+                            <Input
+                                label={"Current Job"}
+                                className="half-row"
+                                name="pla"
+                                onChange={() => console.log("typing....")}
+                            />
+                        </div>
+                        <div class="half-row">
+                            <Input
+                                label={"Social Links"}
+                                className="half-row"
+                                name="pla"
+                                onChange={() => console.log("typing....")}
+                            />
+                        </div>
                     </div>
                 </div>
             {/if}
             {#if user.disponibilityDescription}
-            <div class="center-row">
-                <div class="form-row">
-                    <Input  label={'Disponibility Description'} className="half-row" name="pla" onChange={() => console.log("typing....")} />
+                <div class="center-row">
+                    <div class="form-row">
+                        <Input
+                            label={"Disponibility Description"}
+                            className="half-row"
+                            name="pla"
+                            onChange={() => console.log("typing....")}
+                        />
+                    </div>
                 </div>
             {/if}
         {/if}
         {#if user.userType == contentCreator}
             {#if user.socialLinks && user.disponibilityDescription}
-            <div class="center-row">
-                <div class="form-row">
-                   <div class="half-row">
-                        <Input  label={'Social Links'} className="half-row" name="pla" onChange={() => console.log("typing....")} />
-                    </div>
-                    <div class="half-row">
-                        <Input  label={'Disponibility Description'} className="half-row" name="pla" onChange={() => console.log("typing....")} />
+                <div class="center-row">
+                    <div class="form-row">
+                        <div class="half-row">
+                            <Input
+                                label={"Social Links"}
+                                className="half-row"
+                                name="pla"
+                                onChange={() => console.log("typing....")}
+                            />
+                        </div>
+                        <div class="half-row">
+                            <Input
+                                label={"Disponibility Description"}
+                                className="half-row"
+                                name="pla"
+                                onChange={() => console.log("typing....")}
+                            />
+                        </div>
                     </div>
                 </div>
             {/if}
         {/if}
         {#if user.userType == concierge}
             {#if user.socialLinks}
-            <div class="center-row">
-                <div class="form-row">
-                        <Input  label={'Social Links'} className="half-row" name="pla" onChange={() => console.log("typing....")} />
+                <div class="center-row">
+                    <div class="form-row">
+                        <Input
+                            label={"Social Links"}
+                            className="half-row"
+                            name="pla"
+                            onChange={() => console.log("typing....")}
+                        />
+                    </div>
                 </div>
             {/if}
         {/if}
@@ -239,7 +339,7 @@
         flex-direction: row;
         justify-content: space-between;
     }
-    
+
     .half-row {
         width: 45%;
     }

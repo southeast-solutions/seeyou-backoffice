@@ -74,25 +74,25 @@ button:focus{
 	outline: none;
 }
 .main-button{
-	background: #549C79;
+	background: #132d5e;
 	box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.25);
 	color:white;
 	border: none;
 	
 }
 .secondary-button{
-	border: 1px solid #549C79;
+	border: 1px solid #019af6;
 	box-sizing: border-box;
 	background-color: transparent;
-	color:#549C79;
+	color:#019af6;
 }
 
 .main-button:hover{
 	box-shadow: none;
-	background-color: #67c095;
+	background-color: #019af6;
 }
 .secondary-button:hover{
-	background: #549C79;
+	background: #019af6;
 	color:white;
 }
 
@@ -100,7 +100,6 @@ button:focus{
 	width: 100%;
 	margin: 20px;
 	padding: 10px 20px;
-	border: 1px solid #549c79;
 	display: flex;
 	flex-direction: column;
 }

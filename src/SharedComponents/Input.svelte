@@ -1,18 +1,19 @@
 <script>
      $: ({ id, ...inputProps } = $$props);
+     console.log(inputProps);
 
-    console.log($$props)
 </script>
 
     <div class={`input__field ${inputProps.className ? inputProps.className : ''}`} >
        
         <input 
             class={`input ${inputProps.hasErr ? 'input--has-error' : ''}`}
-            type="text"
+            type={inputProps.type}
             on:change={(value) => inputProps.onChange(value)}
             placeholder={inputProps.placeholder}
+            value={inputProps.value}
             autoCorrect="off"
-            autoComplete="nope"
+            autoComplete="off"
             on:
             />
 
@@ -42,7 +43,16 @@
   justify-content: center;
 }
 
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus
+ {
+  -webkit-box-shadow: 0 0 0px 1000px transparent inset;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
 input {
+    font-family: 'Segoe UI';
     height: 100%;
     width: 100%;
     padding-left: 0;
@@ -55,6 +65,13 @@ input {
     outline: none;
     font-size: 14px;
 }
+
+input:-webkit-autofill:active  {
+    box-shadow: 0 0 0 30px white inset !important;
+  -webkit-box-shadow: 0 0 0 30px white inset !important;
+}
+
+
 
 input:focus {
     border: none !important;

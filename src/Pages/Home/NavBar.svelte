@@ -1,6 +1,7 @@
 <script>
     import { navigate } from "svelte-routing";
-    import { isAdmin, isTourOperator } from "../../Services/AuthService";
+    import { isAdmin, isTourOperator, clearAuthLocalStorage
+    } from "../../Services/AuthService";
     import { onMount } from "svelte";
 
     let showExperiences = false;
@@ -24,7 +25,7 @@
 
 <div class="nav-container">
     <div class="logo-container">
-        <img src="logo.png" alt="page-logo" class="logo" />
+    <img src="logo.png" alt="page-logo" class="logo" width={"50px"} height={"50px"}/>
     </div>
     <div class="buttons-container">
         {#if showUsers}
@@ -41,6 +42,11 @@
         <div class="nav-button" on:click={onProfilePressed}>
             <i class="fi fi-rr-user" />Profile
         </div>
+
+        <div class="nav-button" on:click={clearAuthLocalStorage
+        }>
+            <i class="fi fi-rr-user" />Sign Out
+        </div>
     </div>
 </div>
 
@@ -48,8 +54,8 @@
     .nav-container {
         position: absolute;
         width: 100%;
-        height: 80px;
-        background-color: #e8e7e2;
+        height: 60px;
+        background-color: #132d5e;
         box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.25);
         display: flex;
         flex-direction: row;
@@ -69,12 +75,13 @@
         user-select: none;
         cursor: pointer;
         height: 100%;
-        width: 200px;
+        width: 150px;
         display: flex;
         justify-content: center;
         align-items: center;
-        font-size: 26px;
+        font-size: 20px;
         font-weight: 200;
+        color: white;
     }
     .nav-button > i {
         height: 30px;
@@ -82,7 +89,7 @@
         margin-right: 5px;
     }
     .nav-button:hover {
-        background-color: #223d4f;
+        background-color: #019af6;
         color: white;
     }
 </style>

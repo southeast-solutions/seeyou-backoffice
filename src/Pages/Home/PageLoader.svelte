@@ -3,7 +3,7 @@
 </script>
 
 <div class="center">
-    <Shadow size="60" color="#549c79" unit="px" duration="2s" />
+    <Shadow size="60" color="#132d5e" unit="px" duration="2s" />
 </div>
 
 <style>

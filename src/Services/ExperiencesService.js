@@ -6,7 +6,7 @@ const getExpereinces = async (userId) => {
                 experiences: [
                     {
                         title: "Plimbare cu bicicleta pe la castelul peles",
-                        physicalLocation: { latitude: 21, longitude: 25 },
+                        physicalLocation: { latitude: 45.3599816, longitude: 25.5426423 },
                         duration: 5, type: "tour", price: 50, numberOfTourists: 20,
                         availableLanguages: "Romanian/ English/ Spanish",
                         dateTime: "2012-04-23T18:25:43.511Z",
@@ -26,7 +26,7 @@ const getExpereinces = async (userId) => {
                             "https://img.lovepik.com/photo/50121/7345.jpg_wh860.jpg",
                             "https://forums-images.oneplus.net/attachments/904/904853-921c9e6f5c245ddc35fa4c415bdc3ac8.png",
                         ]
-                    }, { title: "ced", physicalLocation: { latitude: 22, longitude: 22 } }
+                    }, { title: "ced", physicalLocation: { latitude: 21, longitude: 25 } }
                 ]
             });
 

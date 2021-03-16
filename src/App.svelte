@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import { Router, Route, Link } from "svelte-routing";
 	import Login from "./Pages/Auth/Login.svelte";
 	import Register from "./Pages/Auth/Register.svelte";

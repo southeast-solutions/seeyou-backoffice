@@ -1,6 +1,9 @@
 <script>
     import { navigate } from "svelte-routing";
-    import { isAdmin, isTourOperator, clearAuthLocalStorage
+    import {
+        isAdmin,
+        isTourOperator,
+        clearAuthLocalStorage,
     } from "../../Services/AuthService";
     import { onMount } from "svelte";
 
@@ -25,7 +28,13 @@
 
 <div class="nav-container">
     <div class="logo-container">
-    <img src="logo.png" alt="page-logo" class="logo" width={"50px"} height={"50px"}/>
+        <img
+            src="logo.png"
+            alt="page-logo"
+            class="logo"
+            width={"50px"}
+            height={"50px"}
+        />
     </div>
     <div class="buttons-container">
         {#if showUsers}
@@ -43,9 +52,8 @@
             <i class="fi fi-rr-user" />Profile
         </div>
 
-        <div class="nav-button" on:click={clearAuthLocalStorage
-        }>
-            <i class="fi fi-rr-user" />Sign Out
+        <div class="nav-button" on:click={clearAuthLocalStorage}>
+            <i class="fi  fi-rr-sign-out" />Sign Out
         </div>
     </div>
 </div>
@@ -87,6 +95,9 @@
         height: 30px;
         width: auto;
         margin-right: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
     .nav-button:hover {
         background-color: #019af6;

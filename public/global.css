@@ -106,7 +106,7 @@ button:focus{
 .section-title {
 	font-weight: bold;
 	font-size: 28px;
-	color: #549c79;
+	color: #132d5e;
 	margin-bottom: 20px;
 }
 .form-row {
@@ -138,5 +138,5 @@ button:focus{
 	height: 100vh;
 	width: 100vw;
 	overflow-y: auto;
-	padding-top:80px;
+	padding-top:60px;
 }

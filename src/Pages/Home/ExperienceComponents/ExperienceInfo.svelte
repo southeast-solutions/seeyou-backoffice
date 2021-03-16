@@ -172,10 +172,10 @@
             <h3>Location</h3>
         </div>
         <div class="experience__row__generic">
-            <!-- <Map
+            <Map
                 lat={data.physicalLocation.latitude}
                 lng={data.physicalLocation.longitude}
-            /> -->
+            />
         </div>
     {/if}
 </div>

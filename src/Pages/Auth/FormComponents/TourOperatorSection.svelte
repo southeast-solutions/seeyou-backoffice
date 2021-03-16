@@ -1,5 +1,9 @@
 <script>
     import { createEventDispatcher } from "svelte";
+    import {
+        validateEmail,
+        validatePhoneNumber,
+    } from "../../../Validators/UserValidators";
 
     const dispatch = createEventDispatcher();
 

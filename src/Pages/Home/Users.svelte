@@ -138,7 +138,6 @@
         display: flex;
         flex-direction: row;
         align-items: center;
-        padding-top: 80px;
         overflow-y: none;
     }
 

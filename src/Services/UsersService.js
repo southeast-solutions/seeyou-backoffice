@@ -31,7 +31,7 @@ const getUsers = () => {
                         socialLinks: `www.facebook.com
                     twitter.com`,
                         disponibilityDescription:
-                            "De luni pana vineri si in zilele de post",
+                            "All weekends all day",
                     },
                     {
                         id: "abc",

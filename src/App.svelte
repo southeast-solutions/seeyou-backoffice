@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import { Router, Route, Link } from "svelte-routing";
 	import Login from "./Pages/Auth/Login.svelte";
 	import Register from "./Pages/Auth/Register.svelte";
@@ -9,6 +9,13 @@
 	export let url = "";
 </script>
 
+<svelte:head>
+	<script
+		defer
+		async
+		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAGra0Pv79SE1Hs4UEbcYk9VrOOUgUBX48&callback=initMap">
+	</script>
+</svelte:head>
 <main>
 	<Router {url}>
 		<div>

@@ -39,7 +39,7 @@ const getUserData = async (userId) => {
 
 // export { getUserData };
 
-const getUserProfileData = async(userId) => {
+const getUserProfileData = async (userId) => {
     const response = await fetch(`${BASE_ROUTE}/user/${userId}`, {
         method: 'GET',
         headers: {

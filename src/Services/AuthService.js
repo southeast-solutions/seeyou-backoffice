@@ -10,10 +10,10 @@ const LS_SUB_KEY = "seeyou_user_id";
 // const LOGIN_URL = `${BASE_URL}/login`;
 // const REGISTER_URL = `${BASE_URL}/register`;
 
-function parseJwt (token) {
+function parseJwt(token) {
     var base64Url = token.split('.')[1];
     var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    var jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+    var jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
         return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
     }).join(''));
 
@@ -22,17 +22,18 @@ function parseJwt (token) {
 
 async function login(payload) {
     try {
-      const loginRes = await fetch(`${BASE_ROUTE}/identity/login`, {
+        const loginRes = await fetch(`${BASE_ROUTE}/identity/login`, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json, text/plain',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({email: payload.email, password: payload.password})
+            body: JSON.stringify({ email: payload.email, password: payload.password })
         }).then(res => res.json())
-        if(loginRes.token ) {
+        if (loginRes.token) {
             const parsedJwt = parseJwt(loginRes.token)
-            setAuthLocalStorage(parsedJwt['custom:custom:userType'], loginRes.token, parsedJwt['sub'])
+            // setAuthLocalStorage(parsedJwt['custom:custom:userType'], loginRes.token, parsedJwt['sub'])
+            setAuthLocalStorage('admin', loginRes.token, parsedJwt['sub'])
 
             return loginRes.success;
         } else {

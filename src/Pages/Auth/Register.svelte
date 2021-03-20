@@ -239,9 +239,9 @@
         transition: 0.5s;
         padding: 5px 10px;
         width: 100%;
-        height: 150px;
-        color: #549c79;
-        border: 1px solid #549c79;
+        min-height: 150px;
+        color: #132d5e;
+        border: 1px solid #132d5e;
         margin-top: 10px;
         margin-bottom: 10px;
         user-select: none;
@@ -259,11 +259,11 @@
         font-weight: 300;
     }
     .selector-selected {
-        background-color: #549c79;
+        background-color: #132d5e;
         color: white;
     }
     .selector-selected:hover {
-        background-color: #549c79;
+        background-color: #132d5e;
         color: white;
     }
 

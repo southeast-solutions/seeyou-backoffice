@@ -19,6 +19,10 @@
     let numberOfParticipants = 10;
     let availableLanguages = "";
     let description = "";
+    let location = {};
+    let includedServices = [];
+    let notIncludedServices = [];
+    let images = [];
 
     let datetimeComponent;
     let datePicker;
@@ -35,6 +39,38 @@
             readableDate = readable;
         });
     });
+
+    const mapUpdated = (event) => {
+        location = {
+            latitude: event.detail.lat(),
+            longitude: event.detail.lng(),
+        };
+    };
+    const includedServicesChanged = (event) => {
+        includedServices = event.detail;
+    };
+    const notIncludedServicesChanged = (event) => {
+        notIncludedServices = event.detail;
+    };
+    const imagesChanged = (event) => {
+        images = event.detail;
+    };
+
+    const saveClicked = () => {
+        console.log({
+            experienceName,
+            experienceType,
+            duration,
+            price,
+            numberOfParticipants,
+            availableLanguages,
+            location,
+            description,
+            includedServices,
+            notIncludedServices,
+            images,
+        });
+    };
 </script>
 
 <div class="forms__container">
@@ -50,7 +86,7 @@
                 className="half-row"
                 value={experienceName}
                 name="pla"
-                onChange={() => console.log("typing....")}
+                onChange={(event) => (experienceName = event.target.value)}
             />
         </div>
     </div>
@@ -102,7 +138,7 @@
                 value={duration}
                 className="half-row"
                 name="pla"
-                onChange={() => console.log("typing....")}
+                onChange={(event) => (duration = event.target.value)}
             />
         </div>
         <div class="half-row">
@@ -111,7 +147,7 @@
                 value={price}
                 className="half-row"
                 name="pla"
-                onChange={() => console.log("typing....")}
+                onChange={(event) => (price = event.target.value)}
             />
         </div>
     </div>
@@ -122,7 +158,7 @@
                 className="half-row"
                 name="pla"
                 value={availableLanguages}
-                onChange={() => console.log("typing....")}
+                onChange={(event) => (availableLanguages = event.target.value)}
             />
         </div>
         <div class="half-row">
@@ -131,7 +167,8 @@
                 className="half-row"
                 name="pla"
                 value={numberOfParticipants}
-                onChange={() => console.log("typing....")}
+                onChange={(event) =>
+                    (numberOfParticipants = event.target.value)}
             />
         </div>
     </div>
@@ -139,7 +176,9 @@
         <div class="full-row"><p class="form__row__title">Location</p></div>
     </div>
     <div class="form-row">
-        <!-- <div class="full-row"><Map isChangable={true} /></div> -->
+        <div class="full-row">
+            <Map isChangable={true} on:markerChanged={mapUpdated} />
+        </div>
     </div>
     <div class="form-row">
         <div class="full-row">
@@ -181,10 +220,10 @@
     </div>
     <div class="form-row">
         <div class="half-row">
-            <InputList />
+            <InputList on:valueChanged={includedServicesChanged} />
         </div>
         <div class="half-row">
-            <InputList />
+            <InputList on:valueChanged={notIncludedServicesChanged} />
         </div>
     </div>
     <div class="form-row">
@@ -194,13 +233,15 @@
     </div>
     <div class="form-row">
         <div class="full-row">
-            <MultiplePhotoPicker />
+            <MultiplePhotoPicker on:imagesChanged={imagesChanged} />
         </div>
     </div>
 
     <div class="form-row">
         <div class="full-row submit-row">
-            <button class="main-button">Add experience</button>
+            <button class="main-button" on:click={saveClicked}
+                >Add experience</button
+            >
         </div>
     </div>
 </div>

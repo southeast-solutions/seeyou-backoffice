@@ -83,14 +83,10 @@ const onTourOperatorData = (event) => {
                     on:validSection={onConciergeData}/>
             {/if}
 
-        <button class="main-button cta-button" on:click={console.log('Register')}>Register</button>
-
+        <button class="main-button cta-button" on:click={() => console.log('Register')}>Register</button>
         </div>
-
-
-        </div>
-
-        <div>
+    </div>
+ <div>
 
          
     </div>
@@ -122,7 +118,7 @@ const onTourOperatorData = (event) => {
     opacity: 0.97;
     border-radius: 5px;
     box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.25);
-    min-width: 600px;
+    min-width: 800px;
 }
 
 .register-wrapper__account-type-selection {

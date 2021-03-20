@@ -1,5 +1,7 @@
 <script>
     import { createEventDispatcher } from "svelte";
+import Input from "../../../SharedComponents/Input.svelte";
+import Textarea from "../../../SharedComponents/Textarea.svelte";
     import {
         validateEmail,
         validatePhoneNumber,
@@ -66,77 +68,130 @@
     }
 </script>
 
-<div class="form-section">
+<div class="tour-operator-section">
     <div class="section-title">About you</div>
-    <div class="form-row">
-        <input
+    <div class="register-form-row">
+        <div class="input-resizer">
+            <Input
+            label="First Name"
             type="text"
-            class="half-row {vFirstName ? 'valid-form' : 'invalid-form'}"
-            placeholder="First name"
-            bind:value={firstName}
-        />
-        <input
+            placeholder="First name.."
+            onChange={(e) => firstName = e.target.value}
+            value=""
+            mandatory
+            />
+        </div>
+       
+        <div class="input-resizer">
+            <Input
+            label="Last name"
             type="text"
-            class="half-row {vLastName ? 'valid-form' : 'invalid-form'}"
-            placeholder="Last name"
-            bind:value={lastName}
-        />
+            placeholder="Last name.."
+            onChange={(e) => lastName = e.target.value}
+            value=""
+            mandatory
+            />
+        </div>
     </div>
-    <div class="form-row">
-        <input
+    <div class="register-form-row">
+
+        <div class="phone-number-resizer">
+            <Input
+            label="Phone number"
+            type="number"
+            placeholder="Phone number.."
+            onChange={(e) => phoneNumber = e.target.value}
+            value=""
+            mandatory
+            />
+        </div>
+       
+        <div class="input-resizer">
+            <Input
+            label="Email"
             type="text"
-            class="quarter-row {vPhoneNumber ? 'valid-form' : 'invalid-form'}"
-            placeholder="Phone number"
-            bind:value={phoneNumber}
-        />
-        <input
-            type="text"
-            class="three-quarter-row {vEmail ? 'valid-form' : 'invalid-form'}"
-            placeholder="Email"
-            bind:value={email}
-        />
+            placeholder="Email.."
+            onChange={(e) => email = e.target.value}
+            value=""
+            mandatory
+            />
+        </div>
     </div>
-    <div class="form-row">
-        <input
+    <div class="register-form-row">
+        <div class="input-resizer">
+            <Input
+            label="Password"
             type="password"
-            class="half-row {vPassword ? 'valid-form' : 'invalid-form'}"
-            placeholder="Password"
-            bind:value={password}
-        />
-        <input
+            placeholder="Password.."
+            onChange={(e) => password = e.target.value}
+            value=""
+            mandatory
+            />
+        </div>
+       
+        <div class="input-resizer">
+            <Input
+            label="Repeat password"
             type="password"
-            class="half-row {vPasswordRepeat ? 'valid-form' : 'invalid-form'}"
-            placeholder="Repeat password"
-            bind:value={passwordRepeat}
+            placeholder="Repeat password.."
+            onChange={(e) => passwordRepeat = e.target.value}
+            value=""
+            mandatory
+            />
+        </div>
+
+    </div>
+    <div class="register-form-row">
+        <Textarea 
+            value=""
+            label="Social Links"
+            placeholder="Social Links.."
+            onChange={(e) => socialLinks = e.target.value}
+            rows={5}
         />
     </div>
-    <div class="form-row">
-        <textarea
-            name="textarea"
-            cols="30"
-            rows="3"
-            class="{vSocialLinks ? 'valid-form' : 'invalid-form'} full-row"
-            placeholder="Social media links"
-            bind:value={socialLinks}
-        />
-    </div>
-    <div class="form-row">
-        <input
-            type="text"
-            class="full-row {vCity ? 'valid-form' : 'invalid-form'}"
-            placeholder="City"
-            bind:value={city}
+    <div class="register-form-row">
+        <Input
+        label="City"
+        type="text"
+        placeholder="City.."
+        onChange={(e) => city = e.target.value}
+        value=""
+        mandatory
         />
     </div>
 
-    <div class="form-row">
-        <input
-            type="text"
-            class="full-row {vForeignLanguages ? 'valid-form' : 'invalid-form'}"
-            placeholder="Foreign languages spoken"
-            bind:value={foreignLanguages}
-        />
+    <div class="register-form-row">
+        <Input
+        label="Foreign languages spoken"
+        type="text"
+        placeholder="Foreign languages spoken.."
+        onChange={(e) => foreignLanguages = e.target.value}
+        value=""
+        mandatory
+    />
     </div>
 </div>
 
-<style></style>
+<style>
+.tour-operator-section {
+    width: 100%;
+}
+
+.input-resizer {
+    width: 49%;
+}
+
+.register-form-row {
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+    justify-content: space-between;
+    margin-top: 16px;
+}
+
+.phone-number-resizer {
+    width: 30%;
+ }
+
+</style>

@@ -33,11 +33,11 @@ input, textarea {
 	font-size: inherit;
 	-webkit-padding: 0.4em 0;
 	padding: 0.4em;
-	margin: 0 0 0.5em 0;
+	/* margin: 0 0 0.5em 0; */
 	box-sizing: border-box;
 	border: none;
 	background-color: white;
-	box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25);
+	/* box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.25); */
 	font-weight: 300;
 	color: #223D4F;
 	border-radius: 0;
@@ -107,7 +107,7 @@ button:focus{
 	font-weight: bold;
 	font-size: 28px;
 	color: #132d5e;
-	margin-bottom: 20px;
+	margin-bottom: 40px;
 }
 .form-row {
 	width: 100%;

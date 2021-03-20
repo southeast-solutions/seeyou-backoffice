@@ -66,7 +66,6 @@
 
     const onPromoterData = (event) => {
         promoterData = event.detail;
-        registrationHasErrors = false;
     };
     const onTourOperatorData = (event) => {
         if (event.detail.cui) {

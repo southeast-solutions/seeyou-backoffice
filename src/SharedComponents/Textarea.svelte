@@ -4,10 +4,9 @@
     $:labelClass = focused ? "textarea__label--focused" : "textarea__label";
 </script>
 
-<div>
-    <div class="textarea-wrapper">
+<div class="textarea-wrapper">
           <div class={labelClass}>
-            {textAreaProps.label || 'Test Label'}
+            {textAreaProps.label || ''}
           </div>
 
         <div class="textarea">
@@ -15,6 +14,7 @@
             class={!focused ? "textarea__field" : "textarea__field textarea__field--focused"}
             on:focus={() => {focused = true;}}
             on:blur={() => {focused = false;}}
+            on:change={(value) => textAreaProps.onChange(value)}
             value={textAreaProps.value || ''}
             rows={textAreaProps.rows}
             placeholder={textAreaProps.placeholder || ''}
@@ -22,10 +22,13 @@
             maxLength={textAreaProps.maxLength || 2000}
           />
         </div>
-      </div>
-</div>
+     </div>
 
 <style>
+
+.textarea-wrapper {
+    width: 100%;
+}
 
 .textarea {
     width: 100%;
@@ -35,26 +38,30 @@
     flex-direction: column;
     justify-content: center;
     margin-bottom: 8px;
+    box-shadow: inset 0px 0px 0px 0px;
 }
 
 .textarea__field {
     margin-top: 5px;
     outline: none;
-    border: 1px #54709c solid;
+    border: 2px #54709c solid;
     line-height: 1.25;
     font-size: 15px;
     background-color: transparent;
     resize: none;
-    padding: 0;
+    padding-top: 8px;
+    width: 100%;
 }
 
 .textarea__field--focused {
-    border: 1px #019af6 solid !important;
+    border: 2px #019af6 solid !important;
 }
 
 .textarea__label {
     color: #54709c;
     font-size: 15px;
+    margin-bottom: 3px;
+
 }
 
 .textarea__label--focused {
@@ -62,7 +69,9 @@
   top: 0;
   width: 100%;
   cursor: pointer;
-  margin-bottom: 2px;
+  font-size: 15px;
+  margin-bottom: 3px;
+
 }
 
 </style>

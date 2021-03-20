@@ -1,8 +1,8 @@
 <script>
     import { onMount, afterUpdate, createEventDispatcher } from "svelte";
 
-    export let lat = 44.4325;
-    export let lng = 26.0943854;
+    export let lat;
+    export let lng;
     export let isChangable = false;
 
     const dispatch = createEventDispatcher();
@@ -52,6 +52,10 @@
     });
 
     const placeMarker = (position, map) => {
+        if (marker) {
+            marker.setMap(null);
+        }
+
         marker = new google.maps.Marker({
             position: position,
             map: map,

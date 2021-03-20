@@ -1,19 +1,40 @@
 <script>
+    import { onMount } from "svelte";
+    import Map from "./Map.svelte";
     import Input from "../../../SharedComponents/Input.svelte";
+    import InputList from "../../../SharedComponents/InputList.svelte";
     import {
         tour,
         trip,
         vacation,
         local,
     } from "../../../Enums/ExperienceTypes";
+    import SimplePicker from "simplepicker";
+    import MultiplePhotoPicker from "../../../SharedComponents/MultiplePhotoPicker.svelte";
 
     let experienceName = "";
     let experienceType = local;
+    let duration = 2;
+    let price = 50;
+    let numberOfParticipants = 10;
+    let availableLanguages = "";
+    let description = "";
+
+    let datetimeComponent;
+    let datePicker;
+    let readableDate;
+    let selectedDate;
 
     const selectType = (type) => {
-        console.log("a");
         experienceType = type;
     };
+    onMount(() => {
+        datePicker = new SimplePicker(datetimeComponent, { zIndex: 10 });
+        datePicker.on("submit", (date, readable) => {
+            selectedDate = date;
+            readableDate = readable;
+        });
+    });
 </script>
 
 <div class="forms__container">
@@ -27,6 +48,7 @@
             <Input
                 label="Experience name"
                 className="half-row"
+                value={experienceName}
                 name="pla"
                 onChange={() => console.log("typing....")}
             />
@@ -77,6 +99,7 @@
                 label="Duration ({experienceType === vacation
                     ? 'days'
                     : 'hours'})"
+                value={duration}
                 className="half-row"
                 name="pla"
                 onChange={() => console.log("typing....")}
@@ -85,6 +108,7 @@
         <div class="half-row">
             <Input
                 label="Price (RON)"
+                value={price}
                 className="half-row"
                 name="pla"
                 onChange={() => console.log("typing....")}
@@ -97,6 +121,7 @@
                 label="Available languages"
                 className="half-row"
                 name="pla"
+                value={availableLanguages}
                 onChange={() => console.log("typing....")}
             />
         </div>
@@ -105,8 +130,77 @@
                 label="Number of participants"
                 className="half-row"
                 name="pla"
+                value={numberOfParticipants}
                 onChange={() => console.log("typing....")}
             />
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="full-row"><p class="form__row__title">Location</p></div>
+    </div>
+    <div class="form-row">
+        <!-- <div class="full-row"><Map isChangable={true} /></div> -->
+    </div>
+    <div class="form-row">
+        <div class="full-row">
+            <p class="form__row__title">Date and time</p>
+        </div>
+    </div>
+    <div class="form-row form__row__nomargin">
+        <div class="full-row">
+            <div bind:this={datetimeComponent} />
+            <button
+                class="main-button form__row__button"
+                on:click={datePicker.open()}
+                >{readableDate ? readableDate : "Select date and time"}</button
+            >
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="full-row">
+            <p class="form__row__title">Description</p>
+        </div>
+    </div>
+    <div class="form-row">
+        <textarea
+            name="textarea"
+            cols="30"
+            rows="5"
+            class="full-row"
+            placeholder="Description"
+            bind:value={description}
+        />
+    </div>
+    <div class="form-row">
+        <div class="half-row">
+            <p class="form__row__title">Included services</p>
+        </div>
+        <div class="half-row">
+            <p class="form__row__title">Not included services</p>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="half-row">
+            <InputList />
+        </div>
+        <div class="half-row">
+            <InputList />
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="full-row">
+            <p class="form__row__title">Photos (10 max)</p>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="full-row">
+            <MultiplePhotoPicker />
+        </div>
+    </div>
+
+    <div class="form-row">
+        <div class="full-row submit-row">
+            <button class="main-button">Add experience</button>
         </div>
     </div>
 </div>
@@ -148,5 +242,30 @@
     }
     .form-row {
         margin-top: 20px;
+    }
+    .form__row__title {
+        color: #132d5e;
+        font-weight: bold;
+    }
+    .form__row__button {
+        padding: 10px 20px;
+        font-size: 16px;
+        font-weight: 200;
+    }
+    .form__row__nomargin {
+        margin: 0;
+    }
+    textarea {
+        outline: none;
+        border: 0.5px solid #223d4f;
+    }
+    .submit-row {
+        justify-content: center;
+        display: flex;
+    }
+    .submit-row > .main-button {
+        padding: 10px 30px;
+        font-size: 24px;
+        font-weight: 200;
     }
 </style>

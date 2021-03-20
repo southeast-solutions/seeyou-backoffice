@@ -83,6 +83,7 @@
     }
 
     .input__label {
+        transition: 0.2s;
         top: -14px;
         position: absolute;
         font-weight: normal;

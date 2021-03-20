@@ -82,10 +82,16 @@ const onTourOperatorData = (event) => {
                     <ConciergeSection
                     on:validSection={onConciergeData}/>
             {/if}
-        </div>
+
+        <button class="main-button cta-button" on:click={console.log('Register')}>Register</button>
 
         </div>
+
+
+        </div>
+
         <div>
+
          
     </div>
 </div>
@@ -127,10 +133,22 @@ const onTourOperatorData = (event) => {
 .register-wrapper__form-section {
     width: 100%;
     padding: 30px 60px 30px 60px;
-    overflow-y: scroll
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
 }
 
 .register-wrapper__form-section::-webkit-scrollbar {
   display: none;
 }
+
+.cta-button {
+        margin-top: 20px;
+        border-radius: 5px;
+        align-self: flex-end;
+        width: 100px;
+        font-size: 16px;
+        padding: 10px;
+    }
 </style>

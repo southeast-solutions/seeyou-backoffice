@@ -52,12 +52,10 @@
     border: 1px #019af6 solid !important;
 }
 
-
 .textarea__label {
     color: #54709c;
     font-size: 15px;
 }
-  
 
 .textarea__label--focused {
   color: #019af6;
@@ -66,11 +64,5 @@
   cursor: pointer;
   margin-bottom: 2px;
 }
-
-
-
-
-
-
 
 </style>

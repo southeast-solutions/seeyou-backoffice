@@ -61,6 +61,7 @@ input[type=number] {
     input:-webkit-autofill:hover,
     input:-webkit-autofill:focus {
         -webkit-box-shadow: 0 0 0px 1000px transparent inset;
+        box-shadow: 0 0 0px 1000px transparent inset;
         transition: background-color 5000s ease-in-out 0s;
     }
 
@@ -97,6 +98,7 @@ input[type=number] {
     }
 
     .input__label {
+        transition: 0.2s;
         top: -14px;
         position: absolute;
         font-weight: normal;

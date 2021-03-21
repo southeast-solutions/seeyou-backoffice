@@ -2,6 +2,7 @@
     import { onMount } from "svelte";
     import Map from "./Map.svelte";
     import Input from "../../../SharedComponents/Input.svelte";
+    import Textarea from "../../../SharedComponents/Textarea.svelte";
     import InputList from "../../../SharedComponents/InputList.svelte";
     import {
         tour,
@@ -9,8 +10,15 @@
         vacation,
         local,
     } from "../../../Enums/ExperienceTypes";
+    import { addExperience } from "../../../Services/ExperiencesService";
     import SimplePicker from "simplepicker";
     import MultiplePhotoPicker from "../../../SharedComponents/MultiplePhotoPicker.svelte";
+
+    const nullMessage = "Field is mandatory";
+    const invalidValue = "Invalid value";
+    const mapError = "No location was placed";
+
+    let globalError;
 
     let experienceName = "";
     let experienceType = local;
@@ -19,11 +27,19 @@
     let numberOfParticipants = 10;
     let availableLanguages = "";
     let description = "";
+    let locations = {};
+    let includedServices = [];
+    let notIncludedServices = [];
+    let images = [];
 
     let datetimeComponent;
     let datePicker;
     let readableDate;
     let selectedDate;
+
+    let errors = {};
+
+    let isAddLoading = false;
 
     const selectType = (type) => {
         experienceType = type;
@@ -35,6 +51,89 @@
             readableDate = readable;
         });
     });
+
+    const mapUpdated = (event) => {
+        locations = {
+            latitude: event.detail.lat(),
+            longitude: event.detail.lng(),
+        };
+    };
+    const includedServicesChanged = (event) => {
+        includedServices = event.detail;
+    };
+    const notIncludedServicesChanged = (event) => {
+        notIncludedServices = event.detail;
+    };
+    const imagesChanged = (event) => {
+        images = event.detail;
+    };
+
+    const saveClicked = () => {
+        validateInputs();
+        if (!isValid()) return;
+
+        isAddLoading = true;
+        globalError = "";
+        addExperience({
+            experienceName,
+            experienceType,
+            duration,
+            price,
+            numberOfParticipants,
+            availableLanguages,
+            location: locations,
+            description,
+            includedServices,
+            notIncludedServices,
+            highlights: images.map((file) => URL.createObjectURL(file)),
+        })
+            .then(() => {
+                // location.reload();
+            })
+            .catch((err) => {
+                globalError = err.message;
+            })
+            .finally(() => {
+                isAddLoading = false;
+            });
+    };
+
+    const validateInputs = () => {
+        if (!experienceName) errors["name"] = nullMessage;
+        else errors["name"] = undefined;
+
+        if (price <= 0) errors["price"] = invalidValue;
+        else errors["price"] = undefined;
+
+        if (duration <= 0) errors["duration"] = invalidValue;
+        else errors["duration"] = undefined;
+
+        if (numberOfParticipants <= 0)
+            errors["numberOfParticipants"] = invalidValue;
+        else errors["numberOfParticipants"] = undefined;
+
+        if (!availableLanguages) errors["availableLanguages"] = nullMessage;
+        else errors["availableLanguages"] = undefined;
+
+        if (locations) {
+            if (!locations.latitude || !locations.longitude) {
+                errors["locations"] = mapError;
+            } else {
+                errors["locations"] = undefined;
+            }
+        } else {
+            errors["locations"] = mapError;
+        }
+
+        if (!selectedDate) errors["date"] = invalidValue;
+        else errors["date"] = undefined;
+    };
+    const isValid = () => {
+        for (const key in errors) {
+            if (errors[key]) return false;
+        }
+        return true;
+    };
 </script>
 
 <div class="forms__container">
@@ -49,8 +148,10 @@
                 label="Experience name"
                 className="half-row"
                 value={experienceName}
+                hasErr={errors["name"]}
+                errMessage={errors["name"]}
                 name="pla"
-                onChange={() => console.log("typing....")}
+                onChange={(event) => (experienceName = event.target.value)}
             />
         </div>
     </div>
@@ -102,7 +203,10 @@
                 value={duration}
                 className="half-row"
                 name="pla"
-                onChange={() => console.log("typing....")}
+                type="number"
+                hasErr={errors["duration"]}
+                errMessage={errors["duration"]}
+                onChange={(event) => (duration = event.target.value)}
             />
         </div>
         <div class="half-row">
@@ -111,7 +215,10 @@
                 value={price}
                 className="half-row"
                 name="pla"
-                onChange={() => console.log("typing....")}
+                type="number"
+                hasErr={errors["price"]}
+                errMessage={errors["price"]}
+                onChange={(event) => (price = event.target.value)}
             />
         </div>
     </div>
@@ -121,8 +228,10 @@
                 label="Available languages"
                 className="half-row"
                 name="pla"
+                hasErr={errors["availableLanguages"]}
+                errMessage={errors["availableLanguages"]}
                 value={availableLanguages}
-                onChange={() => console.log("typing....")}
+                onChange={(event) => (availableLanguages = event.target.value)}
             />
         </div>
         <div class="half-row">
@@ -130,20 +239,36 @@
                 label="Number of participants"
                 className="half-row"
                 name="pla"
+                type="number"
+                hasErr={errors["numberOfParticipants"]}
+                errMessage={errors["numberOfParticipants"]}
                 value={numberOfParticipants}
-                onChange={() => console.log("typing....")}
+                onChange={(event) =>
+                    (numberOfParticipants = event.target.value)}
             />
         </div>
     </div>
     <div class="form-row">
-        <div class="full-row"><p class="form__row__title">Location</p></div>
-    </div>
-    <div class="form-row">
-        <!-- <div class="full-row"><Map isChangable={true} /></div> -->
+        <div class="full-row">
+            <p class="form__row__title">
+                Location {#if errors["locations"]}
+                    <span style="color:red"> ({errors["locations"]})</span>
+                {/if}
+            </p>
+        </div>
     </div>
     <div class="form-row">
         <div class="full-row">
-            <p class="form__row__title">Date and time</p>
+            <Map isChangable={true} on:markerChanged={mapUpdated} />
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="full-row">
+            <p class="form__row__title">
+                Date and time {#if errors["date"]}
+                    <span style="color:red"> ({errors["date"]})</span>
+                {/if}
+            </p>
         </div>
     </div>
     <div class="form-row form__row__nomargin">
@@ -158,18 +283,14 @@
     </div>
     <div class="form-row">
         <div class="full-row">
-            <p class="form__row__title">Description</p>
+            <Textarea
+                value={description}
+                label="Description"
+                rows="5"
+                placeholder="Add your description"
+                onChange={(event) => (description = event.target.value)}
+            />
         </div>
-    </div>
-    <div class="form-row">
-        <textarea
-            name="textarea"
-            cols="30"
-            rows="5"
-            class="full-row"
-            placeholder="Description"
-            bind:value={description}
-        />
     </div>
     <div class="form-row">
         <div class="half-row">
@@ -181,10 +302,10 @@
     </div>
     <div class="form-row">
         <div class="half-row">
-            <InputList />
+            <InputList on:valueChanged={includedServicesChanged} />
         </div>
         <div class="half-row">
-            <InputList />
+            <InputList on:valueChanged={notIncludedServicesChanged} />
         </div>
     </div>
     <div class="form-row">
@@ -194,13 +315,24 @@
     </div>
     <div class="form-row">
         <div class="full-row">
-            <MultiplePhotoPicker />
+            <MultiplePhotoPicker on:imagesChanged={imagesChanged} />
         </div>
     </div>
+    {#if globalError}
+        <div class="form-row">
+            <div class="full-row submit-row">
+                <p class="form__row__title">
+                    <span style="color:red">{globalError}</span>
+                </p>
+            </div>
+        </div>
+    {/if}
 
     <div class="form-row">
         <div class="full-row submit-row">
-            <button class="main-button">Add experience</button>
+            <button class="main-button" on:click={saveClicked}
+                >{isAddLoading ? "Please wait" : "Add experience"}</button
+            >
         </div>
     </div>
 </div>
@@ -255,10 +387,7 @@
     .form__row__nomargin {
         margin: 0;
     }
-    textarea {
-        outline: none;
-        border: 0.5px solid #223d4f;
-    }
+
     .submit-row {
         justify-content: center;
         display: flex;

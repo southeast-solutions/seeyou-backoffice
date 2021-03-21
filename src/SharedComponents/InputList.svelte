@@ -1,7 +1,11 @@
 <script>
+    import { createEventDispatcher } from "svelte";
     import Input from "./Input.svelte";
+
     export let maxLength = 10;
     export let placeholder = "";
+
+    const dispatch = createEventDispatcher();
 
     $: values = [""];
 
@@ -9,13 +13,24 @@
         if (values.length > 1) {
             values.pop();
             values = values;
+            notifyValue();
         }
     };
     const addClicked = () => {
         if (values.length < maxLength) {
             values = [...values, ""];
+            notifyValue();
         }
     };
+    const changeValue = (index, value) => {
+        values[index] = value;
+        notifyValue();
+    };
+    const notifyValue = () =>
+        dispatch(
+            "valueChanged",
+            values.filter((text) => text !== "")
+        );
 </script>
 
 {#each values as value, index}
@@ -26,7 +41,7 @@
                 className="half-row"
                 {value}
                 name="pla"
-                onChange={() => console.log("typing....")}
+                onChange={(event) => changeValue(index, event.target.value)}
             />
         </div>
         {#if index === values.length - 1}

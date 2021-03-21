@@ -1,3 +1,11 @@
+import axios from "axios";
+import { BASE_ROUTE } from "./Constants";
+
+import { getAuthToken } from "./AuthService"
+
+
+const addExperienceUrl = BASE_ROUTE + "/Experience/AddExperience";
+
 const getExpereinces = async (userId) => {
     return new Promise((resolve, reject) => {
         setTimeout(() => {
@@ -33,5 +41,22 @@ const getExpereinces = async (userId) => {
         }, 2000);
     })
 }
+const addExperience = async (expereinceObj) => {
+    let translatedExperience = expereinceObj;
+    let token = getAuthToken();
+    console.log(translatedExperience)
+    let response = await fetch(addExperienceUrl, {
+        method: 'POST',
+        // mode: 'cors',
+        body: translatedExperience,
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+    });
+    return await response.json();
 
-export { getExpereinces };
+}
+
+export { getExpereinces, addExperience };

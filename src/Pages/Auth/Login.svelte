@@ -88,7 +88,6 @@ import Input from "../../SharedComponents/Input.svelte";
     .form-container {
         height: 60%;
         width: 20%;
-        background-color: #e8e7e2;
         display: flex;
         flex-direction: column;
         align-items: center;

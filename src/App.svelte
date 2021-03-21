@@ -6,6 +6,7 @@
 	import Users from "./Pages/Home/Users.svelte";
 	import Experiences from "./Pages/Home/Experiences.svelte";
 	import NotFound from "./Pages/NotFound.svelte";
+import Register2 from "./Pages/Auth/Register2.svelte";
 	export let url = "";
 </script>
 
@@ -20,7 +21,7 @@
 	<Router {url}>
 		<div>
 			<Route path="/login" component={Login} />
-			<Route path="/register" component={Register} />
+			<Route path="/register" component={Register2} />
 			<Route path="/users" component={Users} />
 			<Route path="/experiences" component={Experiences} />
 			<Route path="/profile" component={Profile} />

@@ -12,7 +12,7 @@
         value={inputProps.value}
         autoCorrect="off"
         autoComplete="off"
-        on:
+        disabled={inputProps.disabled}
     />
 
     {#if inputProps.label}
@@ -22,6 +22,11 @@
             }`}
         >
             {inputProps.label}
+            {#if inputProps.mandatory}
+            <span class="mandatory">
+                *
+            </span>
+            {/if}
         </span>
     {/if}
 
@@ -33,15 +38,24 @@
 </div>
 
 <style>
-    .input__field {
-        width: 100%;
-        position: relative;
-        margin-bottom: 8px;
-        height: 40px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-    }
+.input__field {
+    width: 100%;
+    position: relative;
+    margin-bottom: 8px;
+    height: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none; 
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+}
 
     input:-webkit-autofill,
     input:-webkit-autofill:hover,
@@ -107,5 +121,9 @@
         bottom: -12px;
         font-size: 12px;
         color: #b60610;
+    }
+
+    .mandatory {
+        color: red;
     }
 </style>

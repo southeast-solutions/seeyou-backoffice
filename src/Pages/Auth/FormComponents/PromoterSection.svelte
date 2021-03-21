@@ -1,11 +1,13 @@
 <script>
     import { createEventDispatcher } from "svelte";
-    import {
-        validateEmail,
-        validatePhoneNumber,
-    } from "../../../Validators/UserValidators";
+import Input from "../../../SharedComponents/Input.svelte";
+import Textarea from "../../../SharedComponents/Textarea.svelte";
+    // import {
+    //     validateEmail,
+    //     validatePhoneNumber,
+    // } from "../../../Validators/UserValidators";
 
-    const dispatch = createEventDispatcher();
+const dispatch = createEventDispatcher();
 
     $: firstName = "";
     $: lastName = "";
@@ -21,170 +23,281 @@
     $: foreignLanguages = "";
     $: disponibilityDescription = "";
 
-    $: vFirstName = false;
-    $: vLastName = false;
-    $: vPhoneNumber = false;
-    $: vEmail = false;
-    $: vPassword = false;
-    $: vPasswordRepeat = false;
-    $: vSocialLinks = false;
-    $: vCity = false;
-    $: vCountry = false;
-    $: vCurrentJob = false;
-    $: vForeignLanguages = false;
-    $: vDisponibility = false;
+    // $: vFirstName = false;
+    // $: vLastName = false;
+    // $: vPhoneNumber = false;
+    // $: vEmail = false;
+    // $: vPassword = false;
+    // $: vPasswordRepeat = false;
+    // $: vSocialLinks = false;
+    // $: vCity = false;
+    // $: vCountry = false;
+    // $: vCurrentJob = false;
+    // $: vForeignLanguages = false;
+    // $: vDisponibility = false;
+
 
     $: {
-        vFirstName = firstName ? true : false;
-        vLastName = lastName ? true : false;
-        vEmail = validateEmail(email);
-        vPhoneNumber = validatePhoneNumber(phoneNumber);
-        vPassword = password ? true : false;
-
-        vPasswordRepeat = password === passwordRepeat;
-
-        vSocialLinks = socialLinks ? true : false;
-        vCity = city ? true : false;
-        vCountry = country ? true : false;
-        vCurrentJob = currentJob || isStudent;
-        vForeignLanguages = foreignLanguages ? true : false;
-        vDisponibility = disponibilityDescription ? true : false;
-
-        if (
-            vFirstName &&
-            vLastName &&
-            vPhoneNumber &&
-            vEmail &&
-            vPassword &&
-            vPasswordRepeat &&
-            vSocialLinks &&
-            vCity &&
-            vCountry &&
-            vCurrentJob &&
-            vForeignLanguages &&
-            vDisponibility
-        ) {
-            dispatch("validSection", {
-                firstName,
-                lastName,
-                email,
-                password,
-                socialLinks,
-                city,
-                country,
-                currentJob,
-                isStudent,
-                foreignLanguages,
-                disponibilityDescription,
-            });
-        } else {
-            dispatch("notValid");
+        const dataToPropagate = {
+            firstName,
+            lastName,
+            phoneNumber,
+            email,
+            password,
+            passwordRepeat,
+            socialLinks,
+            city,
+            country,
+            isStudent,
+            currentJob,
+            foreignLanguages,
+            disponibilityDescription,
         }
+
+        dispatch('completeData', dataToPropagate)
     }
+
+    // $: {
+    //     vFirstName = firstName ? true : false;
+    //     vLastName = lastName ? true : false;
+    //     vEmail = validateEmail(email);
+    //     vPhoneNumber = validatePhoneNumber(phoneNumber);
+    //     vPassword = password ? true : false;
+
+    //     vPasswordRepeat = password === passwordRepeat;
+
+    //     vSocialLinks = socialLinks ? true : false;
+    //     vCity = city ? true : false;
+    //     vCountry = country ? true : false;
+    //     vCurrentJob = currentJob || isStudent;
+    //     vForeignLanguages = foreignLanguages ? true : false;
+    //     vDisponibility = disponibilityDescription ? true : false;
+
+    //     if (
+    //         vFirstName &&
+    //         vLastName &&
+    //         vPhoneNumber &&
+    //         vEmail &&
+    //         vPassword &&
+    //         vPasswordRepeat &&
+    //         vSocialLinks &&
+    //         vCity &&
+    //         vCountry &&
+    //         vCurrentJob &&
+    //         vForeignLanguages &&
+    //         vDisponibility
+    //     ) {
+    //         dispatch("validSection", {
+    //             firstName,
+    //             lastName,
+    //             email,
+    //             password,
+    //             socialLinks,
+    //             city,
+    //             country,
+    //             currentJob,
+    //             isStudent,
+    //             foreignLanguages,
+    //             disponibilityDescription,
+    //         });
+    //     } else {
+    //         dispatch("notValid");
+    //     }
+    // }
+
+
+
+    
+
 </script>
 
-<div class="form-section">
+<div class="promoter-section">
     <div class="section-title">About you</div>
-    <div class="form-row">
-        <input
+    <div class="register-form-row">
+        <div class="input-resizer">
+            <Input
+            label="First Name"
             type="text"
-            class="half-row {vFirstName ? 'valid-form' : 'invalid-form'}"
-            placeholder="First name"
-            bind:value={firstName}
-        />
-        <input
+            placeholder="First name.."
+            onChange={(e) => {firstName = e.target.value; dispatch('completeData')}}
+            value=""
+            mandatory
+            />
+        </div>
+       
+        <div class="input-resizer">
+            <Input
+            label="Last name"
             type="text"
-            class="half-row {vLastName ? 'valid-form' : 'invalid-form'}"
-            placeholder="Last name"
-            bind:value={lastName}
-        />
+            placeholder="Last name.."
+            onChange={(e) => lastName = e.target.value}
+            value=""
+            mandatory
+            />
+        </div>
+        
     </div>
-    <div class="form-row">
-        <input
-            type="text"
-            class="quarter-row {vPhoneNumber ? 'valid-form' : 'invalid-form'}"
-            placeholder="Phone number"
-            bind:value={phoneNumber}
-        />
-        <input
-            type="text"
-            class="three-quarter-row {vEmail ? 'valid-form' : 'invalid-form'}"
-            placeholder="Email"
-            bind:value={email}
-        />
-    </div>
-    <div class="form-row">
-        <input
-            type="password"
-            class="half-row {vPassword ? 'valid-form' : 'invalid-form'}"
-            placeholder="Password"
-            bind:value={password}
-        />
-        <input
-            type="password"
-            class="half-row {vPasswordRepeat ? 'valid-form' : 'invalid-form'}"
-            placeholder="Repeat password"
-            bind:value={passwordRepeat}
-        />
-    </div>
-    <div class="form-row">
-        <textarea
-            name="textarea"
-            cols="30"
-            rows="3"
-            class="{vSocialLinks ? 'valid-form' : 'invalid-form'} full-row"
-            placeholder="Social media links"
-            bind:value={socialLinks}
-        />
-    </div>
-    <div class="form-row">
-        <input
-            type="text"
-            class="half-row {vCity ? 'valid-form' : 'invalid-form'}"
-            placeholder="City"
-            bind:value={city}
-        />
-        <input
-            type="text"
-            class="half-row {vCountry ? 'valid-form' : 'invalid-form'}"
-            placeholder="Country"
-            bind:value={country}
-        />
-    </div>
+    <div class="register-form-row">
 
-    <div class="form-row">
-        <div class="full-row">
-            I'm a student
-            <input type="checkbox" bind:checked={isStudent} />
+        <div class="phone-number-resizer">
+            <Input
+            label="Phone number"
+            type="number"
+            placeholder="Phone number.."
+            onChange={(e) => phoneNumber = e.target.value}
+            value=""
+            mandatory
+            />
+        </div>
+       
+        <div class="input-resizer">
+            <Input
+            label="Email"
+            type="text"
+            placeholder="Email.."
+            onChange={(e) => email = e.target.value}
+            value=""
+            mandatory
+            />
         </div>
     </div>
-    <div class="form-row">
-        <input
-            type="text"
-            class="full-row {vCurrentJob ? 'valid-form' : 'invalid-form'}"
-            placeholder="Current job"
-            disabled={isStudent === true ? true : false}
-            bind:value={currentJob}
+    <div class="register-form-row">
+        <div class="input-resizer">
+            <Input
+            label="Password"
+            type="password"
+            placeholder="Password.."
+            onChange={(e) => password = e.target.value}
+            value=""
+            mandatory
+            />
+        </div>
+       
+        <div class="input-resizer">
+            <Input
+            label="Repeat password"
+            type="password"
+            placeholder="Repeat password.."
+            onChange={(e) => passwordRepeat = e.target.value}
+            value=""
+            mandatory
+            />
+        </div>
+
+    </div>
+    <div class="register-form-row">
+        <Textarea 
+            value=""
+            label="Social Links"
+            placeholder="Social Links.."
+            onChange={(e) => socialLinks = e.target.value}
+            rows={5}
         />
     </div>
-    <div class="form-row">
-        <input
+    <div class="register-form-row">
+        <div class="input-resizer">
+            <Input
+            label="City"
             type="text"
-            class="full-row {vForeignLanguages ? 'valid-form' : 'invalid-form'}"
-            placeholder="Foreign languages spoken"
-            bind:value={foreignLanguages}
+            placeholder="City.."
+            onChange={(e) => city = e.target.value}
+            value=""
+            mandatory
+            />
+        </div>
+       
+        <div class="input-resizer">
+            <Input
+            label="Country"
+            type="text"
+            placeholder="Country.."
+            onChange={(e) => country = e.target.value}
+            value=""
+            mandatory
+            />
+        </div>
+    </div>
+
+        <div class="student-checkbox">
+            I'm a student
+            <input class="checbox-input" type="checkbox" bind:checked={isStudent} />
+        </div>
+          
+
+    <div class="register-form-row">
+        <Input
+            label="Current job"
+            type="text"
+            placeholder="Current job.."
+            onChange={(e) => currentJob = e.target.value}
+            value=""
+            mandatory
+            disabled={isStudent}
         />
     </div>
-    <div class="form-row">
-        <textarea
-            name="textarea"
-            cols="30"
-            rows="5"
-            class="{vDisponibility ? 'valid-form' : 'invalid-form'} full-row"
-            placeholder="Disponibility for promoting activities"
-            bind:value={disponibilityDescription}
+    <div class="register-form-row">
+    <Input
+        label="Foreign languages spoken"
+        type="text"
+        placeholder="Foreign languages spoken.."
+        onChange={(e) => foreignLanguages = e.target.value}
+        value=""
+        mandatory
+    />
+    </div>
+    <div class="register-form-row">
+        <Textarea 
+            value=""
+            label="Disponibility for promoting activities"
+            placeholder="Disponibility for promoting activities.."
+            onChange={(e) => disponibilityDescription = e.target.value}
+            rows={5}
         />
     </div>
 </div>
 
-<style></style>
+<style>
+.promoter-section {
+    width: 100%;
+}
+
+.input-resizer {
+    width: 49%;
+}
+
+.phone-number-resizer {
+    width: 30%;
+ }
+
+.register-form-row {
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+    justify-content: space-between;
+    margin-top: 16px;
+}
+
+.student-checkbox {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    font-size: 18px;
+    font-weight: bold;
+    color: #54709c;
+    margin-top: 10px;
+    margin-bottom: 30px;
+}
+
+.checbox-input {
+    margin: 0;
+    margin-left: 10px;
+    margin-top: 3px;
+    width: 16px;
+    height: 16px;
+    border-width: 2px;
+    padding: 0;
+}
+
+</style>

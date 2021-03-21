@@ -94,4 +94,4 @@ const guardAdmin = () => {
 const guardTourOperator = () => {
     if (!isTourOperator()) navigate('/profile', { replace: true });
 }
-export { login, register, guardSignedUser, guardUnsignedUser, setAuthLocalStorage, clearAuthLocalStorage, guardAdmin, guardTourOperator, isAdmin, isTourOperator };
+export { login, register, guardSignedUser, guardUnsignedUser, setAuthLocalStorage, clearAuthLocalStorage, guardAdmin, guardTourOperator, isAdmin, isTourOperator, getAuthToken };

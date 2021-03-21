@@ -4,18 +4,20 @@ import { BASE_ROUTE } from './Constants';
 const getUserData = async (userId) => {
     const LS_AUTH_TOKEN_KEY = "seeyou_auth_token";
     const token = localStorage.getItem(LS_AUTH_TOKEN_KEY);
- 
-   const res = await fetch(`${BASE_ROUTE}/user/${userId}`, {
+    console.log(token);
+
+    const res = await fetch(`${BASE_ROUTE}/user/profile`, {
         method: 'GET',
-        mode: 'cors',
+        // mode: 'no-cors',
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
         }
-    }).then(res => res.json())
-    
-    return res;
+    });
+    const resJson = await res.json();
+
+    return resJson;
     // return new Promise((resolve, reject) => {
     //     setTimeout(() => {
 

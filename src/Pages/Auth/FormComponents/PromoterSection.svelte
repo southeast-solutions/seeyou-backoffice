@@ -2,12 +2,12 @@
     import { createEventDispatcher } from "svelte";
 import Input from "../../../SharedComponents/Input.svelte";
 import Textarea from "../../../SharedComponents/Textarea.svelte";
-    import {
-        validateEmail,
-        validatePhoneNumber,
-    } from "../../../Validators/UserValidators";
+    // import {
+    //     validateEmail,
+    //     validatePhoneNumber,
+    // } from "../../../Validators/UserValidators";
 
-    const dispatch = createEventDispatcher();
+const dispatch = createEventDispatcher();
 
     $: firstName = "";
     $: lastName = "";
@@ -23,66 +23,92 @@ import Textarea from "../../../SharedComponents/Textarea.svelte";
     $: foreignLanguages = "";
     $: disponibilityDescription = "";
 
-    $: vFirstName = false;
-    $: vLastName = false;
-    $: vPhoneNumber = false;
-    $: vEmail = false;
-    $: vPassword = false;
-    $: vPasswordRepeat = false;
-    $: vSocialLinks = false;
-    $: vCity = false;
-    $: vCountry = false;
-    $: vCurrentJob = false;
-    $: vForeignLanguages = false;
-    $: vDisponibility = false;
+    // $: vFirstName = false;
+    // $: vLastName = false;
+    // $: vPhoneNumber = false;
+    // $: vEmail = false;
+    // $: vPassword = false;
+    // $: vPasswordRepeat = false;
+    // $: vSocialLinks = false;
+    // $: vCity = false;
+    // $: vCountry = false;
+    // $: vCurrentJob = false;
+    // $: vForeignLanguages = false;
+    // $: vDisponibility = false;
+
 
     $: {
-        vFirstName = firstName ? true : false;
-        vLastName = lastName ? true : false;
-        vEmail = validateEmail(email);
-        vPhoneNumber = validatePhoneNumber(phoneNumber);
-        vPassword = password ? true : false;
-
-        vPasswordRepeat = password === passwordRepeat;
-
-        vSocialLinks = socialLinks ? true : false;
-        vCity = city ? true : false;
-        vCountry = country ? true : false;
-        vCurrentJob = currentJob || isStudent;
-        vForeignLanguages = foreignLanguages ? true : false;
-        vDisponibility = disponibilityDescription ? true : false;
-
-        if (
-            vFirstName &&
-            vLastName &&
-            vPhoneNumber &&
-            vEmail &&
-            vPassword &&
-            vPasswordRepeat &&
-            vSocialLinks &&
-            vCity &&
-            vCountry &&
-            vCurrentJob &&
-            vForeignLanguages &&
-            vDisponibility
-        ) {
-            dispatch("validSection", {
-                firstName,
-                lastName,
-                email,
-                password,
-                socialLinks,
-                city,
-                country,
-                currentJob,
-                isStudent,
-                foreignLanguages,
-                disponibilityDescription,
-            });
-        } else {
-            dispatch("notValid");
+        const dataToPropagate = {
+            firstName,
+            lastName,
+            phoneNumber,
+            email,
+            password,
+            passwordRepeat,
+            socialLinks,
+            city,
+            country,
+            isStudent,
+            currentJob,
+            foreignLanguages,
+            disponibilityDescription,
         }
+
+        dispatch('completeData', dataToPropagate)
     }
+
+    // $: {
+    //     vFirstName = firstName ? true : false;
+    //     vLastName = lastName ? true : false;
+    //     vEmail = validateEmail(email);
+    //     vPhoneNumber = validatePhoneNumber(phoneNumber);
+    //     vPassword = password ? true : false;
+
+    //     vPasswordRepeat = password === passwordRepeat;
+
+    //     vSocialLinks = socialLinks ? true : false;
+    //     vCity = city ? true : false;
+    //     vCountry = country ? true : false;
+    //     vCurrentJob = currentJob || isStudent;
+    //     vForeignLanguages = foreignLanguages ? true : false;
+    //     vDisponibility = disponibilityDescription ? true : false;
+
+    //     if (
+    //         vFirstName &&
+    //         vLastName &&
+    //         vPhoneNumber &&
+    //         vEmail &&
+    //         vPassword &&
+    //         vPasswordRepeat &&
+    //         vSocialLinks &&
+    //         vCity &&
+    //         vCountry &&
+    //         vCurrentJob &&
+    //         vForeignLanguages &&
+    //         vDisponibility
+    //     ) {
+    //         dispatch("validSection", {
+    //             firstName,
+    //             lastName,
+    //             email,
+    //             password,
+    //             socialLinks,
+    //             city,
+    //             country,
+    //             currentJob,
+    //             isStudent,
+    //             foreignLanguages,
+    //             disponibilityDescription,
+    //         });
+    //     } else {
+    //         dispatch("notValid");
+    //     }
+    // }
+
+
+
+    
+
 </script>
 
 <div class="promoter-section">
@@ -93,7 +119,7 @@ import Textarea from "../../../SharedComponents/Textarea.svelte";
             label="First Name"
             type="text"
             placeholder="First name.."
-            onChange={(e) => firstName = e.target.value}
+            onChange={(e) => {firstName = e.target.value; dispatch('completeData')}}
             value=""
             mandatory
             />

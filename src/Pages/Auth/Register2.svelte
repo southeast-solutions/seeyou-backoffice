@@ -13,6 +13,8 @@ import ConciergeSection from "./FormComponents/ConciergeSection.svelte";
 
 $:selectedAccount = registerSectionAccTypes[0];
 
+$:promoterData = {};
+
 onMount(() => {
         guardUnsignedUser();
     });
@@ -47,7 +49,6 @@ const onTourOperatorData = (event) => {
     };
 
 
-
 </script>
 
 <div class="page-container">
@@ -59,31 +60,30 @@ const onTourOperatorData = (event) => {
         <div class="register-wrapper__form-section">
 
             {#if selectedAccount === registerSectionAccTypes[0]}
-                    <PromoterSection
-                    on:validSection={onPromoterData}
+                <PromoterSection
+                    on:completeData={onPromoterData}
                 />
             {/if}
 
             {#if selectedAccount === registerSectionAccTypes[1]}
-            <TourBusinessSection
-            on:validSection={onTourOperatorData}
+                <TourBusinessSection
+                    on:completeData={onTourOperatorData}
             />
-            <TourOperatorSection
-            on:validSection={onTourOperatorData}
+                <TourOperatorSection
+                    on:completeData={onTourOperatorData}
             />
             {/if}
 
             {#if selectedAccount === registerSectionAccTypes[2]}
                     <ContentCreatorSection
-                    on:validSection={onContentCreatorData} />
+                    on:completeData={onContentCreatorData} />
             {/if}
 
             {#if selectedAccount === registerSectionAccTypes[3]}
                     <ConciergeSection
-                    on:validSection={onConciergeData}/>
+                    on:completeData={onConciergeData}/>
             {/if}
-
-        <button class="main-button cta-button" on:click={() => console.log('Register')}>Register</button>
+            <button class="main-button cta-button" on:click={() => console.log('asdasd')}>Register</button>
         </div>
     </div>
  <div>

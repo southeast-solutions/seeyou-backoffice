@@ -1,19 +1,37 @@
 <script>
 import { onMount } from "svelte";
-import { navigate } from "svelte-routing";
-import {guardUnsignedUser} from "../../Services/AuthService";
+import {guardUnsignedUser, register} from "../../Services/AuthService";
 import AccountTypeSelection from "./FormComponents/AccountTypeSelection.svelte";
 import { registerSectionAccTypes } from '../../Enums/UserTypes';
 import PromoterSection from "./FormComponents/PromoterSection.svelte";
 import TourBusinessSection from "./FormComponents/TourBusinessSection.svelte";
 import TourOperatorSection from "./FormComponents/TourOperatorSection.svelte";
-import ContentCreator from "../Home/UserInfo/ContentCreator.svelte";
 import ContentCreatorSection from "./FormComponents/ContentCreatorSection.svelte";
 import ConciergeSection from "./FormComponents/ConciergeSection.svelte";
 
 $:selectedAccount = registerSectionAccTypes[0];
 
 $:promoterData = {};
+$:contentCreatorData = {}
+$:conciergeData = {}
+$:tourBusinessData = {}
+$:tourOperatorData = {}
+
+$:registerData = {
+    promoterData: promoterData,
+    contentCreatorData: contentCreatorData,
+    conciergeData: conciergeData,
+    tourBusinessData: tourBusinessData,
+    tourOperatorData: tourOperatorData,
+}
+
+$:registerValidationData = {
+    promoterDataValidation: {},
+    tourBusinessDataValidation: {},
+    tourOperatorDataValidation: {},
+    conciergeDataValidation: {},
+    contentCreatorDataValidation: {},
+}
 
 onMount(() => {
         guardUnsignedUser();
@@ -21,12 +39,16 @@ onMount(() => {
 
 const onAccountTypeSelectionChange = (selection) => {
     selectedAccount = selection;
+    promoterData = {};
+    contentCreatorData = {};
+    conciergeData = {};
+    tourBusinessData = {};
+    tourOperatorData = {};
 };
 
 const onConciergeData = (event) => {
-        conciergeData = event.detail;
-        registrationHasErrors = false;
-    };
+    conciergeData = event.detail;
+};
 
 const onPromoterData = (event) => {
     promoterData = event.detail;
@@ -34,19 +56,39 @@ const onPromoterData = (event) => {
 
 const onContentCreatorData = (event) => {
         contentCreatorData = event.detail;
-        registrationHasErrors = false;
 };
 
-const onTourOperatorData = (event) => {
-        if (event.detail.cui) {
-            tourBusinessData = event.detail;
-        } else {
-            tourOperatorData = event.detail;
-        }
-        if (tourBusinessData && tourOperatorData) {
-            registrationHasErrors = false;
-        }
+const onTourBusinessData = (event) => {
+        tourBusinessData = event.detail;
     };
+
+const onTourOperatorUserData = (event) => {
+    tourOperatorData = event.detail;
+}
+
+const registerWrapper = () => {
+   const registerRes = register(registerData, selectedAccount);
+   if(registerRes.promoterDataValidation) {
+        registerValidationData.promoterDataValidation = registerRes.promoterDataValidation;
+   }
+
+   if(registerRes.tourBusinessDataValidation) {
+       registerValidationData.tourBusinessDataValidation = registerRes.tourBusinessDataValidation;
+   }
+
+   if(registerRes.tourOperatorDataValidation) {
+       registerValidationData.tourOperatorDataValidation = registerRes.tourOperatorDataValidation;
+   }
+
+
+   if(registerRes.contentCreatorDataValidation) {
+       registerValidationData.contentCreatorDataValidation = registerRes.contentCreatorDataValidation;
+   }
+
+   if(registerRes.conciergeDataValidation) {
+       registerValidationData.conciergeDataValidation = registerRes.conciergeDataValidation;
+   }
+}
 
 
 </script>
@@ -61,29 +103,34 @@ const onTourOperatorData = (event) => {
 
             {#if selectedAccount === registerSectionAccTypes[0]}
                 <PromoterSection
+                    registerValidationData={registerValidationData}
                     on:completeData={onPromoterData}
                 />
             {/if}
 
             {#if selectedAccount === registerSectionAccTypes[1]}
                 <TourBusinessSection
-                    on:completeData={onTourOperatorData}
+                    registerValidation={registerValidationData}
+                    on:completeData={onTourBusinessData}
             />
                 <TourOperatorSection
-                    on:completeData={onTourOperatorData}
+                    registerValidation={registerValidationData}
+                    on:completeData={onTourOperatorUserData}
             />
             {/if}
 
             {#if selectedAccount === registerSectionAccTypes[2]}
                     <ContentCreatorSection
+                    registerValidation={registerValidationData}
                     on:completeData={onContentCreatorData} />
             {/if}
 
             {#if selectedAccount === registerSectionAccTypes[3]}
                     <ConciergeSection
+                    registerValidation={registerValidationData}
                     on:completeData={onConciergeData}/>
             {/if}
-            <button class="main-button cta-button" on:click={() => console.log('asdasd')}>Register</button>
+            <button class="main-button cta-button" on:click={() => registerWrapper()}>Register</button>
         </div>
     </div>
  <div>

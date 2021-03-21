@@ -1,13 +1,17 @@
 <script>
-    import { createEventDispatcher } from "svelte";
+import { createEventDispatcher, afterUpdate } from "svelte";
 import Input from "../../../SharedComponents/Input.svelte";
 import Textarea from "../../../SharedComponents/Textarea.svelte";
-    import {
-        validateEmail,
-        validatePhoneNumber,
-    } from "../../../Validators/UserValidators";
 
     const dispatch = createEventDispatcher();
+
+    $:validation={};
+
+ afterUpdate(() => {
+     validation = $$props.registerValidation.conciergeDataValidation;
+    // validation = $$props.registerValidationData.conciergeDataValidation;
+ }) ;
+
 
     $: firstName = "";
     $: lastName = "";
@@ -21,57 +25,24 @@ import Textarea from "../../../SharedComponents/Textarea.svelte";
     $: foreignLanguages = "";
     $: disponibilityDescription = "";
 
-    $: vFirstName = false;
-    $: vLastName = false;
-    $: vPhoneNumber = false;
-    $: vEmail = false;
-    $: vPassword = false;
-    $: vPasswordRepeat = false;
-    $: vSocialLinks = false;
-    $: vCity = false;
-    $: vCountry = false;
-    $: vForeignLanguages = false;
-
     $: {
-        vFirstName = firstName ? true : false;
-        vLastName = lastName ? true : false;
-        vEmail = validateEmail(email);
-        vPhoneNumber = validatePhoneNumber(phoneNumber);
-        vPassword = password ? true : false;
-
-        vPasswordRepeat = password === passwordRepeat;
-
-        vSocialLinks = socialLinks ? true : false;
-        vCity = city ? true : false;
-        vCountry = country ? true : false;
-        vForeignLanguages = foreignLanguages ? true : false;
-
-        if (
-            vFirstName &&
-            vLastName &&
-            vPhoneNumber &&
-            vEmail &&
-            vPassword &&
-            vPasswordRepeat &&
-            vSocialLinks &&
-            vCity &&
-            vCountry &&
-            vForeignLanguages
-        ) {
-            dispatch("validSection", {
-                firstName,
-                lastName,
-                email,
-                password,
-                socialLinks,
-                city,
-                country,
-                foreignLanguages,
-            });
-        } else {
-            dispatch("notValid");
+        const dataToPropagate = {
+            firstName,
+            lastName,
+            phoneNumber,
+            email,
+            password,
+            passwordRepeat,
+            socialLinks,
+            city,
+            country,
+            foreignLanguages,
+            disponibilityDescription,
         }
+
+        dispatch('completeData', dataToPropagate)
     }
+
 </script>
 
 <div class="concierge-section">
@@ -82,9 +53,11 @@ import Textarea from "../../../SharedComponents/Textarea.svelte";
             label="First Name"
             type="text"
             placeholder="First name.."
-            onChange={(e) => firstName = e.target.value}
+            onChange={(e) => {firstName = e.target.value; dispatch('completeData')}}
             value=""
             mandatory
+            hasError={!!validation.firstName}
+            errMessage={validation.firstName || ''}
             />
         </div>
        
@@ -93,9 +66,11 @@ import Textarea from "../../../SharedComponents/Textarea.svelte";
             label="Last name"
             type="text"
             placeholder="Last name.."
-            onChange={(e) => lastName = e.target.value}
+            onChange={(e) => {lastName = e.target.value; dispatch('completeData')}}
             value=""
             mandatory
+            hasError={!!validation.lastName}
+            errMessage={validation.lastName || ''}
             />
         </div>
         
@@ -107,9 +82,11 @@ import Textarea from "../../../SharedComponents/Textarea.svelte";
             label="Phone number"
             type="number"
             placeholder="Phone number.."
-            onChange={(e) => phoneNumber = e.target.value}
+            onChange={(e) => {phoneNumber = e.target.value; dispatch('completeData')}}
             value=""
             mandatory
+            hasError={!!validation.phoneNumber}
+            errMessage={validation.phoneNumber || ''}
             />
         </div>
        
@@ -118,9 +95,11 @@ import Textarea from "../../../SharedComponents/Textarea.svelte";
             label="Email"
             type="text"
             placeholder="Email.."
-            onChange={(e) => email = e.target.value}
+            onChange={(e) => {email = e.target.value; dispatch('completeData')}}
             value=""
             mandatory
+            hasError={!!validation.email}
+            errMessage={validation.email || ''}
             />
         </div>
     </div>
@@ -130,9 +109,11 @@ import Textarea from "../../../SharedComponents/Textarea.svelte";
             label="Password"
             type="password"
             placeholder="Password.."
-            onChange={(e) => password = e.target.value}
+            onChange={(e) => {password = e.target.value; dispatch('completeData')}}
             value=""
             mandatory
+            hasError={!!validation.password}
+            errMessage={validation.password || ''}
             />
         </div>
        
@@ -141,9 +122,11 @@ import Textarea from "../../../SharedComponents/Textarea.svelte";
             label="Repeat password"
             type="password"
             placeholder="Repeat password.."
-            onChange={(e) => passwordRepeat = e.target.value}
+            onChange={(e) => {passwordRepeat = e.target.value; dispatch('completeData')}}
             value=""
             mandatory
+            hasError={!!validation.passwordRepeat}
+            errMessage={validation.passwordRepeat || ''}
             />
         </div>
 
@@ -153,7 +136,7 @@ import Textarea from "../../../SharedComponents/Textarea.svelte";
             value=""
             label="Social Links"
             placeholder="Social Links.."
-            onChange={(e) => socialLinks = e.target.value}
+            onChange={(e) => {socialLinks = e.target.value; dispatch('completeData')}}
             rows={5}
         />
     </div>
@@ -163,9 +146,11 @@ import Textarea from "../../../SharedComponents/Textarea.svelte";
             label="City"
             type="text"
             placeholder="City.."
-            onChange={(e) => city = e.target.value}
+            onChange={(e) => {city = e.target.value; dispatch('completeData')}}
             value=""
             mandatory
+            hasError={!!validation.city}
+            errMessage={validation.city || ''}
             />
         </div>
        
@@ -174,9 +159,11 @@ import Textarea from "../../../SharedComponents/Textarea.svelte";
             label="Country"
             type="text"
             placeholder="Country.."
-            onChange={(e) => country = e.target.value}
+            onChange={(e) => {country = e.target.value, dispatch('completeData')}}
             value=""
             mandatory
+            hasError={!!validation.country}
+            errMessage={validation.country || ''}
             />
         </div>
     </div>
@@ -186,9 +173,11 @@ import Textarea from "../../../SharedComponents/Textarea.svelte";
             label="Foreign languages spoken"
             type="text"
             placeholder="Foreign languages spoken.."
-            onChange={(e) => foreignLanguages = e.target.value}
+            onChange={(e) => {foreignLanguages = e.target.value; dispatch('completeData')}}
             value=""
             mandatory
+            hasError={!!validation.foreignLanguages}
+            errMessage={validation.foreignLanguages || ''}
         />
     </div>
 
@@ -212,6 +201,6 @@ import Textarea from "../../../SharedComponents/Textarea.svelte";
 	display: flex;
 	flex-direction: row;
     justify-content: space-between;
-    margin-top: 16px;
+    margin-top: 24px;
 }
 </style>

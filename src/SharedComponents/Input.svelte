@@ -1,28 +1,34 @@
 <script>
-    $: ({ id, ...inputProps } = $$props);
-    console.log(inputProps);
+import { afterUpdate } from "svelte";
+
+
+    $: updatedProps = {}
+    afterUpdate(() => {
+        updatedProps = $$props;
+    })
+
 </script>
 
-<div class={`input__field ${inputProps.className ? inputProps.className : ""}`}>
+<div class={`input__field ${updatedProps.className ? updatedProps.className : ""}`}>
     <input
-        class={`input ${inputProps.hasErr ? "input--has-error" : ""}`}
-        type={inputProps.type}
-        on:change={(value) => inputProps.onChange(value)}
-        placeholder={inputProps.placeholder}
-        value={inputProps.value}
+        class={`input ${updatedProps.hasError ? "input--has-error" : ""}`}
+        type={updatedProps.type}
+        on:change={(value) => updatedProps.onChange(value)}
+        placeholder={updatedProps.placeholder}
+        value={updatedProps.value}
         autoCorrect="off"
         autoComplete="off"
-        disabled={inputProps.disabled}
+        disabled={updatedProps.disabled}
     />
 
-    {#if inputProps.label}
+    {#if updatedProps.label}
         <span
             class={`input__label ${
-                inputProps.hasErr ? "input-label--has-error" : ""
+                updatedProps.hasError ? "input-label--has-error" : ""
             }`}
         >
-            {inputProps.label}
-            {#if inputProps.mandatory}
+            {updatedProps.label}
+            {#if updatedProps.mandatory}
             <span class="mandatory">
                 *
             </span>
@@ -30,9 +36,9 @@
         </span>
     {/if}
 
-    {#if inputProps.hasErr && inputProps.errMessage.length}
+    {#if updatedProps.hasError && updatedProps.errMessage.length}
         <span class="input__err-message">
-            {inputProps.errMessage}
+            {updatedProps.errMessage}
         </span>
     {/if}
 </div>
@@ -118,7 +124,7 @@ input[type=number] {
 
     .input__err-message {
         position: absolute;
-        bottom: -12px;
+        bottom: -20px;
         font-size: 12px;
         color: #b60610;
     }

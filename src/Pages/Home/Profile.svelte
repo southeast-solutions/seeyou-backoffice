@@ -92,7 +92,6 @@
                             name="pla"
                             onChange={(e) => {
                                 userInfo["firstName"] = e.target.value;
-                                console.log(userInfo);
                             }}
                         />
                     </div>

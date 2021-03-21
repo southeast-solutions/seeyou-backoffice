@@ -7,7 +7,7 @@
     import ContentCreatorSection from "./FormComponents/ContentCreatorSection.svelte";
     import ConciergeSection from "./FormComponents/ConciergeSection.svelte";
     import { onMount } from "svelte";
-    import { register, guardUnsignedUser } from "../../Services/AuthService";
+    import {  guardUnsignedUser } from "../../Services/AuthService";
     import {
         promoter,
         concierge,
@@ -120,8 +120,7 @@
                 return;
         }
 
-        register(payload);
-        console.log(payload);
+        // register(payload);
     };
 </script>
 

@@ -74,6 +74,12 @@ const validateContentCreator = (contentCreatorData) => {
         validationContentCreator['password'] = fieldRequired;
     }
 
+    var strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{5,})");
+
+    if(!strongRegex.test(contentCreatorData.password)) {
+        validationContentCreator['password'] = 'Password not strong enough'
+    }
+
     if(!contentCreatorData.passwordRepeat) {
         validationContentCreator['passwordRepeat'] = fieldRequired;
     } 
@@ -128,10 +134,17 @@ const validateConcierge = (conciergeData) => {
         validationConciergeData['email'] = 'Invalid email';
     }
 
-
+   
     if(!conciergeData.password) {
         validationConciergeData['password'] = fieldRequired;
     }
+
+    var strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{5,})");
+
+    if(!strongRegex.test(conciergeData.password)) {
+        validationConciergeData['password'] = 'Password not strong enough'
+    }
+
 
     if(!conciergeData.passwordRepeat) {
         validationConciergeData['passwordRepeat'] = fieldRequired;
@@ -188,6 +201,12 @@ const validatePromoter = (promoterData) => {
 
     if(!promoterData.password) {
         validationPromoterData['password'] = fieldRequired;
+    }
+    
+    var strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{5,})");
+
+    if(!strongRegex.test(promoterData.password)) {
+        validationPromoterData['password'] = 'Password not strong enough'
     }
 
     if(!promoterData.passwordRepeat) {
@@ -252,6 +271,12 @@ const validateTourOperator = (tourOperator, businessOperator) => {
         validationTourOperator['password'] = fieldRequired;
     }
 
+    var strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{5,})");
+
+    if(!strongRegex.test(tourOperator.password)) {
+        validationTourOperator['password'] = 'Password not strong enough'
+    }
+
     if(!tourOperator.passwordRepeat) {
         validationTourOperator['passwordRepeat'] = fieldRequired;
     } 
@@ -308,13 +333,15 @@ const validateTourOperator = (tourOperator, businessOperator) => {
 
 }
 
-const register = (registerData, accountType) => {
+const validation =  (registerData, accountType) => {
+    let validationStatus = 0;
     let registerRes = {
         promoterDataValidation: {},
         tourBusinessDataValidation: {},
         tourOperatorDataValidation: {},
-        conciergeValidation: {},
-        contentCreatorValidation: {},
+        conciergeDataValidation: {},
+        contentDataCreatorValidation: {},
+        validationStatus: 0,
     }
     let promoterDataValidationRes = {};
     let tourOperatorDataValidationRes = {};
@@ -323,37 +350,76 @@ const register = (registerData, accountType) => {
     switch (accountType) {
         case registerSectionAccTypes[0]:
             promoterDataValidationRes = validatePromoter(registerData.promoterData);
-            if(promoterDataValidationRes !== {}) {
+            if(Object.keys(promoterDataValidationRes).length) {
                 registerRes.promoterDataValidation = promoterDataValidationRes;
+                validationStatus = 1;
                 return registerRes;
             }
             break;
         case registerSectionAccTypes[1]:
 
             tourOperatorDataValidationRes = validateTourOperator(registerData.tourOperatorData, registerData.tourBusinessData);
-            if(promoterDataValidationRes) {
+            if(Object.keys(tourOperatorDataValidationRes[1]).length || Object.keys(tourOperatorDataValidationRes[0]).length) {
                 registerRes.tourBusinessDataValidation = tourOperatorDataValidationRes[1];
                 registerRes.tourOperatorDataValidation = tourOperatorDataValidationRes[0];
+                validationStatus = 1;
                 return registerRes;
             }
             break;
         case registerSectionAccTypes[2]:
             contentCreatorDataValidationRes = validateContentCreator(registerData.contentCreatorData);
-            if(contentCreatorDataValidationRes) {
+            if(Object.keys(contentCreatorDataValidationRes).length) {
                 registerRes.contentCreatorDataValidation = contentCreatorDataValidationRes;
+                validationStatus = 1;
                 return registerRes;
             }
             break;
         case registerSectionAccTypes[3]:
             conciergeDataValidationRes = validateConcierge(registerData.conciergeData);
-            if(contentCreatorDataValidationRes) {
+            if(Object.keys(conciergeDataValidationRes).length) {
                 registerRes.conciergeDataValidation = conciergeDataValidationRes;
+                validationStatus = 1;
                 return registerRes;
             }
             break;
+    }
 
-        default: 
-            break;
+    return {
+        promoterDataValidation: {},
+        tourBusinessDataValidation: {},
+        tourOperatorDataValidation: {},
+        conciergeDataValidation: {},
+        contentDataCreatorValidation: {},
+        validationStatus: 1,
+    }
+   
+}
+
+const register = async (payload, accType) => {
+    switch (accType) {
+        case registerSectionAccTypes[0]:
+            const newPayload = {...payload.promoterData, userType: 'Promoter'}
+            const res = await fetch(`${BASE_ROUTE}/identity/register`,{
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json, text/plain',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(newPayload)
+            }).then(res => res.json())
+
+            return res;
+           
+            break; 
+
+        case registerSectionAccTypes[1]:
+            break; 
+
+        case registerSectionAccTypes[2]:
+            break; 
+
+        case registerSectionAccTypes[3]:
+            break; 
     }
 }
 
@@ -403,4 +469,4 @@ const guardAdmin = () => {
 const guardTourOperator = () => {
     if (!isTourOperator()) navigate('/profile', { replace: true });
 }
-export { login, register, guardSignedUser, guardUnsignedUser, setAuthLocalStorage, clearAuthLocalStorage, guardAdmin, guardTourOperator, isAdmin, isTourOperator, getAuthToken };
+export { login, validation, register, guardSignedUser, guardUnsignedUser, setAuthLocalStorage, clearAuthLocalStorage, guardAdmin, guardTourOperator, isAdmin, isTourOperator, getAuthToken };

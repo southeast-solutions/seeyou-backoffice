@@ -8,7 +8,6 @@ import Textarea from "../../../SharedComponents/Textarea.svelte";
     $:validation={};
 
     afterUpdate(() => {
-        console.log($$props)
         validation = $$props.registerValidation.tourBusinessDataValidation;
     }) ;
 

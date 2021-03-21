@@ -1,6 +1,7 @@
 <script>
+import { navigate } from 'svelte-routing';
 import { onMount } from "svelte";
-import {guardUnsignedUser, register} from "../../Services/AuthService";
+import {guardUnsignedUser, register, validation} from "../../Services/AuthService";
 import AccountTypeSelection from "./FormComponents/AccountTypeSelection.svelte";
 import { registerSectionAccTypes } from '../../Enums/UserTypes';
 import PromoterSection from "./FormComponents/PromoterSection.svelte";
@@ -66,27 +67,35 @@ const onTourOperatorUserData = (event) => {
     tourOperatorData = event.detail;
 }
 
-const registerWrapper = () => {
-   const registerRes = register(registerData, selectedAccount);
-   if(registerRes.promoterDataValidation) {
-        registerValidationData.promoterDataValidation = registerRes.promoterDataValidation;
+const validationWrapper = async () => {
+   const validationRes = validation(registerData, selectedAccount);
+    if(validationRes.validationStatus === 1) {
+        const registerRes = await register(registerData,selectedAccount)
+        if (registerRes.succes) {
+            navigate('/login');
+        }
+        return;
+    }
+
+   if(validationRes.promoterDataValidation) {
+        registerValidationData.promoterDataValidation = validationRes.promoterDataValidation;
    }
 
-   if(registerRes.tourBusinessDataValidation) {
-       registerValidationData.tourBusinessDataValidation = registerRes.tourBusinessDataValidation;
+   if(validationRes.tourBusinessDataValidation) {
+       registerValidationData.tourBusinessDataValidation = validationRes.tourBusinessDataValidation;
    }
 
-   if(registerRes.tourOperatorDataValidation) {
-       registerValidationData.tourOperatorDataValidation = registerRes.tourOperatorDataValidation;
+   if(validationRes.tourOperatorDataValidation) {
+       registerValidationData.tourOperatorDataValidation = validationRes.tourOperatorDataValidation;
    }
 
 
-   if(registerRes.contentCreatorDataValidation) {
-       registerValidationData.contentCreatorDataValidation = registerRes.contentCreatorDataValidation;
+   if(validationRes.contentCreatorDataValidation) {
+       registerValidationData.contentCreatorDataValidation = validationRes.contentCreatorDataValidation;
    }
 
-   if(registerRes.conciergeDataValidation) {
-       registerValidationData.conciergeDataValidation = registerRes.conciergeDataValidation;
+   if(validationRes.conciergeDataValidation) {
+       registerValidationData.conciergeDataValidation = validationRes.conciergeDataValidation;
    }
 }
 
@@ -130,7 +139,7 @@ const registerWrapper = () => {
                     registerValidation={registerValidationData}
                     on:completeData={onConciergeData}/>
             {/if}
-            <button class="main-button cta-button" on:click={() => registerWrapper()}>Register</button>
+            <button class="main-button cta-button" on:click={() => validationWrapper()}>Register</button>
         </div>
     </div>
  <div>

@@ -10,7 +10,7 @@
         vacation,
         local,
     } from "../../../Enums/ExperienceTypes";
-    import { addExperience } from "../../../Services/ExperiencesService";
+    import { addExperience,uploadPhoto } from "../../../Services/ExperiencesService";
     import SimplePicker from "simplepicker";
     import MultiplePhotoPicker from "../../../SharedComponents/MultiplePhotoPicker.svelte";
 
@@ -67,35 +67,40 @@
     const imagesChanged = (event) => {
         images = event.detail;
     };
+    const uploadImages=()=>{
+        uploadPhoto(images[0]);
+    }
 
     const saveClicked = () => {
-        validateInputs();
-        if (!isValid()) return;
+        // validateInputs();
+        // if (!isValid()) return;
 
-        isAddLoading = true;
-        globalError = "";
-        addExperience({
-            experienceName,
-            experienceType,
-            duration,
-            price,
-            numberOfParticipants,
-            availableLanguages,
-            location: locations,
-            description,
-            includedServices,
-            notIncludedServices,
-            highlights: images.map((file) => URL.createObjectURL(file)),
-        })
-            .then(() => {
-                // location.reload();
-            })
-            .catch((err) => {
-                globalError = err.message;
-            })
-            .finally(() => {
-                isAddLoading = false;
-            });
+        // isAddLoading = true;
+        // globalError = "";
+        // addExperience({
+        //     dateTime: selectedDate,
+        //     name: experienceName,
+        //     type: experienceType,
+        //     duration,
+        //     price,
+        //     numberOfTourists: numberOfParticipants,
+        //     availableLanguages,
+        //     location: locations,
+        //     description,
+        //     includedServices,
+        //     notIncludedServices,
+        //     highlights: images.map((file) => URL.createObjectURL(file)),
+        // })
+        //     .then(() => {
+        //         location.reload();
+        //     })
+        //     .catch((err) => {
+        //         globalError = err.message;
+        //     })
+        //     .finally(() => {
+        //         isAddLoading = false;
+        //     });
+        uploadImages();
     };
 
     const validateInputs = () => {

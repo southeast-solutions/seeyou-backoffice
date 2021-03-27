@@ -8,7 +8,7 @@ const getUserData = async (userId) => {
 
     const res = await fetch(`${BASE_ROUTE}/user/profile`, {
         method: 'GET',
-        // mode: 'no-cors',
+        mode: 'cors',
         headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',

@@ -37,8 +37,8 @@
         if (Array.isArray(data.notIncludedServices)) {
             notIncludedServicesArray = data.notIncludedServices;
         }
-        if (Array.isArray(data.photos)) {
-            photos = data.photos;
+        if (Array.isArray(data.highlights)) {
+            photos = data.highlights;
         }
     };
 </script>
@@ -53,7 +53,7 @@
     {/if}
 
     <div class="experience__row__horizontal__padding experience__row__generic">
-        <h1>{data.title}</h1>
+        <h1>{data.name}</h1>
     </div>
 
     {#if data.duration && data.price && data.type && data.numberOfTourists}
@@ -119,18 +119,6 @@
             {data.description}
         </div>
     {/if}
-    {#if data.highlights}
-        <div
-            class="experience__row__horizontal__padding experience__row__generic"
-        >
-            <h3>Highlights</h3>
-        </div>
-        <div
-            class="experience__row__horizontal__padding experience__row__generic"
-        >
-            {data.highlights}
-        </div>
-    {/if}
     {#if includedServicesArray}
         <div
             class="experience__row__horizontal__padding experience__row__generic"
@@ -165,17 +153,14 @@
             </div>
         </div>
     {/if}
-    {#if data.physicalLocation.latitude && data.physicalLocation.longitude}
+    {#if data.location.latitude && data.location.longitude}
         <div
             class="experience__row__horizontal__padding experience__row__generic"
         >
             <h3>Location</h3>
         </div>
         <div class="experience__row__generic">
-            <Map
-                lat={data.physicalLocation.latitude}
-                lng={data.physicalLocation.longitude}
-            />
+            <Map lat={data.location.latitude} lng={data.location.longitude} />
         </div>
     {/if}
 </div>

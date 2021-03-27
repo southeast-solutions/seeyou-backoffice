@@ -42,7 +42,7 @@
                 class="experience-title"
                 on:click={highlightExperience(experience)}
             >
-                {experience.title}
+                {experience.name}
             </div>
         {/each}
         <button

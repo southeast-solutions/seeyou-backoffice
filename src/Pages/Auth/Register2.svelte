@@ -68,11 +68,18 @@ const onTourOperatorUserData = (event) => {
 }
 
 const validationWrapper = async () => {
+registerValidationData = {
+    promoterDataValidation: {},
+    tourBusinessDataValidation: {},
+    tourOperatorDataValidation: {},
+    conciergeDataValidation: {},
+    contentCreatorDataValidation: {},
+}
    const validationRes = validation(registerData, selectedAccount);
     if(validationRes.validationStatus === 1) {
         const registerRes = await register(registerData,selectedAccount)
         if (registerRes.succes) {
-            navigate('/login');
+            navigate('/confirm-account');
         }
         return;
     }

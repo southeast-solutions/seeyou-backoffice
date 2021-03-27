@@ -7,6 +7,7 @@
 	import Experiences from "./Pages/Home/Experiences.svelte";
 	import NotFound from "./Pages/NotFound.svelte";
 import Register2 from "./Pages/Auth/Register2.svelte";
+import ConfirmAccout from "./Pages/Auth/ConfirmAccout.svelte";
 	export let url = "";
 </script>
 
@@ -20,6 +21,7 @@ import Register2 from "./Pages/Auth/Register2.svelte";
 <main>
 	<Router {url}>
 		<div>
+			<Route path="confirm-account" component={ConfirmAccout} />
 			<Route path="/login" component={Login} />
 			<Route path="/register" component={Register2} />
 			<Route path="/users" component={Users} />

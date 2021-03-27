@@ -32,20 +32,24 @@
 
     let userInfo;
 
+    // === TO DO === CREATE MAPPERS FOR EACH USER TYPE
+    // TEMPORARY FOR TYPE 1 HERE
     onMount(async () => {
         guardSignedUser();
         const userId = localStorage.getItem("seeyou_user_id");
         if (userId) {
             userInfo = await getUserData(userId);
-            user.socialLinks = userInfo.tourOperatorEntity.socialLinks;
-            user.firstName = userInfo.tourOperatorEntity.firstName;
-            user.lastName = userInfo.tourOperatorEntity.lastName;
+            console.log(userInfo)
+            user.socialLinks = userInfo.socialLinks;
+            user.firstName = userInfo.firstName;
+            user.lastName = userInfo.lastName;
             user.foreignLanguages =
-                userInfo.tourOperatorEntity.foreignLanguages;
-            user.city = userInfo.tourOperatorEntity.city;
-            user.cui = userInfo.tourBusinessEntity.cui;
-            user.adress = userInfo.tourBusinessEntity.adress;
-            user.businessName = userInfo.tourBusinessEntity.businessName;
+                userInfo.foreignLanguages;
+            user.city = userInfo.city;
+            user.cui = userInfo.cui;
+            user.adress = userInfo.adress;
+            user.businessName = userInfo.businessName;
+            user.phoneNumber = userInfo.phoneNumber;
         } else {
             return;
         }

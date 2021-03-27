@@ -45,17 +45,32 @@ async function login(payload) {
     }
 }
 
-const fieldRequired = 'Field required'
+const fieldRequired = 'Field required';
+const lengthNotEnough = 'Length must be 3 at least';
+const phoneNumberLength = 'Length must be 10 at least';
 
 const validateContentCreator = (contentCreatorData) => {
     let validationContentCreator = {};
     
+    if(contentCreatorData.firstName.length < 3) {
+        validationContentCreator['firstName'] = lengthNotEnough;
+    }
+
     if(!contentCreatorData.firstName) {
         validationContentCreator['firstName'] = fieldRequired;
     }
+
+    if(contentCreatorData.lastName.length < 3) {
+        validationContentCreator['lastName'] = lengthNotEnough;
+    } 
+
     if(!contentCreatorData.lastName) {
         validationContentCreator['lastName'] = fieldRequired;
     } 
+
+    if(contentCreatorData.phoneNumber.length < 10) {
+        validationContentCreator['phoneNumber'] = phoneNumberLength;
+    }
 
     if(!contentCreatorData.phoneNumber) {
         validationContentCreator['phoneNumber'] = fieldRequired;
@@ -114,13 +129,26 @@ const validateContentCreator = (contentCreatorData) => {
 
 const validateConcierge = (conciergeData) => {
     let validationConciergeData = {};
+    
+    if(conciergeData.firstName.length < 3) {
+        validationConciergeData['firstName'] = lengthNotEnough;
+    }
 
     if(!conciergeData.firstName) {
         validationConciergeData['firstName'] = fieldRequired;
     }
+
+    if(conciergeData.lastName.length < 3) {
+        validationConciergeData['lastName'] = lengthNotEnough;
+    } 
+
     if(!conciergeData.lastName) {
         validationConciergeData['lastName'] = fieldRequired;
     } 
+
+    if(conciergeData.phoneNumber.length < 10) {
+        validationConciergeData['phoneNumber'] = phoneNumberLength;
+    }
 
     if(!conciergeData.phoneNumber) {
         validationConciergeData['phoneNumber'] = fieldRequired;
@@ -179,12 +207,25 @@ const validateConcierge = (conciergeData) => {
 const validatePromoter = (promoterData) => {
     let validationPromoterData = {};
 
+    if(promoterData.firstName.length < 3) {
+        validationPromoterData['firstName'] = lengthNotEnough;
+    }
+
     if(!promoterData.firstName) {
         validationPromoterData['firstName'] = fieldRequired;
     }
+
+    if(promoterData.lastName.length < 3) {
+        validationPromoterData['lastName'] = lengthNotEnough;
+    }
+
     if(!promoterData.lastName) {
         validationPromoterData['lastName'] = fieldRequired;
     } 
+
+    if(promoterData.phoneNumber.length < 10) {
+        validationPromoterData['phoneNumber'] = phoneNumberLength;
+    }
 
     if(!promoterData.phoneNumber) {
         validationPromoterData['phoneNumber'] = fieldRequired;
@@ -247,12 +288,25 @@ const validateTourOperator = (tourOperator, businessOperator) => {
     let validationTourOperator = {};
     let validationBusinessOperator = {}
 
+    if(tourOperator.firstName.length < 3) {
+        validationTourOperator['firstName'] = lengthNotEnough;
+    }
+
     if(!tourOperator.firstName) {
         validationTourOperator['firstName'] = fieldRequired;
     }
+
+    if(tourOperator.lastName.length < 3) {
+        validationTourOperator['lastName'] = lengthNotEnough;
+    } 
+
     if(!tourOperator.lastName) {
         validationTourOperator['lastName'] = fieldRequired;
     } 
+
+    if(tourOperator.phoneNumber.length < 10) {
+        validationTourOperator['phoneNumber'] = phoneNumberLength;
+    }
 
     if(!tourOperator.phoneNumber) {
         validationTourOperator['phoneNumber'] = fieldRequired;

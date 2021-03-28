@@ -33,7 +33,7 @@ afterUpdate(() => {
 
     </div>
     
-    {#if profilePhotoProps.firstName && profilePhotoProps.last}
+    {#if profilePhotoProps.firstName && profilePhotoProps.lastName}
     <div class="profile-photo-card__strong-text">
         {profilePhotoProps.firstName} {profilePhotoProps.lastName}
     </div>

@@ -78,7 +78,7 @@ registerValidationData = {
    const validationRes = validation(registerData, selectedAccount);
     if(validationRes.validationStatus === 1) {
         const registerRes = await register(registerData,selectedAccount)
-        if (registerRes.succes) {
+        if (registerRes.success) {
             navigate('/confirm-account');
         }
         return;

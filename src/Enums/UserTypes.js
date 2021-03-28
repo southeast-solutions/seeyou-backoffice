@@ -4,6 +4,16 @@ const contentCreator = "contentCreator";
 const concierge = "concierge";
 const admin = "admin"
 
+const userTypes = {
+    promoter: 1,
+    tourOperator: 2,
+    contentCreator: 3,
+    concierge: 4,
+    admin: 5,
+};
+
+
+
 const registerSectionAccTypes = [
     {
         id: promoter,
@@ -32,5 +42,5 @@ const registerSectionAccTypes = [
 ];
 
 
-export { promoter, tourOperator, contentCreator, concierge, admin, registerSectionAccTypes };
+export { promoter, tourOperator, contentCreator, concierge, admin, registerSectionAccTypes, userTypes };
 

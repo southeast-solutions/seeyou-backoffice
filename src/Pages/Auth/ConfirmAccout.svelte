@@ -20,7 +20,7 @@ const onConfirmCode = async (email, code) => {
     }).then(res => res.json);
 
 
-    if(confirmResponse.success === true) {
+    if(confirmResponse.success) {
         navigate('/login')
     } else {
         errMessage = 'There was a problem'

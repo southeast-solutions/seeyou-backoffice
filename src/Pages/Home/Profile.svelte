@@ -5,15 +5,14 @@
     import { guardSignedUser } from "../../Services/AuthService";
     import { getUserData } from "../../Services/ProfileService";
     import NavBar from "./NavBar.svelte";
-    import {
-        tourOperator,
-        promoter,
-        contentCreator,
-        concierge,
-    } from "../../Enums/UserTypes";
+    import {userTypes} from "../../Enums/UserTypes";
     import ProfilePhotoCard from "../../SharedComponents/ProfilePhotoCard.svelte";
+    import '../../Enums/UserTypes';
+    import {mapDataAfterUserType} from './Profile/Profile.Mappers';
+import { BASE_ROUTE } from "../../Services/Constants";
 
     let user = {
+        id: "",
         firstName: "",
         lastName: "",
         phoneNumber: "",
@@ -32,20 +31,16 @@
 
     let userInfo;
 
+    // === TO DO === CREATE MAPPERS FOR EACH USER TYPE
+    // TEMPORARY FOR TYPE 1 HERE
     onMount(async () => {
         guardSignedUser();
         const userId = localStorage.getItem("seeyou_user_id");
         if (userId) {
             userInfo = await getUserData(userId);
-            user.socialLinks = userInfo.tourOperatorEntity.socialLinks;
-            user.firstName = userInfo.tourOperatorEntity.firstName;
-            user.lastName = userInfo.tourOperatorEntity.lastName;
-            user.foreignLanguages =
-                userInfo.tourOperatorEntity.foreignLanguages;
-            user.city = userInfo.tourOperatorEntity.city;
-            user.cui = userInfo.tourBusinessEntity.cui;
-            user.adress = userInfo.tourBusinessEntity.adress;
-            user.businessName = userInfo.tourBusinessEntity.businessName;
+            const mappedData = mapDataAfterUserType(userInfo);
+            console.log(mappedData)
+            user = mappedData;
         } else {
             return;
         }
@@ -62,6 +57,22 @@
             fileReader.readAsDataURL(file[0]);
         }
     };
+
+    const updateUserData = async () => {
+        const LS_AUTH_TOKEN_KEY = "seeyou_auth_token";
+        const token = localStorage.getItem(LS_AUTH_TOKEN_KEY);
+        const userUpdateRes = await fetch(`${BASE_ROUTE}/user`, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json, text/plain',
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(user)
+        }).then(res => res.json());
+
+        console.log(userUpdateRes);
+    }
 </script>
 
 <NavBar />
@@ -92,7 +103,6 @@
                             name="pla"
                             onChange={(e) => {
                                 userInfo["firstName"] = e.target.value;
-                                console.log(userInfo);
                             }}
                         />
                     </div>
@@ -162,7 +172,7 @@
                 </div>
             </div>
 
-            {#if user.userType == tourOperator}
+            {#if user.userType === userTypes.tourOperator}
                 <div class="center-row">
                     <div class="form-row">
                         <div class="half-row">
@@ -192,31 +202,33 @@
                         </div>
                     </div>
                 </div>
-            {/if}
-            <div class="center-row">
-                <div class="form-row">
-                    <div class="half-row">
-                        <Input
-                            label={"Cui"}
-                            className="half-row"
-                            name="pla"
-                            onChange={(e) => (userInfo["cui"] = e.target.value)}
-                            value={user.cui ? user.cui : ""}
-                        />
-                    </div>
-                    <div class="half-row">
-                        <Input
-                            label={"Adress"}
-                            className="half-row"
-                            name="pla"
-                            onChange={(e) =>
-                                (userInfo["adress"] = e.target.value)}
-                            value={user.adress ? user.adress : ""}
-                        />
+
+                <div class="center-row">
+                    <div class="form-row">
+                        <div class="half-row">
+                            <Input
+                                label={"Cui"}
+                                className="half-row"
+                                name="pla"
+                                onChange={(e) => (userInfo["cui"] = e.target.value)}
+                                value={user.cui ? user.cui : ""}
+                            />
+                        </div>
+                        <div class="half-row">
+                            <Input
+                                label={"Adress"}
+                                className="half-row"
+                                name="pla"
+                                onChange={(e) =>
+                                    (userInfo["adress"] = e.target.value)}
+                                value={user.adress ? user.adress : ""}
+                            />
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="center-row">
+            {/if}
+            
+            <!-- <div class="center-row">
                 <div class="form-row">
                     <div class="half-row">
                         <Input
@@ -229,9 +241,9 @@
                         />
                     </div>
                 </div>
-            </div>
+            </div> -->
 
-            {#if user.userType == promoter}
+            {#if user.userType === userTypes.promoter}
                 <div class="center-row">
                     <div class="form-row">
                         <div class="half-row">
@@ -274,7 +286,7 @@
                     </div>
                 </div>
             {/if}
-            {#if user.userType == contentCreator}
+            {#if user.userType === userTypes.contentCreator}
                 <div class="center-row">
                     <div class="form-row">
                         <div class="half-row">
@@ -303,7 +315,7 @@
                     </div>
                 </div>
             {/if}
-            {#if user.userType == concierge}
+            {#if user.userType === userTypes.concierge}
                 <div class="center-row">
                     <div class="form-row">
                         <Input
@@ -317,7 +329,7 @@
                     </div>
                 </div>
             {/if}
-            <button class="main-button cta-button" on:click={console.log(user)}
+            <button class="main-button cta-button" on:click={() => updateUserData()}
                 >{"Update"}</button
             >
         </div>
@@ -338,6 +350,7 @@
         padding-right: 10%;
         flex-wrap: wrap;
         padding-top: 100px;
+        flex: 1;
     }
 
     .left-card {

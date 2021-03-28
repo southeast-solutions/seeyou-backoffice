@@ -42,7 +42,7 @@ import Input from "../../SharedComponents/Input.svelte";
 
 <div class="page-container">
     <div class="form-container">
-        <img src="logo.png" alt="login-img" class="logo-img" />
+        <img src="logo2.png" alt="login-img" class="logo-img" />
 
         <div class="inputs-container">
             <Input

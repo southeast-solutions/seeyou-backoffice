@@ -2,7 +2,6 @@
     import { onMount } from 'svelte';
     import { registerSectionAccTypes } from '../../../Enums/UserTypes';
     $: ({ id, ...accountTypeSelectionProps } = $$props);
-    console.log($$props);
 </script>
 
 <div class="account-type-selection__wrapper">

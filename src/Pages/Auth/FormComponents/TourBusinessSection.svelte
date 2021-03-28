@@ -1,10 +1,17 @@
 <script>
-    import { createEventDispatcher } from "svelte";
+import { createEventDispatcher, afterUpdate } from "svelte";
 import Input from "../../../SharedComponents/Input.svelte";
 import Textarea from "../../../SharedComponents/Textarea.svelte";
-    import { validateEmail } from "../../../Validators/UserValidators";
 
     const dispatch = createEventDispatcher();
+
+    $:validation={};
+
+    afterUpdate(() => {
+        validation = $$props.registerValidation.tourBusinessDataValidation;
+    }) ;
+
+ 
 
     $: cui = "";
     $: businessName = "";
@@ -13,42 +20,19 @@ import Textarea from "../../../SharedComponents/Textarea.svelte";
     $: website = "";
     $: address = "";
 
-    $: vCui = false;
-    $: vBusinessName = false;
-    $: vEmail = false;
-    $: vSocialLinks = false;
-    $: vWebsite = false;
-    $: vAddress = false;
-
     $: {
-        vCui = cui ? true : false;
-        vBusinessName = businessName ? true : false;
-        vEmail = validateEmail(email);
-
-        vSocialLinks = socialLinks ? true : false;
-        vWebsite = website ? true : false;
-        vAddress = address ? true : false;
-
-        if (
-            vCui &&
-            vBusinessName &&
-            vEmail &&
-            vSocialLinks &&
-            vWebsite &&
-            vAddress
-        ) {
-            dispatch("validSection", {
-                cui,
-                businessName,
-                email,
-                socialLinks,
-                website,
-                address,
-            });
-        } else {
-            dispatch("notValid");
+        const dataToPropagate = {
+            cui,
+            businessName,
+            email,
+            socialLinks,
+            website,
+            address,
         }
+
+        dispatch('completeData', dataToPropagate)
     }
+
 </script>
 
 <div class="tour-business-section">
@@ -59,9 +43,11 @@ import Textarea from "../../../SharedComponents/Textarea.svelte";
             label="Business name"
             type="text"
             placeholder="Business name.."
-            onChange={(e) => businessName = e.target.value}
+            onChange={(e) => {businessName = e.target.value; dispatch('completeData')}}
             value=""
             mandatory
+            hasError={!!validation.businessName}
+            errMessage={validation.businessName || ''}
             />
         </div>
        
@@ -70,9 +56,11 @@ import Textarea from "../../../SharedComponents/Textarea.svelte";
             label="Business unique code (CUI)"
             type="text"
             placeholder="Business unique code (CUI).."
-            onChange={(e) => cui = e.target.value}
+            onChange={(e) => {cui = e.target.value; dispatch('completeData')}}
             value=""
             mandatory
+            hasError={!!validation.cui}
+            errMessage={validation.cui || ''}
             />
         </div>
     </div>
@@ -82,9 +70,11 @@ import Textarea from "../../../SharedComponents/Textarea.svelte";
         label="Email"
         type="text"
         placeholder="Email.."
-        onChange={(e) => email = e.target.value}
+        onChange={(e) => {email = e.target.value; dispatch('completeData')}}
         value=""
         mandatory
+        hasError={!!validation.email}
+        errMessage={validation.email || ''}
         />
     </div>
     <div class="register-form-row">
@@ -92,7 +82,7 @@ import Textarea from "../../../SharedComponents/Textarea.svelte";
             value=""
             label="Social Links"
             placeholder="Social Links.."
-            onChange={(e) => socialLinks = e.target.value}
+            onChange={(e) => {socialLinks = e.target.value; dispatch('completeData')}}
             rows={3}
         />
     </div>
@@ -101,9 +91,11 @@ import Textarea from "../../../SharedComponents/Textarea.svelte";
         label="Website"
         type="text"
         placeholder="Website.."
-        onChange={(e) => website = e.target.value}
+        onChange={(e) => {website = e.target.value; dispatch('completeData')}}
         value=""
         mandatory
+        hasError={!!validation.website}
+        errMessage={validation.website || ''}
         />
     </div>
 
@@ -112,9 +104,11 @@ import Textarea from "../../../SharedComponents/Textarea.svelte";
         label="Address"
         type="text"
         placeholder="Address.."
-        onChange={(e) => address = e.target.value}
+        onChange={(e) => {address = e.target.value; dispatch('completeData')}}
         value=""
         mandatory
+        hasError={!!validation.address}
+        errMessage={validation.address || ''}
         />
     </div>
 </div>
@@ -134,6 +128,6 @@ import Textarea from "../../../SharedComponents/Textarea.svelte";
 	display: flex;
 	flex-direction: row;
     justify-content: space-between;
-    margin-top: 16px;
+    margin-top: 24px;
 }
 </style>

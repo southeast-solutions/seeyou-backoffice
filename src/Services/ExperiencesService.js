@@ -2,6 +2,7 @@ import axios from "axios";
 import { BASE_ROUTE } from "./Constants";
 
 import { getAuthToken } from "./AuthService"
+import { get } from "./FetchService";
 
 
 const addExperienceUrl = BASE_ROUTE + "/experience/addExperience";
@@ -45,33 +46,14 @@ const uploadImageUrl = "http://localhost:5001" + "/images/experience"
 // }
 
 const getExpereinces = async () => {
-    const token = getAuthToken();
-    const response = await fetch(
-        getExperiencesUrl,
-        {
-            method: "GET", headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            }
-        }
-    )
-    return await response.json()
+
+    const response = await get(getExperiencesUrl);
+    return response;
 }
 const addExperience = async (expereinceObj) => {
     let translatedExperience = expereinceObj;
     let token = getAuthToken();
-    console.log(JSON.stringify({ Experience: translatedExperience }));
-    let response = await fetch(addExperienceUrl, {
-        method: 'POST',
-        // mode: 'cors',
-        body: JSON.stringify({ Experience: translatedExperience }),
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-        }
-    });
+    let response = await post(addExperienceUrl, translatedExperience);
     return await response.json();
 
 }

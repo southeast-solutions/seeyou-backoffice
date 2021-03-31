@@ -17,7 +17,7 @@ const onConfirmCode = async (email, code) => {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({ email: email, code: code })
-    }).then(res => res.json);
+    }).then(res => res.json());
 
 
     if(confirmResponse.success) {
@@ -40,13 +40,16 @@ const onConfirmCode = async (email, code) => {
                     placeholder="code.." 
                     onChange={(e) => inputCode = e.target.value}
                     value="" />
-
+            <div class="extra-margin-top">
                 <Input
                     label="Email"
                     type="text"
                     placeholder="email.." 
                     onChange={(e) => inputEmail = e.target.value}
                     value="" />
+
+            </div>
+
             </div>
         <button class="secondary-button cta-button" on:click={() => onConfirmCode(inputEmail, inputCode)}>Confirm code</button>
             
@@ -73,7 +76,7 @@ const onConfirmCode = async (email, code) => {
 
     }
     .form-container {
-        height: 43%;
+        height: 60%;
         width: 20%;
         display: flex;
         flex-direction: column;
@@ -91,12 +94,12 @@ const onConfirmCode = async (email, code) => {
         height: auto;
     }
     .cta-button {
+        margin-top: 30px;
         width: 60%;
         height: 50px;
         font-size: 16px;
     }
     .inputs-container {
-        height: 300px;
         margin-top: 40px;
         display: flex;
         flex-direction: column;
@@ -106,8 +109,12 @@ const onConfirmCode = async (email, code) => {
         justify-content: space-between;
     }
 
-    .verication-code-text {
+    .extra-margin-top {
         margin-top: 20px;
+    }
+
+    .verication-code-text {
+        margin-top: 30px;
         font-size: 14px;
         color: #019af6;
     }

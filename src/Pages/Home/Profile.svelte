@@ -63,12 +63,13 @@ import { BASE_ROUTE } from "../../Services/Constants";
         const token = localStorage.getItem(LS_AUTH_TOKEN_KEY);
         const userUpdateRes = await fetch(`${BASE_ROUTE}/user`, {
             method: 'POST',
+            mode: "cors",
             headers: {
                 'Accept': 'application/json, text/plain',
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
             },
-            body: JSON.stringify(user)
+            body: JSON.stringify({user: user})
         }).then(res => res.json());
 
         console.log(userUpdateRes);

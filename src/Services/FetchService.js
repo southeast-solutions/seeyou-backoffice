@@ -2,7 +2,7 @@ import axios from "axios";
 import { getAuthToken, clearAuthLocalStorage } from "./AuthService"
 import { BASE_ROUTE } from "./Constants";
 
-const checkAuthURL = BASE_ROUTE + "/identity/IsTokenValid";
+const checkAuthURL = BASE_ROUTE + "/identity";
 const getHttpHeaders = (token) => {
     return {
         'Accept': 'application/json',

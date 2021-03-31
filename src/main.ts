@@ -1,4 +1,9 @@
 import App from './App.svelte';
+declare global {
+	interface Window {
+		initMap: any;
+	}
+}
 
 const app = new App({
 	target: document.body,

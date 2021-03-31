@@ -2,7 +2,7 @@ import axios from "axios";
 import { BASE_ROUTE } from "./Constants";
 
 import { getAuthToken } from "./AuthService"
-import { get } from "./FetchService";
+import { get, post } from "./FetchService";
 
 
 const addExperienceUrl = BASE_ROUTE + "/experience/addExperience";
@@ -52,7 +52,6 @@ const getExpereinces = async () => {
 }
 const addExperience = async (expereinceObj) => {
     let translatedExperience = expereinceObj;
-    let token = getAuthToken();
     let response = await post(addExperienceUrl, translatedExperience);
     return await response.json();
 

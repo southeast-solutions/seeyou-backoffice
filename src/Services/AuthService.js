@@ -1,5 +1,5 @@
 import { navigate } from "svelte-routing";
-import {  tourOperator,  admin ,registerSectionAccTypes } from "../Enums/UserTypes"
+import { tourOperator, admin, registerSectionAccTypes } from "../Enums/UserTypes"
 import { BASE_ROUTE } from './Constants';
 import { validateEmail } from "../Validators/UserValidators";
 
@@ -51,76 +51,76 @@ const phoneNumberLength = 'Length must be 10 at least';
 
 const validateContentCreator = (contentCreatorData) => {
     let validationContentCreator = {};
-    
-    if(contentCreatorData.firstName.length < 3) {
+
+    if (contentCreatorData.firstName.length < 3) {
         validationContentCreator['firstName'] = lengthNotEnough;
     }
 
-    if(!contentCreatorData.firstName) {
+    if (!contentCreatorData.firstName) {
         validationContentCreator['firstName'] = fieldRequired;
     }
 
-    if(contentCreatorData.lastName.length < 3) {
+    if (contentCreatorData.lastName.length < 3) {
         validationContentCreator['lastName'] = lengthNotEnough;
-    } 
+    }
 
-    if(!contentCreatorData.lastName) {
+    if (!contentCreatorData.lastName) {
         validationContentCreator['lastName'] = fieldRequired;
-    } 
+    }
 
-    if(contentCreatorData.phoneNumber.length < 10) {
+    if (contentCreatorData.phoneNumber.length < 10) {
         validationContentCreator['phoneNumber'] = phoneNumberLength;
     }
 
-    if(!contentCreatorData.phoneNumber) {
+    if (!contentCreatorData.phoneNumber) {
         validationContentCreator['phoneNumber'] = fieldRequired;
     }
 
-    if(!contentCreatorData.email) {
+    if (!contentCreatorData.email) {
         validationContentCreator['email'] = fieldRequired;
     }
 
-    if(!validateEmail(contentCreatorData.email)) {
+    if (!validateEmail(contentCreatorData.email)) {
         validationContentCreator['email'] = 'Invalid email';
     }
 
 
-    if(!contentCreatorData.password) {
+    if (!contentCreatorData.password) {
         validationContentCreator['password'] = fieldRequired;
     }
 
     var strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{5,})");
 
-    if(!strongRegex.test(contentCreatorData.password)) {
+    if (!strongRegex.test(contentCreatorData.password)) {
         validationContentCreator['password'] = 'Password not strong enough'
     }
 
-    if(!contentCreatorData.passwordRepeat) {
+    if (!contentCreatorData.passwordRepeat) {
         validationContentCreator['passwordRepeat'] = fieldRequired;
-    } 
+    }
 
-    if(contentCreatorData.password !== contentCreatorData.passwordRepeat) {
-        if(contentCreatorData.password.length && contentCreatorData.passwordRepeat.length) {
+    if (contentCreatorData.password !== contentCreatorData.passwordRepeat) {
+        if (contentCreatorData.password.length && contentCreatorData.passwordRepeat.length) {
             validationContentCreator['password'] = 'Passwords do not match';
             validationContentCreator['passwordRepeat'] = 'Passwords do not match';
         }
     }
 
-    if(!contentCreatorData.socialLinks) {
+    if (!contentCreatorData.socialLinks) {
         validationContentCreator['socialLinks'] = fieldRequired;
     }
 
- 
 
-    if(!contentCreatorData.city) {
+
+    if (!contentCreatorData.city) {
         validationContentCreator['city'] = fieldRequired;
     }
 
-    if(!contentCreatorData.foreignLanguages) {
+    if (!contentCreatorData.foreignLanguages) {
         validationContentCreator['foreignLanguages'] = fieldRequired;
     }
 
-    if(!contentCreatorData.disponibilityDescription) {
+    if (!contentCreatorData.disponibilityDescription) {
         validationContentCreator['disponibilityDescription'] = fieldRequired;
     }
 
@@ -129,75 +129,75 @@ const validateContentCreator = (contentCreatorData) => {
 
 const validateConcierge = (conciergeData) => {
     let validationConciergeData = {};
-    
-    if(conciergeData.firstName.length < 3) {
+
+    if (conciergeData.firstName.length < 3) {
         validationConciergeData['firstName'] = lengthNotEnough;
     }
 
-    if(!conciergeData.firstName) {
+    if (!conciergeData.firstName) {
         validationConciergeData['firstName'] = fieldRequired;
     }
 
-    if(conciergeData.lastName.length < 3) {
+    if (conciergeData.lastName.length < 3) {
         validationConciergeData['lastName'] = lengthNotEnough;
-    } 
+    }
 
-    if(!conciergeData.lastName) {
+    if (!conciergeData.lastName) {
         validationConciergeData['lastName'] = fieldRequired;
-    } 
+    }
 
-    if(conciergeData.phoneNumber.length < 10) {
+    if (conciergeData.phoneNumber.length < 10) {
         validationConciergeData['phoneNumber'] = phoneNumberLength;
     }
 
-    if(!conciergeData.phoneNumber) {
+    if (!conciergeData.phoneNumber) {
         validationConciergeData['phoneNumber'] = fieldRequired;
     }
 
-    if(!conciergeData.email) {
+    if (!conciergeData.email) {
         validationConciergeData['email'] = fieldRequired;
     }
 
-    if(!validateEmail(conciergeData.email)) {
+    if (!validateEmail(conciergeData.email)) {
         validationConciergeData['email'] = 'Invalid email';
     }
 
-   
-    if(!conciergeData.password) {
+
+    if (!conciergeData.password) {
         validationConciergeData['password'] = fieldRequired;
     }
 
     var strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{5,})");
 
-    if(!strongRegex.test(conciergeData.password)) {
+    if (!strongRegex.test(conciergeData.password)) {
         validationConciergeData['password'] = 'Password not strong enough'
     }
 
 
-    if(!conciergeData.passwordRepeat) {
+    if (!conciergeData.passwordRepeat) {
         validationConciergeData['passwordRepeat'] = fieldRequired;
-    } 
+    }
 
-    if(conciergeData.password !== conciergeData.passwordRepeat) {
-        if(conciergeData.password.length && conciergeData.passwordRepeat.length) {
+    if (conciergeData.password !== conciergeData.passwordRepeat) {
+        if (conciergeData.password.length && conciergeData.passwordRepeat.length) {
             validationConciergeData['password'] = 'Passwords do not match';
             validationConciergeData['passwordRepeat'] = 'Passwords do not match';
         }
     }
 
-    if(!conciergeData.socialLinks) {
+    if (!conciergeData.socialLinks) {
         validationConciergeData['socialLinks'] = fieldRequired;
     }
 
-    if(!conciergeData.country) {
+    if (!conciergeData.country) {
         validationConciergeData['country'] = fieldRequired;
     }
 
-    if(!conciergeData.city) {
+    if (!conciergeData.city) {
         validationConciergeData['city'] = fieldRequired;
     }
 
-    if(!conciergeData.foreignLanguages) {
+    if (!conciergeData.foreignLanguages) {
         validationConciergeData['foreignLanguages'] = fieldRequired;
     }
 
@@ -207,77 +207,77 @@ const validateConcierge = (conciergeData) => {
 const validatePromoter = (promoterData) => {
     let validationPromoterData = {};
 
-    if(promoterData.firstName.length < 3) {
+    if (promoterData.firstName.length < 3) {
         validationPromoterData['firstName'] = lengthNotEnough;
     }
 
-    if(!promoterData.firstName) {
+    if (!promoterData.firstName) {
         validationPromoterData['firstName'] = fieldRequired;
     }
 
-    if(promoterData.lastName.length < 3) {
+    if (promoterData.lastName.length < 3) {
         validationPromoterData['lastName'] = lengthNotEnough;
     }
 
-    if(!promoterData.lastName) {
+    if (!promoterData.lastName) {
         validationPromoterData['lastName'] = fieldRequired;
-    } 
+    }
 
-    if(promoterData.phoneNumber.length < 10) {
+    if (promoterData.phoneNumber.length < 10) {
         validationPromoterData['phoneNumber'] = phoneNumberLength;
     }
 
-    if(!promoterData.phoneNumber) {
+    if (!promoterData.phoneNumber) {
         validationPromoterData['phoneNumber'] = fieldRequired;
     }
 
-    if(!promoterData.email) {
+    if (!promoterData.email) {
         validationPromoterData['email'] = fieldRequired;
     }
 
-    if(!validateEmail(promoterData.email)) {
+    if (!validateEmail(promoterData.email)) {
         validationPromoterData['email'] = 'Invalid email';
     }
 
 
-    if(!promoterData.password) {
+    if (!promoterData.password) {
         validationPromoterData['password'] = fieldRequired;
     }
-    
+
     var strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{5,})");
 
-    if(!strongRegex.test(promoterData.password)) {
+    if (!strongRegex.test(promoterData.password)) {
         validationPromoterData['password'] = 'Password not strong enough'
     }
 
-    if(!promoterData.passwordRepeat) {
+    if (!promoterData.passwordRepeat) {
         validationPromoterData['passwordRepeat'] = fieldRequired;
-    } 
+    }
 
-    if(promoterData.password !== promoterData.passwordRepeat) {
-        if(promoterData.password.length && promoterData.passwordRepeat.length) {
+    if (promoterData.password !== promoterData.passwordRepeat) {
+        if (promoterData.password.length && promoterData.passwordRepeat.length) {
             validationPromoterData['password'] = 'Passwords do not match';
             validationPromoterData['passwordRepeat'] = 'Passwords do not match';
         }
     }
 
-    if(!promoterData.socialLinks) {
+    if (!promoterData.socialLinks) {
         validationPromoterData['socialLinks'] = fieldRequired;
     }
 
-    if(!promoterData.country) {
+    if (!promoterData.country) {
         validationPromoterData['country'] = fieldRequired;
     }
 
-    if(!promoterData.city) {
+    if (!promoterData.city) {
         validationPromoterData['city'] = fieldRequired;
     }
 
-    if(!promoterData.foreignLanguages) {
+    if (!promoterData.foreignLanguages) {
         validationPromoterData['foreignLanguages'] = fieldRequired;
     }
 
-    if(!promoterData.disponibilityDescription) {
+    if (!promoterData.disponibilityDescription) {
         validationPromoterData['disponibilityDescription'] = fieldRequired;
     }
 
@@ -288,98 +288,98 @@ const validateTourOperator = (tourOperator, businessOperator) => {
     let validationTourOperator = {};
     let validationBusinessOperator = {}
 
-    if(tourOperator.firstName.length < 3) {
+    if (tourOperator.firstName.length < 3) {
         validationTourOperator['firstName'] = lengthNotEnough;
     }
 
-    if(!tourOperator.firstName) {
+    if (!tourOperator.firstName) {
         validationTourOperator['firstName'] = fieldRequired;
     }
 
-    if(tourOperator.lastName.length < 3) {
+    if (tourOperator.lastName.length < 3) {
         validationTourOperator['lastName'] = lengthNotEnough;
-    } 
+    }
 
-    if(!tourOperator.lastName) {
+    if (!tourOperator.lastName) {
         validationTourOperator['lastName'] = fieldRequired;
-    } 
+    }
 
-    if(tourOperator.phoneNumber.length < 10) {
+    if (tourOperator.phoneNumber.length < 10) {
         validationTourOperator['phoneNumber'] = phoneNumberLength;
     }
 
-    if(!tourOperator.phoneNumber) {
+    if (!tourOperator.phoneNumber) {
         validationTourOperator['phoneNumber'] = fieldRequired;
     }
 
-    if(!tourOperator.email) {
+    if (!tourOperator.email) {
         validationTourOperator['email'] = fieldRequired;
     }
 
-    if(!validateEmail(tourOperator.email)) {
+    if (!validateEmail(tourOperator.email)) {
         validationTourOperator['email'] = 'Invalid email';
     }
 
 
-    if(!tourOperator.password) {
+    if (!tourOperator.password) {
         validationTourOperator['password'] = fieldRequired;
     }
 
     var strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{5,})");
 
-    if(!strongRegex.test(tourOperator.password)) {
+    if (!strongRegex.test(tourOperator.password)) {
         validationTourOperator['password'] = 'Password not strong enough'
     }
 
-    if(!tourOperator.passwordRepeat) {
+    if (!tourOperator.passwordRepeat) {
         validationTourOperator['passwordRepeat'] = fieldRequired;
-    } 
+    }
 
-    if(tourOperator.password !== tourOperator.passwordRepeat) {
-        if(tourOperator.password.length && tourOperator.passwordRepeat.length) {
+    if (tourOperator.password !== tourOperator.passwordRepeat) {
+        if (tourOperator.password.length && tourOperator.passwordRepeat.length) {
             validationTourOperator['password'] = 'Passwords do not match';
             validationTourOperator['passwordRepeat'] = 'Passwords do not match';
         }
     }
 
 
-    if(!tourOperator.socialLinks) {
+    if (!tourOperator.socialLinks) {
         validationTourOperator['socialLinks'] = fieldRequired;
     }
 
-    if(!tourOperator.city) {
+    if (!tourOperator.city) {
         validationTourOperator['city'] = fieldRequired;
     }
 
-    if(!tourOperator.foreignLanguages) {
+    if (!tourOperator.foreignLanguages) {
         validationTourOperator['foreignLanguages'] = fieldRequired;
     }
 
-    if(!businessOperator.businessName) {
+    if (!businessOperator.businessName) {
         validationBusinessOperator['businessName'] = fieldRequired;
     }
 
-    if(!businessOperator.cui) {
+    if (!businessOperator.cui) {
         validationBusinessOperator['cui'] = fieldRequired;
     }
 
-    if(!businessOperator.email) {
+    if (!businessOperator.email) {
         validationBusinessOperator['email'] = fieldRequired;
     }
 
-    if(!validateEmail(businessOperator.email)) {
+    if (!validateEmail(businessOperator.email)) {
         validationBusinessOperator['email'] = 'Invalid email';
     }
 
-    if(!businessOperator.socialLinks) {
+    if (!businessOperator.socialLinks) {
         validationBusinessOperator['socialLinks'] = fieldRequired;
     }
 
-    if(!businessOperator.website) {
+    if (!businessOperator.website) {
         validationBusinessOperator['website'] = fieldRequired;
     }
 
-    if(!businessOperator.address) {
+    if (!businessOperator.address) {
         validationBusinessOperator['address'] = fieldRequired;
     }
 
@@ -387,7 +387,7 @@ const validateTourOperator = (tourOperator, businessOperator) => {
 
 }
 
-const validation =  (registerData, accountType) => {
+const validation = (registerData, accountType) => {
     let validationStatus = 0;
     let registerRes = {
         promoterDataValidation: {},
@@ -404,7 +404,7 @@ const validation =  (registerData, accountType) => {
     switch (accountType) {
         case registerSectionAccTypes[0]:
             promoterDataValidationRes = validatePromoter(registerData.promoterData);
-            if(Object.keys(promoterDataValidationRes).length) {
+            if (Object.keys(promoterDataValidationRes).length) {
                 registerRes.promoterDataValidation = promoterDataValidationRes;
                 validationStatus = 1;
                 return registerRes;
@@ -413,7 +413,7 @@ const validation =  (registerData, accountType) => {
         case registerSectionAccTypes[1]:
 
             tourOperatorDataValidationRes = validateTourOperator(registerData.tourOperatorData, registerData.tourBusinessData);
-            if(Object.keys(tourOperatorDataValidationRes[1]).length || Object.keys(tourOperatorDataValidationRes[0]).length) {
+            if (Object.keys(tourOperatorDataValidationRes[1]).length || Object.keys(tourOperatorDataValidationRes[0]).length) {
                 registerRes.tourBusinessDataValidation = tourOperatorDataValidationRes[1];
                 registerRes.tourOperatorDataValidation = tourOperatorDataValidationRes[0];
                 validationStatus = 1;
@@ -422,7 +422,7 @@ const validation =  (registerData, accountType) => {
             break;
         case registerSectionAccTypes[2]:
             contentCreatorDataValidationRes = validateContentCreator(registerData.contentCreatorData);
-            if(Object.keys(contentCreatorDataValidationRes).length) {
+            if (Object.keys(contentCreatorDataValidationRes).length) {
                 registerRes.contentCreatorDataValidation = contentCreatorDataValidationRes;
                 validationStatus = 1;
                 return registerRes;
@@ -430,7 +430,7 @@ const validation =  (registerData, accountType) => {
             break;
         case registerSectionAccTypes[3]:
             conciergeDataValidationRes = validateConcierge(registerData.conciergeData);
-            if(Object.keys(conciergeDataValidationRes).length) {
+            if (Object.keys(conciergeDataValidationRes).length) {
                 registerRes.conciergeDataValidation = conciergeDataValidationRes;
                 validationStatus = 1;
                 return registerRes;
@@ -446,14 +446,14 @@ const validation =  (registerData, accountType) => {
         contentDataCreatorValidation: {},
         validationStatus: 1,
     }
-   
+
 }
 
 const register = async (payload, accType) => {
     switch (accType) {
         case registerSectionAccTypes[0]:
-            const newPayload = {...payload.promoterData, userType: 'Promoter'}
-            const res = await fetch(`${BASE_ROUTE}/identity/register`,{
+            const newPayload = { ...payload.promoterData, userType: 'Promoter' }
+            const res = await fetch(`${BASE_ROUTE}/identity/register`, {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json, text/plain',
@@ -463,17 +463,17 @@ const register = async (payload, accType) => {
             }).then(res => res.json())
 
             return res;
-           
-            break; 
+
+            break;
 
         case registerSectionAccTypes[1]:
-            break; 
+            break;
 
         case registerSectionAccTypes[2]:
-            break; 
+            break;
 
         case registerSectionAccTypes[3]:
-            break; 
+            break;
     }
 }
 
@@ -482,7 +482,7 @@ const setAuthLocalStorage = (userType, authToken, userId) => {
     localStorage.setItem(LS_AUTH_TOKEN_KEY, authToken)
     localStorage.setItem(LS_SUB_KEY, userId)
 
-    location.reload();
+    // location.reload();
 }
 
 
@@ -491,7 +491,7 @@ const clearAuthLocalStorage = () => {
     localStorage.removeItem(LS_USER_TYPE_KEY);
     localStorage.removeItem(LS_SUB_KEY);
 
-    location.reload();
+    // location.reload();
 }
 
 const getAuthToken = () => {

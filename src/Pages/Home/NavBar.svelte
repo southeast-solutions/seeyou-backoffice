@@ -20,6 +20,11 @@
         navigate("/profile", { replace: false });
     };
 
+    const signOut = () => {
+        clearAuthLocalStorage();
+        navigate("/login");
+    };
+
     onMount(() => {
         showExperiences = isTourOperator();
         showUsers = isAdmin();
@@ -52,7 +57,7 @@
             <i class="fi fi-rr-user" />Profile
         </div>
 
-        <div class="nav-button" on:click={clearAuthLocalStorage}>
+        <div class="nav-button" on:click={signOut}>
             <i class="fi  fi-rr-sign-out" />Sign Out
         </div>
     </div>

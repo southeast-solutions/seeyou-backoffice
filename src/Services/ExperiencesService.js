@@ -7,7 +7,7 @@ import { get, post } from "./FetchService";
 
 const addExperienceUrl = BASE_ROUTE + "/experience/addExperience";
 const getExperiencesUrl = BASE_ROUTE + "/experience/myExperiences";
-const uploadImageUrl = "http://localhost:5001" + "/images/experience"
+const uploadImageUrl = BASE_ROUTE + "/images/experience"
 
 // const getExpereinces = async (userId) => {
 //     return new Promise((resolve, reject) => {
@@ -51,26 +51,34 @@ const getExpereinces = async () => {
     return response;
 }
 const addExperience = async (expereinceObj) => {
-    let translatedExperience = expereinceObj;
-    let response = await post(addExperienceUrl, translatedExperience);
-    return await response.json();
+    let translatedExperience = { experience: expereinceObj };
+    return await post(addExperienceUrl, translatedExperience);
+
 
 }
-const uploadPhoto = (file) => {
+const uploadPhoto = async (file) => {
     let token = getAuthToken();
     console.log(file);
     const formData = new FormData();
     formData.append('dataFile', file);
-    const upload = fetch(uploadImageUrl, {
-        method: 'POST',
-        body: formData,
-        headers: { 'Authorization': `Bearer ${token}` }
-    }).then((response) => response.json()).then((result) => {
-        console.log('Success:', result);
-    })
-        .catch((error) => {
-            console.error('Error:', error);
+    try {
+        const upload = await fetch(uploadImageUrl, {
+            method: 'POST',
+            body: formData,
+            headers: { 'Authorization': `Bearer ${token}` }
         });
+        const result = await upload.json();
+        if (result.success) {
+            return result.url
+        }
+        else {
+            return undefined;
+        }
+    }
+    catch (e) {
+        console.log(e);
+        return undefined;
+    }
 
 }
 export { getExpereinces, addExperience, uploadPhoto };

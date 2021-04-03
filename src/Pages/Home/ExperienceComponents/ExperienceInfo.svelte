@@ -45,11 +45,13 @@
 
 <div class="experience__container">
     {#if photos}
-        <div
-            class="experience__row__horizontal__padding experience__row__generic"
-        >
-            <Carousel items={photos} />
-        </div>
+        {#if photos.length}
+            <div
+                class="experience__row__horizontal__padding experience__row__generic"
+            >
+                <Carousel items={photos} />
+            </div>
+        {/if}
     {/if}
 
     <div class="experience__row__horizontal__padding experience__row__generic">

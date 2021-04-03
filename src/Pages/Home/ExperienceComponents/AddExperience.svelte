@@ -1,5 +1,5 @@
 <script>
-    import { onMount } from "svelte";
+    import { onMount, createEventDispatcher } from "svelte";
     import Map from "./Map.svelte";
     import Input from "../../../SharedComponents/Input.svelte";
     import Textarea from "../../../SharedComponents/Textarea.svelte";
@@ -16,6 +16,8 @@
     } from "../../../Services/ExperiencesService";
     import SimplePicker from "simplepicker";
     import MultiplePhotoPicker from "../../../SharedComponents/MultiplePhotoPicker.svelte";
+
+    const dispatch = createEventDispatcher();
 
     const nullMessage = "Field is mandatory";
     const invalidValue = "Invalid value";
@@ -70,16 +72,34 @@
     const imagesChanged = (event) => {
         images = event.detail;
     };
-    const uploadImages = () => {
-        uploadPhoto(images[0]);
+    const uploadImages = async () => {
+        try {
+            const promises = images.map((image) => uploadPhoto(image));
+            const responses = await Promise.all(promises);
+            console.log(responses);
+            let valid = true;
+            responses.forEach((element) => {
+                if (element === undefined) {
+                    valid = false;
+                }
+            });
+            return valid ? responses : undefined;
+        } catch (e) {
+            return undefined;
+        }
     };
 
-    const saveClicked = () => {
+    const saveClicked = async () => {
         validateInputs();
         if (!isValid()) return;
 
         isAddLoading = true;
         globalError = "";
+        let urls = await uploadImages();
+        if (urls === undefined) {
+            globalError = "Error uploading photos";
+            return;
+        }
         addExperience({
             dateTime: selectedDate,
             name: experienceName,
@@ -92,10 +112,10 @@
             description,
             includedServices,
             notIncludedServices,
-            highlights: images.map((file) => URL.createObjectURL(file)),
+            highlights: urls,
         })
             .then(() => {
-                location.reload();
+                dispatch("added");
             })
             .catch((err) => {
                 globalError = err.message;
@@ -103,7 +123,6 @@
             .finally(() => {
                 isAddLoading = false;
             });
-        // uploadImages();
     };
 
     const validateInputs = () => {

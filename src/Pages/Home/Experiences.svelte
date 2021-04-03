@@ -29,6 +29,10 @@
     const addExperienceClicked = () => {
         addExperienceMode = true;
     };
+
+    const experienceAdded = async () => {
+        experiences = (await getExpereinces()).experiences;
+    };
 </script>
 
 <svelte:head>
@@ -54,7 +58,7 @@
         {#if !isLoaded}
             <PageLoader />
         {:else if addExperienceMode}
-            <AddExperience />
+            <AddExperience on:added={experienceAdded} />
         {:else if !selectedExperience}
             <div class="center-content">
                 <h3>No experience selected</h3>

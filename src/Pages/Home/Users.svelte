@@ -32,9 +32,10 @@
         guardSignedUser();
         guardAdmin();
 
-        users = (await getUsers()).users;
+        users = await getUsers();
         filteredUsers = users;
         isLoaded = true;
+        console.log(users);
     });
 
     const handleFilters = () => {
@@ -114,15 +115,15 @@
         {:else}
             {#each filteredUsers as user}
                 <div class="user-container">
-                    {#if user.userType == promoter}
+                    {#if user.userType == 1}
                         <Promoter {user} />
-                    {:else if user.userType == tourOperator}
+                    {:else if user.userType == 4}
                         <TourOperator {user} />
-                    {:else if user.userType == contentCreator}
+                    {:else if user.userType == 2}
                         <ContentCreator {user} />
-                    {:else if user.userType == concierge}
+                    {:else if user.userType == 3}
                         <Concierge {user} />
-                    {:else if user.userType == admin}
+                    {:else if user.userType == 5}
                         <Concierge {user} isAdmin={true} />
                     {/if}
                 </div>

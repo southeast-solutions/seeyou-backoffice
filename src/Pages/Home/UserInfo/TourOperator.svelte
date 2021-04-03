@@ -7,61 +7,63 @@
     let proccessedBusinessSocialLinks = undefined;
 
     onMount(() => {
-        if (user.operator.socialLinks) {
-            proccessedSocialLinks = user.operator.socialLinks
+        if (user.tourOperatorEntity.socialLinks) {
+            proccessedSocialLinks = user.tourOperatorEntity.socialLinks
                 .replace(",", "")
                 .replace("https://www.", "")
                 .split("\n")
                 .filter(Boolean)
                 .map((str) => str.trim());
         }
-        if (user.business.socialLinks) {
-            proccessedBusinessSocialLinks = user.business.socialLinks
+        if (user.tourBusinessEntity.socialLinks) {
+            proccessedBusinessSocialLinks = user.tourBusinessEntity.socialLinks
                 .replace(",", "")
                 .replace("https://www.", "")
                 .split("\n")
                 .filter(Boolean)
                 .map((str) => str.trim());
         }
+        console.log(user);
     });
 </script>
 
-{#if user.operator && user.business}
+{#if user.tourBusinessEntity && user.tourOperatorEntity}
     <div class="content-container">
         <div class="content-row">
             <div class="full-row">
                 <h3>Tour Operator</h3>
             </div>
         </div>
-        {#if user.operator.firstName && user.operator.lastName}
+        {#if user.tourOperatorEntity.firstName && user.tourOperatorEntity.lastName}
             <div class="content-row">
                 <div class="full-row">
-                    Full name: {user.operator.firstName}
-                    {user.operator.lastName}
+                    Full name: {user.tourOperatorEntity.firstName}
+                    {user.tourOperatorEntity.lastName}
                 </div>
             </div>
         {/if}
-        {#if user.operator.email && user.operator.phoneNumber}
+        {#if user.tourOperatorEntity.email && user.tourOperatorEntity.phoneNumber}
             <div class="content-row">
                 <div class="full-row">
-                    Email: <a href="mailto:{user.operator.email}"
-                        >{user.operator.email}</a
+                    Email: <a href="mailto:{user.tourOperatorEntity.email}"
+                        >{user.tourOperatorEntity.email}</a
                     >
-                    Phone number: {user.operator.phoneNumber}
+                    Phone number: {user.tourOperatorEntity.phoneNumber}
                 </div>
             </div>
         {/if}
-        {#if user.operator.city}
+        {#if user.tourOperatorEntity.city}
             <div class="content-row">
                 <div class="full-row">
-                    Location: {user.operator.city}
+                    Location: {user.tourOperatorEntity.city}
                 </div>
             </div>
         {/if}
-        {#if user.operator.foreignLanguages}
+        {#if user.tourOperatorEntity.foreignLanguages}
             <div class="content-row">
                 <div class="full-row">
-                    Foreign languages: {user.operator.foreignLanguages}
+                    Foreign languages: {user.tourOperatorEntity
+                        .foreignLanguages}
                 </div>
             </div>
         {/if}
@@ -75,31 +77,31 @@
             </div>
         {/if}
         <hr />
-        {#if user.business.businessName && user.business.cui}
+        {#if user.tourBusinessEntity.businessName && user.tourBusinessEntity.cui}
             <div class="content-row">
                 <div class="full-row">
-                    Business name: {user.business.businessName}, CUI: {user
-                        .business.cui}
+                    Business name: {user.tourBusinessEntity.businessName}, CUI: {user
+                        .tourBusinessEntity.cui}
                 </div>
             </div>
         {/if}
-        {#if user.business.email && user.business.website}
+        {#if user.tourBusinessEntity.email && user.tourBusinessEntity.website}
             <div class="content-row">
                 <div class="full-row">
-                    Email: <a href="mailto:{user.business.email}"
-                        >{user.business.email}</a
+                    Email: <a href="mailto:{user.tourBusinessEntity.email}"
+                        >{user.tourBusinessEntity.email}</a
                     >
                     Website:
-                    <a href="//{user.business.website}"
-                        >{user.business.website}</a
+                    <a href="//{user.tourBusinessEntity.website}"
+                        >{user.tourBusinessEntity.website}</a
                     > &nbsp;
                 </div>
             </div>
         {/if}
-        {#if user.business.address}
+        {#if user.tourBusinessEntity.address}
             <div class="content-row">
                 <div class="full-row">
-                    Address: {user.business.address}
+                    Address: {user.tourBusinessEntity.address}
                 </div>
             </div>
         {/if}

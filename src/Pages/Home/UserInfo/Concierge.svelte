@@ -65,7 +65,13 @@
     {/if}
     {#if !isAdmin}
         <div class="content-row">
-            <FooterButtons id={user.id} />
+            <FooterButtons
+                id={user.id}
+                verified={user.verified}
+                on:verified={() => {
+                    user.verified = !user.verified;
+                }}
+            />
         </div>
     {/if}
 </div>

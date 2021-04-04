@@ -76,7 +76,6 @@
         try {
             const promises = images.map((image) => uploadPhoto(image));
             const responses = await Promise.all(promises);
-            console.log(responses);
             let valid = true;
             responses.forEach((element) => {
                 if (element === undefined) {

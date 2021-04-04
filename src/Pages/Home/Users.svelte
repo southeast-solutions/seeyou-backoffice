@@ -51,25 +51,15 @@
         }
         filteredUsers = [];
         if (filterAdmin)
-            filteredUsers.push(
-                ...users.filter((user) => user.userType == admin)
-            );
+            filteredUsers.push(...users.filter((user) => user.userType == 5));
         if (filterPromoter)
-            filteredUsers.push(
-                ...users.filter((user) => user.userType == promoter)
-            );
+            filteredUsers.push(...users.filter((user) => user.userType == 1));
         if (filterOperator)
-            filteredUsers.push(
-                ...users.filter((user) => user.userType == tourOperator)
-            );
+            filteredUsers.push(...users.filter((user) => user.userType == 4));
         if (filterCreator)
-            filteredUsers.push(
-                ...users.filter((user) => user.userType == contentCreator)
-            );
+            filteredUsers.push(...users.filter((user) => user.userType == 2));
         if (filterConcierge)
-            filteredUsers.push(
-                ...users.filter((user) => user.userType == concierge)
-            );
+            filteredUsers.push(...users.filter((user) => user.userType == 3));
     };
 </script>
 

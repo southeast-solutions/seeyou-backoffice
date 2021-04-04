@@ -1,15 +1,22 @@
 <script>
-    export let id;
+    import { createEventDispatcher } from "svelte";
 
-    const verifyCallback = () => {};
-    const deleteCallback = () => {};
+    import { verify } from "../../../Services/UsersService";
+    export let id;
+    export let verified = false;
+
+    const dispatch = createEventDispatcher();
+
+    const verifyCallback = async () => {
+        await verify(id, !verified);
+        dispatch("verified");
+    };
 </script>
 
 {#if id}
     <div class="end-row">
-        <button class="main-button" on:click={verifyCallback}>Verify</button>
-        <button class="secondary-button" on:click={deleteCallback}
-            >Delete</button
+        <button class="main-button" on:click={verifyCallback}
+            >{verified ? "Unverify" : "Verify"}</button
         >
     </div>
 {/if}
@@ -28,10 +35,5 @@
         font-size: 20px;
         font-weight: 200;
         margin-left: 10px;
-    }
-
-    .secondary-button:hover {
-        background-color: red;
-        border: none;
     }
 </style>

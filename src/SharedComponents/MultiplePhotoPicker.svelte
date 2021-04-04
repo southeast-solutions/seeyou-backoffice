@@ -13,7 +13,6 @@
     $: {
         allFiles.push(...Array.from(files));
         allFiles = allFiles.slice(0, maxPhotos);
-        console.log(allFiles);
         showImages = allFiles.map((file) => URL.createObjectURL(file));
         files = [];
         dispatch("imagesChanged", allFiles);

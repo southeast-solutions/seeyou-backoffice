@@ -8,6 +8,7 @@ import { get, post } from "./FetchService";
 const addExperienceUrl = BASE_ROUTE + "/experience/addExperience";
 const getExperiencesUrl = BASE_ROUTE + "/experience/myExperiences";
 const uploadImageUrl = BASE_ROUTE + "/images/experience"
+const deleteExperienceUrl = BASE_ROUTE + "/experience/deleteExperience";
 
 // const getExpereinces = async (userId) => {
 //     return new Promise((resolve, reject) => {
@@ -81,4 +82,8 @@ const uploadPhoto = async (file) => {
     }
 
 }
-export { getExpereinces, addExperience, uploadPhoto };
+
+const deleteEx = async (id) => {
+    return await post(deleteExperienceUrl, { id })
+}
+export { getExpereinces, addExperience, uploadPhoto, deleteEx };

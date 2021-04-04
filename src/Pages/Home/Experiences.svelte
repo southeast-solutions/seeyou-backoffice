@@ -30,8 +30,12 @@
         addExperienceMode = true;
     };
 
-    const experienceAdded = async () => {
+    const experiencesUpdated = async () => {
+        isLoaded = false;
+        addExperienceMode = false;
+        selectedExperience = undefined;
         experiences = (await getExpereinces()).experiences;
+        isLoaded = true;
     };
 </script>
 
@@ -58,13 +62,16 @@
         {#if !isLoaded}
             <PageLoader />
         {:else if addExperienceMode}
-            <AddExperience on:added={experienceAdded} />
+            <AddExperience on:added={experiencesUpdated} />
         {:else if !selectedExperience}
             <div class="center-content">
                 <h3>No experience selected</h3>
             </div>
         {:else}
-            <ExperienceInfo data={selectedExperience} />
+            <ExperienceInfo
+                data={selectedExperience}
+                on:deleted={experiencesUpdated}
+            />
         {/if}
     </div>
 </div>

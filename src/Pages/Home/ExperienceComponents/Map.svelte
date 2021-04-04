@@ -38,7 +38,6 @@
         }
     });
     afterUpdate(() => {
-        console.log({ lat, lng });
         if (marker) {
             marker.setMap(null);
         }

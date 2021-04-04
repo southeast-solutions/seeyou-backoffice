@@ -10,7 +10,6 @@
     import {mapDataAfterUserType, tourOperatorMapper} from './Profile/Profile.Mappers';
     import { BASE_ROUTE } from "../../Services/Constants";
     import { NotificationDisplay, notifier } from '@beyonk/svelte-notifications'
-import { tour } from "../../Enums/ExperienceTypes";
 
     let user = {};
 
@@ -23,6 +22,7 @@ import { tour } from "../../Enums/ExperienceTypes";
         const LS_AUTH_TOKEN_KEY = "seeyou_auth_token";
         const token = localStorage.getItem(LS_AUTH_TOKEN_KEY);
         formData.append('dataFile', currentFile);
+        notifier.info('Please wait', 4500)
         try {
             const upload = await fetch(`${BASE_ROUTE}/images/profile`, {
                 method: 'POST',
@@ -71,6 +71,7 @@ import { tour } from "../../Enums/ExperienceTypes";
     };
 
     const updateUserData = async (userData) => {
+
         let userToPost = !!userData ? userData : user;
         if(userToPost.userType === 'TourOperator') {
            userToPost = tourOperatorMapper(userToPost);

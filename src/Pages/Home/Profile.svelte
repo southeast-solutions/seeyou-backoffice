@@ -5,31 +5,41 @@
     import { guardSignedUser } from "../../Services/AuthService";
     import { getUserData } from "../../Services/ProfileService";
     import NavBar from "./NavBar.svelte";
-    import {userTypes} from "../../Enums/UserTypes";
     import ProfilePhotoCard from "../../SharedComponents/ProfilePhotoCard.svelte";
     import '../../Enums/UserTypes';
-    import {mapDataAfterUserType} from './Profile/Profile.Mappers';
-import { BASE_ROUTE } from "../../Services/Constants";
+    import {mapDataAfterUserType, tourOperatorMapper} from './Profile/Profile.Mappers';
+    import { BASE_ROUTE } from "../../Services/Constants";
+    import { NotificationDisplay, notifier } from '@beyonk/svelte-notifications'
 
-    let user = {
-        id: "",
-        firstName: "",
-        lastName: "",
-        phoneNumber: "",
-        city: "",
-        country: "",
-        foreignLanguages: "",
-        businessName: "",
-        businessWebsite: "",
-        cui: "",
-        adress: "",
-        socialLinks: "",
-        currentJob: "",
-        disponiblityDescription: "",
-        profileUrl: "",
-    };
+    let user = {};
+
+    let currentFile = '';
 
     let userInfo;
+
+    const updateProfilePhoto = async (imgSrc) => {
+        const formData = new FormData();
+        const LS_AUTH_TOKEN_KEY = "seeyou_auth_token";
+        const token = localStorage.getItem(LS_AUTH_TOKEN_KEY);
+        formData.append('dataFile', currentFile);
+        notifier.info('Please wait', 4500)
+        try {
+            const upload = await fetch(`${BASE_ROUTE}/images/profile`, {
+                method: 'POST',
+                body: formData,
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+
+            const result = await upload.json();
+
+            if(result.success) {
+                const userData = {...user, profilePictureUrl: result.url};
+                updateUserData(userData);
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    }
 
     // === TO DO === CREATE MAPPERS FOR EACH USER TYPE
     // TEMPORARY FOR TYPE 1 HERE
@@ -47,50 +57,78 @@ import { BASE_ROUTE } from "../../Services/Constants";
     });
     const previewImage = () => {
         var file = document.getElementById("file").files;
+        currentFile = file[0];
         if (file.length > 0) {
             var fileReader = new FileReader();
 
             fileReader.onload = function (event) {
-                user["profileUrl"] = event.target.result;
+                user["profilePictureUrl"] = event.target.result;
             };
 
             fileReader.readAsDataURL(file[0]);
+
         }
     };
 
-    const updateUserData = async () => {
+    const updateUserData = async (userData) => {
+
+        let userToPost = !!userData ? userData : user;
+        if(userToPost.userType === 'TourOperator') {
+           userToPost = tourOperatorMapper(userToPost);
+        }
+        let invalidData;
+
+        if(userToPost.userType === 'TourOperator') {
+            invalidData = Object.keys(userToPost.tourBusinessEntity).filter(key => !userToPost.tourBusinessEntity[key]).concat(Object.keys(userToPost.tourOperatorEntity).filter(key => !userToPost.tourOperatorEntity[key]));
+        } else {
+            invalidData = Object.keys(userToPost).filter(key => !userToPost[key])
+        }
+
+        if(invalidData.length) {
+            notifier.danger('Please fill all the fields', 3000);
+            return;
+        }
+
         const LS_AUTH_TOKEN_KEY = "seeyou_auth_token";
         const token = localStorage.getItem(LS_AUTH_TOKEN_KEY);
         const userUpdateRes = await fetch(`${BASE_ROUTE}/user`, {
             method: 'POST',
-            mode: "cors",
             headers: {
                 'Accept': 'application/json, text/plain',
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
             },
-            body: JSON.stringify({user: user})
-        }).then(res => res.json());
+            body: JSON.stringify({user: userToPost})
+        });
 
-        console.log(userUpdateRes);
+        if(userUpdateRes.status === 200) {
+            notifier.success('Profile updated successfully', 3000);
+            return;
+        }
     }
+
 </script>
 
 <NavBar />
-
 <div class="home-page-container">
+    
     {#if userInfo}
         <div class="left-card">
             <ProfilePhotoCard
                 city={user?.city ? user.city : ""}
                 country={user?.country ? user.country : ""}
                 phoneNumber={user?.phoneNumber}
-                profileUrl={user.profileUrl}
+                profilePictureUrl={user.profilePictureUrl}
                 firstName={user.firstName ? user.firstName : ""}
                 lastName={user?.lastName ? user?.lastName : ""}
                 email={user?.email ? user?.email : ""}
-                onChangeProfileUrl={() => previewImage()}
+                onChangeprofilePictureUrl={() => previewImage()}
+                onUploadprofilePictureUrl={(imgSrc) => updateProfilePhoto(imgSrc)}
             />
+
+            <div class="notification-display">
+                <NotificationDisplay/>
+            </div>
         </div>
 
         <div class="right-card">
@@ -103,7 +141,7 @@ import { BASE_ROUTE } from "../../Services/Constants";
                             className="half-row"
                             name="pla"
                             onChange={(e) => {
-                                userInfo["firstName"] = e.target.value;
+                                user["firstName"] = e.target.value;
                             }}
                         />
                     </div>
@@ -115,7 +153,7 @@ import { BASE_ROUTE } from "../../Services/Constants";
                             className="half-row"
                             name="pla"
                             onChange={(e) =>
-                                (userInfo["lastName"] = e.target.value)}
+                                (user["lastName"] = e.target.value)}
                         />
                     </div>
                 </div>
@@ -128,18 +166,17 @@ import { BASE_ROUTE } from "../../Services/Constants";
                             label={"Phone number"}
                             value={user.phoneNumber ? user.phoneNumber : ""}
                             className="half-row"
-                            name="pla"
+                            type="number"
                             onChange={(e) =>
-                                (userInfo["phoneNumber"] = e.target.value)}
+                                (user["phoneNumber"] = e.target.value)}
                         />
                     </div>
                     <div class="half-row">
                         <Input
                             label={"City"}
                             className="half-row"
-                            name="pla"
                             onChange={(e) =>
-                                (userInfo["city"] = e.target.value)}
+                                (user["city"] = e.target.value)}
                             value={user?.city ? user.city : ""}
                         />
                     </div>
@@ -155,7 +192,7 @@ import { BASE_ROUTE } from "../../Services/Constants";
                             className="half-row"
                             name="pla"
                             onChange={(e) =>
-                                (userInfo["country"] = e.target.value)}
+                                (user["country"] = e.target.value)}
                         />
                     </div>
                     <div class="half-row">
@@ -167,13 +204,13 @@ import { BASE_ROUTE } from "../../Services/Constants";
                             className="half-row"
                             name="pla"
                             onChange={(e) =>
-                                (userInfo["foreignLanguages"] = e.target.value)}
+                                (user["foreignLanguages"] = e.target.value)}
                         />
                     </div>
                 </div>
             </div>
 
-            {#if user.userType === userTypes.tourOperator}
+            {#if user.userType === "TourOperator"}
                 <div class="center-row">
                     <div class="form-row">
                         <div class="half-row">
@@ -185,7 +222,7 @@ import { BASE_ROUTE } from "../../Services/Constants";
                                     ? user.businessName
                                     : ""}
                                 onChange={(e) =>
-                                    (userInfo["businessName"] = e.target.value)}
+                                    (user["businessName"] = e.target.value)}
                             />
                         </div>
                         <div class="half-row">
@@ -193,11 +230,11 @@ import { BASE_ROUTE } from "../../Services/Constants";
                                 label={"Business Website"}
                                 className="half-row"
                                 name="pla"
-                                value={user.businessWebsite
-                                    ? user.businessWebsite
+                                value={user.website
+                                    ? user.website
                                     : ""}
                                 onChange={(e) =>
-                                    (userInfo["businessWebsite"] =
+                                    (user["website"] =
                                         e.target.value)}
                             />
                         </div>
@@ -211,7 +248,7 @@ import { BASE_ROUTE } from "../../Services/Constants";
                                 label={"Cui"}
                                 className="half-row"
                                 name="pla"
-                                onChange={(e) => (userInfo["cui"] = e.target.value)}
+                                onChange={(e) => (user["cui"] = e.target.value)}
                                 value={user.cui ? user.cui : ""}
                             />
                         </div>
@@ -221,30 +258,40 @@ import { BASE_ROUTE } from "../../Services/Constants";
                                 className="half-row"
                                 name="pla"
                                 onChange={(e) =>
-                                    (userInfo["adress"] = e.target.value)}
+                                    (user["adress"] = e.target.value)}
                                 value={user.adress ? user.adress : ""}
+                            />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="center-row">
+                    <div class="form-row">
+                        <div class="half-row">
+                            <Input
+                            label={"Business Social Links"}
+                            className="half-row"
+                            name="pla"
+                            onChange={(e) =>
+                            (user["socialLinks"] = e.target.value)}
+                            value={user.socialLinks ? user.socialLinks : ""}
+                            />
+                        </div>
+                        <div class="half-row">
+                            <Input
+                            label={"User Social Links"}
+                            className="half-row"
+                            name="pla"
+                            onChange={(e) =>
+                            (user["userSocialLinks"] = e.target.value)}
+                            value={user.userSocialLinks ? user.userSocialLinks : ""}
                             />
                         </div>
                     </div>
                 </div>
             {/if}
             
-            <!-- <div class="center-row">
-                <div class="form-row">
-                    <div class="half-row">
-                        <Input
-                            label={"Social Links"}
-                            className="half-row"
-                            name="pla"
-                            onChange={(e) =>
-                                (userInfo["socialLinks"] = e.target.value)}
-                            value={user.socialLinks ? user.socialLinks : ""}
-                        />
-                    </div>
-                </div>
-            </div> -->
-
-            {#if user.userType === userTypes.promoter}
+            {#if user.userType === "Promoter"}
                 <div class="center-row">
                     <div class="form-row">
                         <div class="half-row">
@@ -253,7 +300,7 @@ import { BASE_ROUTE } from "../../Services/Constants";
                                 className="half-row"
                                 name="pla"
                                 onChange={(e) =>
-                                    (userInfo["currentJob"] = e.target.value)}
+                                    (user["currentJob"] = e.target.value)}
                                 value={user.currentJob ? user.currentJob : ""}
                             />
                         </div>
@@ -263,14 +310,13 @@ import { BASE_ROUTE } from "../../Services/Constants";
                                 className="half-row"
                                 name="pla"
                                 onChange={(e) =>
-                                    (userInfo["socialLinks"] = e.target.value)}
+                                    (user["socialLinks"] = e.target.value)}
                                 value={user.socialLinks ? user.socialLinks : ""}
                             />
                         </div>
                     </div>
                 </div>
             {/if}
-            {#if user.disponibilityDescription}
                 <div class="center-row">
                     <div class="form-row">
                         <Input
@@ -278,16 +324,15 @@ import { BASE_ROUTE } from "../../Services/Constants";
                             className="half-row"
                             name="pla"
                             onChange={(e) =>
-                                (userInfo["disponiblityDescription"] =
+                                (user["disponibilityDescription"] =
                                     e.target.value)}
-                            value={user.disponiblityDescription
-                                ? user.disponiblityDescription
+                            value={user.disponibilityDescription
+                                ? user.disponibilityDescription
                                 : ""}
                         />
                     </div>
                 </div>
-            {/if}
-            {#if user.userType === userTypes.contentCreator}
+            {#if user.userType === 'ContentCreator'}
                 <div class="center-row">
                     <div class="form-row">
                         <div class="half-row">
@@ -296,7 +341,7 @@ import { BASE_ROUTE } from "../../Services/Constants";
                                 className="half-row"
                                 name="pla"
                                 onChange={(e) =>
-                                    (userInfo["socialLinks"] = e.target.value)}
+                                    (user["socialLinks"] = e.target.value)}
                                 value={user.socialLinks ? user.socialLinks : ""}
                             />
                         </div>
@@ -306,7 +351,7 @@ import { BASE_ROUTE } from "../../Services/Constants";
                                 className="half-row"
                                 name="pla"
                                 onChange={(e) =>
-                                    (userInfo["disponibilityDescription"] =
+                                    (user["disponibilityDescription"] =
                                         e.target.value)}
                                 value={user.disponibilityDescription
                                     ? user.disponiblityDescription
@@ -316,7 +361,7 @@ import { BASE_ROUTE } from "../../Services/Constants";
                     </div>
                 </div>
             {/if}
-            {#if user.userType === userTypes.concierge}
+            {#if user.userType === 'Concierge'}
                 <div class="center-row">
                     <div class="form-row">
                         <Input
@@ -324,12 +369,15 @@ import { BASE_ROUTE } from "../../Services/Constants";
                             className="half-row"
                             name="pla"
                             onChange={(e) =>
-                                (userInfo["socialLinks"] = e.target.value)}
+                                (user["socialLinks"] = e.target.value)}
                             value={user.socialLinks ? user.socialLinks : ""}
                         />
                     </div>
                 </div>
             {/if}
+
+           
+
             <button class="main-button cta-button" on:click={() => updateUserData()}
                 >{"Update"}</button
             >
@@ -404,5 +452,12 @@ import { BASE_ROUTE } from "../../Services/Constants";
 
     .half-row {
         width: 45%;
+    }
+    
+
+    .notification-display {
+        position: absolute;
+        left: 30px;
+        bottom: 30px;
     }
 </style>

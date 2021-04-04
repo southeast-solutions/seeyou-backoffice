@@ -1,21 +1,20 @@
 <script>
 import { afterUpdate } from "svelte";
+import { BASE_ROUTE } from "../Services/Constants";
  $: ({ id, ...profilePhotoProps } = $$props);
 
-let imgSrc = $$props.profileUrl ?  $$props.profileUrl : '';
+let imgSrc = $$props.profilePictureUrl ?  $$props.profilePictureUrl : '';
 
-
-console.log($$props)
 
 afterUpdate(() => {
-    imgSrc = $$props.profileUrl ? $$props.profileUrl : '';
+    imgSrc = $$props.profilePictureUrl ? $$props.profilePictureUrl : '';
 });
 
 
 </script>
 
 <div class="profile-photo-card">
-    <input class="hidden-element" type="file" name="file" id="file" accept="image/*" on:change={() => profilePhotoProps.onChangeProfileUrl()}>
+    <input class="hidden-element" type="file" name="file" id="file" accept="image/*" on:change={() => profilePhotoProps.onChangeprofilePictureUrl()}>
  
 
     <div class="profile-picture-button">
@@ -29,7 +28,7 @@ afterUpdate(() => {
         <i class="fi fi-rr-user" />
     {/if}
     <div class="profile-photo-change__icon" on:click={() => {let element= document.querySelector('input[type="file"]'); element.click(); }}>C</div>
-    <div class="profile-photo-save__icon" on:click={() => {console.log(imgSrc); }}>S</div>
+    <div class="profile-photo-save__icon" on:click={() => {profilePhotoProps.onUploadprofilePictureUrl(imgSrc) }}>S</div>
 
     </div>
     

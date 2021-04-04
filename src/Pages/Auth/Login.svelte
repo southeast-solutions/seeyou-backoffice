@@ -78,7 +78,7 @@ import Input from "../../SharedComponents/Input.svelte";
         justify-content: center;
         align-items: center;
         background-color: #cccccc;
-        background-image: url('https://images.freecreatives.com/wp-content/uploads/2016/03/21074431/Tehran-Persia-Travel-Wallpaper.jpg');
+       background-image: linear-gradient(to top, #09203f 0%, #537895 100%);
         background-repeat: no-repeat, repeat;
         background-position: center; /* Center the image */
         background-repeat: no-repeat; /* Do not repeat the image */

@@ -146,7 +146,16 @@ registerValidationData = {
                     registerValidation={registerValidationData}
                     on:completeData={onConciergeData}/>
             {/if}
-            <button class="main-button cta-button" on:click={() => validationWrapper()}>Register</button>
+
+            <div stlye={{display: 'flex', flexDirection: 'row'}}>
+                <button
+                class="main-button cta-button"
+                on:click={() => navigate('/login')}>Login</button
+                >
+                <button class="main-button cta-button" on:click={() => validationWrapper()}>Register</button>
+                
+            </div>
+           
         </div>
     </div>
  <div>
@@ -164,7 +173,8 @@ registerValidationData = {
     justify-content: center;
     align-items: center;
     background-color: #cccccc;
-    background-image: url('https://images.freecreatives.com/wp-content/uploads/2016/03/21074431/Tehran-Persia-Travel-Wallpaper.jpg');
+    /* background-image: linear-gradient(to top, #09203f 0%, #537895 100%); */
+   background-image: linear-gradient(to top, #09203f 0%, #537895 100%);
     background-repeat: no-repeat, repeat;
     background-position: center; /* Center the image */
     background-repeat: no-repeat; /* Do not repeat the image */

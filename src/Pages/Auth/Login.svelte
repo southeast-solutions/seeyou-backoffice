@@ -1,11 +1,8 @@
 <script>
     import { navigate } from "svelte-routing";
     import { onMount } from "svelte";
-    import {
-        login,
-        guardUnsignedUser,
-    } from "../../Services/AuthService";
-import Input from "../../SharedComponents/Input.svelte";
+    import { login, guardUnsignedUser } from "../../Services/AuthService";
+    import Input from "../../SharedComponents/Input.svelte";
     const invalidLogin = "Username or password are invalid";
 
     const loginMessage = "Sign in";
@@ -25,15 +22,18 @@ import Input from "../../SharedComponents/Input.svelte";
     async function signInClicked() {
         loginButtonMessage = loadingMessage;
         errorMessage = "";
-        const loginMessage = await login({email: inputLogin, password: inputPassword});
+        const loginMessage = await login({
+            email: inputLogin,
+            password: inputPassword,
+        });
 
-        if(!loginMessage) {
-            loginButtonMessage = "Login"
-            errorMessage = "Invalid email/password"
+        if (!loginMessage) {
+            loginButtonMessage = "Login";
+            errorMessage = "Invalid email/password";
         } else {
-            navigate('/profile')
+            navigate("/profile");
         }
-    };
+    }
 
     const signUpClicked = () => {
         navigate("/register");
@@ -45,28 +45,36 @@ import Input from "../../SharedComponents/Input.svelte";
         <img src="logo2.png" alt="login-img" class="logo-img" />
 
         <div class="inputs-container">
-            <Input
-                label="Email"
-                type="text"
-                placeholder="Email"
-                onChange={(e) => inputLogin = e.target.value}
-                value="" />
-            <Input
-                label="Password"
-                type="password" 
-                placeholder="Password"
-                onChange={(e) => inputPassword = e.target.value}
-                value="" />
-          
+            <div class="login-input">
+                <Input
+                    label="Email"
+                    type="text"
+                    placeholder="Email"
+                    onChange={(e) => (inputLogin = e.target.value)}
+                    value=""
+                />
+            </div>
+            <div class="login-input">
+                <Input
+                    label="Password"
+                    type="password"
+                    placeholder="Password"
+                    onChange={(e) => (inputPassword = e.target.value)}
+                    value=""
+                />
+            </div>
         </div>
         {#if errorMessage !== ""}
-        <div class="error-message">{errorMessage}</div>
-    {/if}
-    <button class="main-button cta-button" on:click={signInClicked}>{loginButtonMessage}</button>
-    <button class="secondary-button cta-button" on:click={signUpClicked}>Sign Up</button>
-    <a href="/" class="forgot-pass-message">Forgot your password?</a>
+            <div class="error-message">{errorMessage}</div>
+        {/if}
+        <button class="main-button cta-button" on:click={signInClicked}
+            >{loginButtonMessage}</button
+        >
+        <button class="secondary-button cta-button" on:click={signUpClicked}
+            >Sign Up</button
+        >
+        <a href="/" class="forgot-pass-message">Forgot your password?</a>
     </div>
-  
 </div>
 
 <style>
@@ -78,12 +86,11 @@ import Input from "../../SharedComponents/Input.svelte";
         justify-content: center;
         align-items: center;
         background-color: #cccccc;
-       background-image: linear-gradient(to top, #09203f 0%, #537895 100%);
+        background-image: linear-gradient(to top, #09203f 0%, #537895 100%);
         background-repeat: no-repeat, repeat;
         background-position: center; /* Center the image */
         background-repeat: no-repeat; /* Do not repeat the image */
         background-size: cover;
-
     }
     .form-container {
         height: 60%;
@@ -101,7 +108,7 @@ import Input from "../../SharedComponents/Input.svelte";
     .error-message {
         font-size: 16px;
     }
-    
+
     .logo-img {
         margin-top: 20px;
         width: 30%;
@@ -123,8 +130,10 @@ import Input from "../../SharedComponents/Input.svelte";
         height: 21%;
         justify-content: space-between;
     }
-   
- 
+
+    .login-input {
+        margin-top: 20px;
+    }
     .error-message {
         color: red;
         font-size: 18px;
@@ -133,6 +142,6 @@ import Input from "../../SharedComponents/Input.svelte";
     .forgot-pass-message {
         font-size: 14px;
         color: #019af6;
-        margin-top: 10px;   
+        margin-top: 10px;
     }
 </style>

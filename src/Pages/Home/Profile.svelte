@@ -6,14 +6,26 @@
     import { getUserData } from "../../Services/ProfileService";
     import NavBar from "./NavBar.svelte";
     import ProfilePhotoCard from "../../SharedComponents/ProfilePhotoCard.svelte";
-    import '../../Enums/UserTypes';
-    import {mapDataAfterUserType, tourOperatorMapper} from './Profile/Profile.Mappers';
+    import "../../Enums/UserTypes";
+    import {
+        mapDataAfterUserType,
+        tourOperatorMapper,
+    } from "./Profile/Profile.Mappers";
     import { BASE_ROUTE } from "../../Services/Constants";
-    import { NotificationDisplay, notifier } from '@beyonk/svelte-notifications'
+    import {
+        promoter,
+        concierge,
+        tourOperator,
+        contentCreator,
+    } from "../../Enums/UserTypes";
+    import {
+        NotificationDisplay,
+        notifier,
+    } from "@beyonk/svelte-notifications";
 
     let user = {};
 
-    let currentFile = '';
+    let currentFile = "";
 
     let userInfo;
 
@@ -21,39 +33,35 @@
         const formData = new FormData();
         const LS_AUTH_TOKEN_KEY = "seeyou_auth_token";
         const token = localStorage.getItem(LS_AUTH_TOKEN_KEY);
-        formData.append('dataFile', currentFile);
-        notifier.info('Please wait', 4500)
+        formData.append("dataFile", currentFile);
+        notifier.info("Please wait", 4500);
         try {
             const upload = await fetch(`${BASE_ROUTE}/images/profile`, {
-                method: 'POST',
+                method: "POST",
                 body: formData,
-                headers: { 'Authorization': `Bearer ${token}` }
+                headers: { Authorization: `Bearer ${token}` },
             });
 
             const result = await upload.json();
 
-            if(result.success) {
-                const userData = {...user, profilePictureUrl: result.url};
+            if (result.success) {
+                const userData = { ...user, profilePictureUrl: result.url };
                 updateUserData(userData);
             }
         } catch (err) {
             console.log(err);
         }
-    }
+    };
 
     // === TO DO === CREATE MAPPERS FOR EACH USER TYPE
     // TEMPORARY FOR TYPE 1 HERE
     onMount(async () => {
         guardSignedUser();
-        const userId = localStorage.getItem("seeyou_user_id");
-        if (userId) {
-            userInfo = await getUserData(userId);
-            const mappedData = mapDataAfterUserType(userInfo);
-            console.log(mappedData)
-            user = mappedData;
-        } else {
-            return;
-        }
+
+        userInfo = await getUserData();
+        console.log(userInfo);
+        const mappedData = mapDataAfterUserType(userInfo);
+        user = mappedData;
     });
     const previewImage = () => {
         var file = document.getElementById("file").files;
@@ -66,52 +74,56 @@
             };
 
             fileReader.readAsDataURL(file[0]);
-
         }
     };
 
     const updateUserData = async (userData) => {
-
         let userToPost = !!userData ? userData : user;
-        if(userToPost.userType === 'TourOperator') {
-           userToPost = tourOperatorMapper(userToPost);
+        if (userToPost.userType === tourOperator) {
+            userToPost = tourOperatorMapper(userToPost);
         }
         let invalidData;
 
-        if(userToPost.userType === 'TourOperator') {
-            invalidData = Object.keys(userToPost.tourBusinessEntity).filter(key => !userToPost.tourBusinessEntity[key]).concat(Object.keys(userToPost.tourOperatorEntity).filter(key => !userToPost.tourOperatorEntity[key]));
+        if (userToPost.userType === tourOperator) {
+            invalidData = Object.keys(userToPost.tourBusinessEntity)
+                .filter((key) => !userToPost.tourBusinessEntity[key])
+                .concat(
+                    Object.keys(userToPost.tourOperatorEntity).filter(
+                        (key) => !userToPost.tourOperatorEntity[key]
+                    )
+                );
         } else {
-            invalidData = Object.keys(userToPost).filter(key => !userToPost[key])
+            invalidData = Object.keys(userToPost).filter(
+                (key) => !userToPost[key]
+            );
         }
 
-        if(invalidData.length) {
-            notifier.danger('Please fill all the fields', 3000);
+        if (invalidData.length) {
+            notifier.danger("Please fill all the fields", 3000);
             return;
         }
 
         const LS_AUTH_TOKEN_KEY = "seeyou_auth_token";
         const token = localStorage.getItem(LS_AUTH_TOKEN_KEY);
         const userUpdateRes = await fetch(`${BASE_ROUTE}/user`, {
-            method: 'POST',
+            method: "POST",
             headers: {
-                'Accept': 'application/json, text/plain',
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
+                Accept: "application/json, text/plain",
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
             },
-            body: JSON.stringify({user: userToPost})
+            body: JSON.stringify({ user: userToPost }),
         });
 
-        if(userUpdateRes.status === 200) {
-            notifier.success('Profile updated successfully', 3000);
+        if (userUpdateRes.status === 200) {
+            notifier.success("Profile updated successfully", 3000);
             return;
         }
-    }
-
+    };
 </script>
 
 <NavBar />
 <div class="home-page-container">
-    
     {#if userInfo}
         <div class="left-card">
             <ProfilePhotoCard
@@ -123,11 +135,12 @@
                 lastName={user?.lastName ? user?.lastName : ""}
                 email={user?.email ? user?.email : ""}
                 onChangeprofilePictureUrl={() => previewImage()}
-                onUploadprofilePictureUrl={(imgSrc) => updateProfilePhoto(imgSrc)}
+                onUploadprofilePictureUrl={(imgSrc) =>
+                    updateProfilePhoto(imgSrc)}
             />
 
             <div class="notification-display">
-                <NotificationDisplay/>
+                <NotificationDisplay />
             </div>
         </div>
 
@@ -175,8 +188,7 @@
                         <Input
                             label={"City"}
                             className="half-row"
-                            onChange={(e) =>
-                                (user["city"] = e.target.value)}
+                            onChange={(e) => (user["city"] = e.target.value)}
                             value={user?.city ? user.city : ""}
                         />
                     </div>
@@ -191,8 +203,7 @@
                             value={user.country ? user.country : ""}
                             className="half-row"
                             name="pla"
-                            onChange={(e) =>
-                                (user["country"] = e.target.value)}
+                            onChange={(e) => (user["country"] = e.target.value)}
                         />
                     </div>
                     <div class="half-row">
@@ -210,7 +221,7 @@
                 </div>
             </div>
 
-            {#if user.userType === "TourOperator"}
+            {#if user.userType === tourOperator}
                 <div class="center-row">
                     <div class="form-row">
                         <div class="half-row">
@@ -230,12 +241,9 @@
                                 label={"Business Website"}
                                 className="half-row"
                                 name="pla"
-                                value={user.website
-                                    ? user.website
-                                    : ""}
+                                value={user.website ? user.website : ""}
                                 onChange={(e) =>
-                                    (user["website"] =
-                                        e.target.value)}
+                                    (user["website"] = e.target.value)}
                             />
                         </div>
                     </div>
@@ -269,29 +277,31 @@
                     <div class="form-row">
                         <div class="half-row">
                             <Input
-                            label={"Business Social Links"}
-                            className="half-row"
-                            name="pla"
-                            onChange={(e) =>
-                            (user["socialLinks"] = e.target.value)}
-                            value={user.socialLinks ? user.socialLinks : ""}
+                                label={"Business Social Links"}
+                                className="half-row"
+                                name="pla"
+                                onChange={(e) =>
+                                    (user["socialLinks"] = e.target.value)}
+                                value={user.socialLinks ? user.socialLinks : ""}
                             />
                         </div>
                         <div class="half-row">
                             <Input
-                            label={"User Social Links"}
-                            className="half-row"
-                            name="pla"
-                            onChange={(e) =>
-                            (user["userSocialLinks"] = e.target.value)}
-                            value={user.userSocialLinks ? user.userSocialLinks : ""}
+                                label={"User Social Links"}
+                                className="half-row"
+                                name="pla"
+                                onChange={(e) =>
+                                    (user["userSocialLinks"] = e.target.value)}
+                                value={user.userSocialLinks
+                                    ? user.userSocialLinks
+                                    : ""}
                             />
                         </div>
                     </div>
                 </div>
             {/if}
-            
-            {#if user.userType === "Promoter"}
+
+            {#if user.userType === promoter}
                 <div class="center-row">
                     <div class="form-row">
                         <div class="half-row">
@@ -317,6 +327,7 @@
                     </div>
                 </div>
             {/if}
+            {#if user.userType === promoter || user.userType === contentCreator}
                 <div class="center-row">
                     <div class="form-row">
                         <Input
@@ -332,7 +343,9 @@
                         />
                     </div>
                 </div>
-            {#if user.userType === 'ContentCreator'}
+            {/if}
+
+            {#if user.userType === contentCreator}
                 <div class="center-row">
                     <div class="form-row">
                         <div class="half-row">
@@ -361,7 +374,7 @@
                     </div>
                 </div>
             {/if}
-            {#if user.userType === 'Concierge'}
+            {#if user.userType === concierge}
                 <div class="center-row">
                     <div class="form-row">
                         <Input
@@ -376,10 +389,9 @@
                 </div>
             {/if}
 
-           
-
-            <button class="main-button cta-button" on:click={() => updateUserData()}
-                >{"Update"}</button
+            <button
+                class="main-button cta-button"
+                on:click={() => updateUserData()}>{"Update"}</button
             >
         </div>
     {:else}
@@ -453,7 +465,6 @@
     .half-row {
         width: 45%;
     }
-    
 
     .notification-display {
         position: absolute;

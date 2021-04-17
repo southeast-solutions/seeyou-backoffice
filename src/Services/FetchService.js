@@ -1,6 +1,8 @@
 import axios from "axios";
 import { getAuthToken, clearAuthLocalStorage } from "./AuthService"
 import { BASE_ROUTE } from "./Constants";
+import { navigate } from "svelte-routing";
+
 
 const checkAuthURL = BASE_ROUTE + "/identity";
 const getHttpHeaders = (token) => {
@@ -8,6 +10,12 @@ const getHttpHeaders = (token) => {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
+    }
+}
+const getUnAuthorizedHeaders = () => {
+    return {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
     }
 }
 
@@ -19,7 +27,9 @@ const checkAuth = async () => {
         })
     } catch (e) {
         if (e.response.status === 401) {
+            console.log('abfdsfdsfds');
             clearAuthLocalStorage();
+            navigate("/login");
         }
     }
 }
@@ -30,7 +40,6 @@ export const get = async (url) => {
         const response = await axios.get(url, {
             headers: getHttpHeaders(token)
         })
-
         return response.data;
     } catch (e) {
         console.log(e);
@@ -52,6 +61,16 @@ export const post = async (url, body) => {
         if (e.response.status === 401) {
             checkAuth();
         }
+        return undefined;
+    }
+}
+export const postUnauthorized = async (url, body) => {
+    try {
+        const response = await axios.post(url, body, {
+            headers: getUnAuthorizedHeaders()
+        })
+        return response.data;
+    } catch (e) {
         return undefined;
     }
 }

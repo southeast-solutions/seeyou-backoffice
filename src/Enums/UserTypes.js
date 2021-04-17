@@ -1,17 +1,8 @@
-const promoter = "promoter";
-const tourOperator = "tourOperator"
-const contentCreator = "contentCreator";
-const concierge = "concierge";
-const admin = "admin"
-
-const userTypes = {
-    promoter: 1,
-    tourOperator: 2,
-    contentCreator: 3,
-    concierge: 4,
-    admin: 5,
-};
-
+const promoter = "PROMOTER";
+const tourOperator = "TOUR"
+const contentCreator = "CONTENT_CREATOR";
+const concierge = "CONCIERGE";
+const admin = "ADMIN"
 
 
 const registerSectionAccTypes = [
@@ -42,5 +33,5 @@ const registerSectionAccTypes = [
 ];
 
 
-export { promoter, tourOperator, contentCreator, concierge, admin, registerSectionAccTypes, userTypes };
+export { promoter, tourOperator, contentCreator, concierge, admin, registerSectionAccTypes };
 

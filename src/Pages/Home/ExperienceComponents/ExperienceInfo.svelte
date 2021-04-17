@@ -1,20 +1,23 @@
 <script>
-    import { onMount, afterUpdate } from "svelte";
+    import { afterUpdate, createEventDispatcher } from "svelte";
 
     import { vacation } from "../../../Enums/ExperienceTypes";
     import Map from "./Map.svelte";
     import Carousel from "./Carousel.svelte";
+    import Input from "../../../SharedComponents/Input.svelte";
+    import { deleteEx } from "../../../Services/ExperiencesService";
+
+    const dispatch = createEventDispatcher();
 
     export let data;
+
+    let deleteMode = false;
+    $: deleteInputValue = "";
 
     let dateObj;
     let includedServicesArray;
     let notIncludedServicesArray;
     let photos;
-
-    onMount(() => {
-        processProps();
-    });
 
     afterUpdate(() => {
         processProps();
@@ -25,7 +28,6 @@
         includedServicesArray = undefined;
         notIncludedServicesArray = undefined;
         photos = undefined;
-        console.log(data);
 
         if (data.dateTime) {
             dateObj = new Date(data.dateTime);
@@ -40,6 +42,12 @@
         if (Array.isArray(data.highlights)) {
             photos = data.highlights;
         }
+    };
+
+    const deleteExperience = async () => {
+        console.log(data.id);
+        await deleteEx(data.id);
+        dispatch("deleted");
     };
 </script>
 
@@ -165,6 +173,47 @@
             <Map lat={data.location.latitude} lng={data.location.longitude} />
         </div>
     {/if}
+    <div class="experience__row__horizontal__padding experience__row__generic">
+        <div class="centered-content">
+            {#if !deleteMode}
+                <button
+                    class="main-button delete-button delete-mode-button"
+                    on:click={() => {
+                        deleteMode = true;
+                    }}>Delete</button
+                >
+            {:else}
+                <button
+                    class="secondary-button delete-mode-button"
+                    on:click={() => {
+                        deleteMode = false;
+                    }}>Cancel</button
+                >
+                {#if deleteInputValue === "delete"}
+                    <button
+                        class="main-button delete-button delete-mode-button"
+                        on:click={() => deleteExperience()}>Delete</button
+                    >
+                {/if}
+            {/if}
+        </div>
+    </div>
+    {#if deleteMode}
+        <div
+            class="experience__row__horizontal__padding experience__row__generic"
+        >
+            <div class="centered-content">
+                <Input
+                    label={"Write delete to confirm your action."}
+                    onChange={(e) => {
+                        deleteInputValue = e.target.value;
+                        console.log(deleteInputValue);
+                    }}
+                    value=""
+                />
+            </div>
+        </div>
+    {/if}
 </div>
 
 <style>
@@ -204,5 +253,19 @@
         display: flex;
         align-items: center;
         justify-content: center;
+    }
+    .centered-content {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+    }
+    .delete-button {
+        font-size: 18px;
+        background-color: red;
+    }
+    .delete-mode-button {
+        width: 140px;
+        height: 45px;
+        margin: 0px 5px;
     }
 </style>

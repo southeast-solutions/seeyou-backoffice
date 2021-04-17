@@ -23,7 +23,6 @@
                 .filter(Boolean)
                 .map((str) => str.trim());
         }
-        console.log(user);
     });
 </script>
 
@@ -115,7 +114,13 @@
             </div>
         {/if}
         <div class="content-row">
-            <FooterButtons id={user.id} />
+            <FooterButtons
+                id={user.id}
+                verified={user.verified}
+                on:verified={() => {
+                    user.verified = !user.verified;
+                }}
+            />
         </div>
     </div>
 {/if}

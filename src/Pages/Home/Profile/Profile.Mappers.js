@@ -1,10 +1,9 @@
-import '../../../Enums/UserTypes';
-import { userTypes } from '../../../Enums/UserTypes';
+import { promoter, tourOperator, contentCreator, concierge, admin } from '../../../Enums/UserTypes';
 
 const mapDataAfterUserType = (userInfo) => {
     let user = {};
-    
-    if(userInfo.userType === userTypes.promoter) {
+
+    if (userInfo.userType === promoter) {
         user.socialLinks = userInfo.socialLinks;
         user.firstName = userInfo.firstName;
         user.lastName = userInfo.lastName;
@@ -12,7 +11,7 @@ const mapDataAfterUserType = (userInfo) => {
         user.city = userInfo.city;
         user.country = userInfo.country;
         user.phoneNumber = userInfo.phoneNumber;
-        user.userType = 'Promoter';
+        user.userType = promoter;
         user.currentJob = userInfo.currentJob;
         user.profilePictureUrl = userInfo.profilePictureUrl;
         user.disponibilityDescription = userInfo.disponibilityDescription;
@@ -20,7 +19,7 @@ const mapDataAfterUserType = (userInfo) => {
         return user;
     }
 
-    if(userInfo.userType = userTypes.tourOperator) {
+    if (userInfo.userType === tourOperator) {
         // Create user tour operator data
         user.address = userInfo.tourBusinessEntity.address;
         user.website = userInfo.tourBusinessEntity.website;
@@ -32,34 +31,35 @@ const mapDataAfterUserType = (userInfo) => {
         user.lastName = userInfo.tourOperatorEntity.lastName;
         user.cui = userInfo.tourBusinessEntity.cui;
         user.businessName = userInfo.tourBusinessEntity.businessName;
-        user.userType = "TourOperator"
+        user.userType = tourOperator
         user.profilePictureUrl = userInfo.profilePictureUrl;
 
         return user;
     }
 
-    if(userInfo.userType === userTypes.contentCreator) {
+    if (userInfo.userType === contentCreator) {
         user.city = userInfo.city;
         user.firstName = userInfo.firstName;
         user.lastName = userInfo.lastName;
         user.foreignLanguages = userInfo.foreignLanguages;
         user.socialLinks = userInfo.socialLinks;
-        user.userType = "ContentCreator";
+        user.userType = contentCreator;
         user.disponibilityDescription = userInfo.disponibilityDescription;
         user.profilePictureUrl = userInfo.profilePictureUrl;
         return user;
     }
 
-    if(userInfo.userType === userTypes.concierge) {
-       user.city = userInfo.city;
-       user.country = userInfo.country;
-       user.firstName = userInfo.firstName;
-       user.lastName = userInfo.lastName;
-       user.userType = "Concierge";
-       user.foreignLanguages = userInfo.foreignLanguages;
-       user.socialLinks = userInfo.socialLinks;
-       user.profilePictureUrl = userInfo.profilePictureUrl;
-    return user;
+    if (userInfo.userType === concierge) {
+        user.city = userInfo.city;
+        user.country = userInfo.country;
+        user.firstName = userInfo.firstName;
+        user.lastName = userInfo.lastName;
+        user.phoneNumber = userInfo.phoneNumber
+        user.userType = concierge;
+        user.foreignLanguages = userInfo.foreignLanguages;
+        user.socialLinks = userInfo.socialLinks;
+        user.profilePictureUrl = userInfo.profilePictureUrl;
+        return user;
     }
 }
 
@@ -77,11 +77,11 @@ const tourOperatorMapper = (user) => {
     userInfo.tourBusinessEntity.cui = user.cui;
     userInfo.tourBusinessEntity.businessName = user.businessName;
     userInfo.tourBusinessEntity.businessName = user.businessName;
-    user.userType = "TourOperator";
+    user.userType = tourOperator;
     user.profilePictureUrl = user.profilePictureUrl;
 
     return (userInfo);
 
 }
 
-export { mapDataAfterUserType, tourOperatorMapper};
+export { mapDataAfterUserType, tourOperatorMapper };

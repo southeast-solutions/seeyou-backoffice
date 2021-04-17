@@ -2,12 +2,11 @@
 import { BASE_ROUTE } from './Constants';
 import { get } from './FetchService';
 
-const getUserData = async (userId) =>
-    await get(`${BASE_ROUTE}/user/profile`);
+const getUserData = async () => {
 
+    const response = await get(`${BASE_ROUTE}/user/profile`)
+    if (response.userType === "ADMIN") { response.userType = "CONCIERGE" }
 
-const getUserProfileData = async (userId) =>
-    await get(`${BASE_ROUTE}/user/${userId}`);
-
-
-export { getUserProfileData, getUserData }
+    return response;
+}
+export { getUserData }

@@ -1,13 +1,6 @@
 <script>
     import { onMount } from "svelte";
     import { guardAdmin, guardSignedUser } from "../../Services/AuthService";
-    import {
-        admin,
-        promoter,
-        tourOperator,
-        contentCreator,
-        concierge,
-    } from "../../Enums/UserTypes";
     import { getUsers } from "../../Services/UsersService";
 
     import NavBar from "./NavBar.svelte";
@@ -17,6 +10,13 @@
     import TourOperator from "./UserInfo/TourOperator.svelte";
     import ContentCreator from "./UserInfo/ContentCreator.svelte";
     import Concierge from "./UserInfo/Concierge.svelte";
+    import {
+        admin,
+        concierge,
+        contentCreator,
+        promoter,
+        tourOperator,
+    } from "../../Enums/UserTypes";
 
     let filterAdmin = false;
     let filterPromoter = false;
@@ -51,25 +51,15 @@
         }
         filteredUsers = [];
         if (filterAdmin)
-            filteredUsers.push(
-                ...users.filter((user) => user.userType == admin)
-            );
+            filteredUsers.push(...users.filter((user) => user.userType == 5));
         if (filterPromoter)
-            filteredUsers.push(
-                ...users.filter((user) => user.userType == promoter)
-            );
+            filteredUsers.push(...users.filter((user) => user.userType == 1));
         if (filterOperator)
-            filteredUsers.push(
-                ...users.filter((user) => user.userType == tourOperator)
-            );
+            filteredUsers.push(...users.filter((user) => user.userType == 4));
         if (filterCreator)
-            filteredUsers.push(
-                ...users.filter((user) => user.userType == contentCreator)
-            );
+            filteredUsers.push(...users.filter((user) => user.userType == 2));
         if (filterConcierge)
-            filteredUsers.push(
-                ...users.filter((user) => user.userType == concierge)
-            );
+            filteredUsers.push(...users.filter((user) => user.userType == 3));
     };
 </script>
 
@@ -115,15 +105,15 @@
         {:else}
             {#each filteredUsers as user}
                 <div class="user-container">
-                    {#if user.userType == 1}
+                    {#if user.userType == promoter}
                         <Promoter {user} />
-                    {:else if user.userType == 4}
+                    {:else if user.userType == tourOperator}
                         <TourOperator {user} />
-                    {:else if user.userType == 2}
+                    {:else if user.userType == contentCreator}
                         <ContentCreator {user} />
-                    {:else if user.userType == 3}
+                    {:else if user.userType == concierge}
                         <Concierge {user} />
-                    {:else if user.userType == 5}
+                    {:else if user.userType == admin}
                         <Concierge {user} isAdmin={true} />
                     {/if}
                 </div>

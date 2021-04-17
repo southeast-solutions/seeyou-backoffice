@@ -1,45 +1,24 @@
 import { navigate } from "svelte-routing";
-import { tourOperator, admin, registerSectionAccTypes } from "../Enums/UserTypes"
 import { BASE_ROUTE } from './Constants';
 import { validateEmail } from "../Validators/UserValidators";
+import { promoter, tourOperator, contentCreator, concierge, admin, registerSectionAccTypes } from "../Enums/UserTypes"
+import { postUnauthorized } from "../Services/FetchService";
 
 const LS_AUTH_TOKEN_KEY = "seeyou_auth_token";
 const LS_USER_TYPE_KEY = "seeyou_user_type";
 const LS_SUB_KEY = "seeyou_user_id";
 
-// const BASE_URL = "localhost:6969";
-// const LOGIN_URL = `${BASE_URL}/login`;
-// const REGISTER_URL = `${BASE_URL}/register`;
-
-function parseJwt(token) {
-    var base64Url = token.split('.')[1];
-    var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    var jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
-        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-    }).join(''));
-
-    return JSON.parse(jsonPayload);
-};
+const REGISTER_URL = `${BASE_ROUTE}/identity/register`;
 
 async function login(payload) {
     try {
-        const loginRes = await fetch(`${BASE_ROUTE}/identity/login`, {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json, text/plain',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ email: payload.email, password: payload.password })
-        }).then(res => res.json())
-        if (loginRes.token) {
-            const parsedJwt = parseJwt(loginRes.token)
-            // setAuthLocalStorage(parsedJwt['custom:custom:userType'], loginRes.token, parsedJwt['sub'])
-            setAuthLocalStorage('admin', loginRes.token, parsedJwt['sub'])
+        const loginRes = await postUnauthorized(`${BASE_ROUTE}/identity/login`,
+            { email: payload.email, password: payload.password })
 
-            return loginRes.success;
-        } else {
-            return loginRes.success
+        if (loginRes.token) {
+            setAuthLocalStorage(loginRes.userType, loginRes.token)
         }
+        return loginRes.success;
     } catch (err) {
         return err;
     }
@@ -450,39 +429,31 @@ const validation = (registerData, accountType) => {
 }
 
 const register = async (payload, accType) => {
+    let newPayload = {};
+
     switch (accType) {
         case registerSectionAccTypes[0]:
-            const newPayload = { ...payload.promoterData, userType: 'Promoter' }
-            const res = await fetch(`${BASE_ROUTE}/identity/register`, {
-                method: 'POST',
-                headers: {
-                    'Accept': 'application/json, text/plain',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(newPayload)
-            }).then(res => res.json())
-
-            return res;
-
-            break;
+            newPayload = { ...payload.promoterData, userType: promoter }
+            break
 
         case registerSectionAccTypes[1]:
+            newPayload = { tourBusinessEntity: payload.tourBusinessData, tourOperatorEntity: payload.tourOperatorData, userType: tourOperator }
             break;
 
         case registerSectionAccTypes[2]:
+            newPayload = { ...payload.contentCreatorData, userType: contentCreator }
             break;
 
         case registerSectionAccTypes[3]:
+            newPayload = { ...payload.conciergeData, userType: concierge }
             break;
     }
+    return await postUnauthorized(REGISTER_URL, newPayload);
 }
 
-const setAuthLocalStorage = (userType, authToken, userId) => {
+const setAuthLocalStorage = (userType, authToken) => {
     localStorage.setItem(LS_USER_TYPE_KEY, userType);
     localStorage.setItem(LS_AUTH_TOKEN_KEY, authToken)
-    localStorage.setItem(LS_SUB_KEY, userId)
-
-    // location.reload();
 }
 
 

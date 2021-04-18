@@ -233,6 +233,7 @@
         display: flex;
         flex-direction: row;
         align-items: center;
+        flex-wrap: wrap;
 
         font-size: 18px;
     }
@@ -267,5 +268,19 @@
         width: 140px;
         height: 45px;
         margin: 0px 5px;
+    }
+    @media only screen and (max-width: 600px) {
+        .experience__row__horizontal__padding {
+            padding: 0px 5px;
+        }
+        h1 {
+            font-size: 1.5em;
+        }
+        .experience__row__generic {
+            font-size: 15px;
+        }
+        .experience__row__section {
+            min-width: 90px;
+        }
     }
 </style>

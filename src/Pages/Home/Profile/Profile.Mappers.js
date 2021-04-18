@@ -44,6 +44,7 @@ const mapDataAfterUserType = (userInfo) => {
         user.foreignLanguages = userInfo.foreignLanguages;
         user.socialLinks = userInfo.socialLinks;
         user.userType = contentCreator;
+        user.phoneNumber = userInfo.phoneNumber;
         user.disponibilityDescription = userInfo.disponibilityDescription;
         user.profilePictureUrl = userInfo.profilePictureUrl;
         return user;

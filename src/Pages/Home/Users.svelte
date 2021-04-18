@@ -51,15 +51,25 @@
         }
         filteredUsers = [];
         if (filterAdmin)
-            filteredUsers.push(...users.filter((user) => user.userType == 5));
+            filteredUsers.push(
+                ...users.filter((user) => user.userType == admin)
+            );
         if (filterPromoter)
-            filteredUsers.push(...users.filter((user) => user.userType == 1));
+            filteredUsers.push(
+                ...users.filter((user) => user.userType == promoter)
+            );
         if (filterOperator)
-            filteredUsers.push(...users.filter((user) => user.userType == 4));
+            filteredUsers.push(
+                ...users.filter((user) => user.userType == tourOperator)
+            );
         if (filterCreator)
-            filteredUsers.push(...users.filter((user) => user.userType == 2));
+            filteredUsers.push(
+                ...users.filter((user) => user.userType == contentCreator)
+            );
         if (filterConcierge)
-            filteredUsers.push(...users.filter((user) => user.userType == 3));
+            filteredUsers.push(
+                ...users.filter((user) => user.userType == concierge)
+            );
     };
 </script>
 
@@ -180,5 +190,18 @@
         font-size: 16px;
         font-weight: 200;
         width: 80px;
+    }
+    @media only screen and (max-width: 600px) {
+        .home-page-container {
+            flex-direction: column;
+            height: auto;
+        }
+        .filters-container {
+            height: auto;
+            width: 100%;
+        }
+        .content-container {
+            width: 100%;
+        }
     }
 </style>

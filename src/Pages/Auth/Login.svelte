@@ -126,13 +126,11 @@
         flex-direction: column;
         align-content: center;
         width: 100%;
-        margin-bottom: 30px;
-        height: 21%;
-        justify-content: space-between;
+        margin-bottom: 5px;
     }
 
     .login-input {
-        margin-top: 20px;
+        margin: 5px 0px 10px 0px;
     }
     .error-message {
         color: red;

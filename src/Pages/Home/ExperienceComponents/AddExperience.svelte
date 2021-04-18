@@ -423,4 +423,6 @@
         font-size: 24px;
         font-weight: 200;
     }
+    @media only screen and (max-width: 600px) {
+    }
 </style>

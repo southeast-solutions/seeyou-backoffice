@@ -1,15 +1,17 @@
 <script>
-import { afterUpdate } from "svelte";
+    import { afterUpdate } from "svelte";
 
-
-    $: updatedProps = {}
+    $: updatedProps = {};
     afterUpdate(() => {
         updatedProps = $$props;
-    })
-
+    });
 </script>
 
-<div class={`input__field ${updatedProps.className ? updatedProps.className : ""}`}>
+<div
+    class={`input__field ${
+        updatedProps.className ? updatedProps.className : ""
+    }`}
+>
     <input
         class={`input ${updatedProps.hasError ? "input--has-error" : ""}`}
         type={updatedProps.type}
@@ -29,9 +31,7 @@ import { afterUpdate } from "svelte";
         >
             {updatedProps.label}
             {#if updatedProps.mandatory}
-            <span class="mandatory">
-                *
-            </span>
+                <span class="mandatory"> * </span>
             {/if}
         </span>
     {/if}
@@ -44,24 +44,24 @@ import { afterUpdate } from "svelte";
 </div>
 
 <style>
-.input__field {
-    width: 100%;
-    position: relative;
-    margin-bottom: 8px;
-    height: 40px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
+    .input__field {
+        width: 100%;
+        position: relative;
+        margin-bottom: 8px;
+        height: 40px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
 
-input[type=number]::-webkit-inner-spin-button, 
-input[type=number]::-webkit-outer-spin-button { 
-    -webkit-appearance: none; 
-}
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+    }
 
-input[type=number] {
-  -moz-appearance: textfield;
-}
+    input[type="number"] {
+        -moz-appearance: textfield;
+    }
 
     input:-webkit-autofill,
     input:-webkit-autofill:hover,
@@ -84,6 +84,9 @@ input[type=number] {
         z-index: 1;
         outline: none;
         font-size: 14px;
+    }
+    input:disabled {
+        background-color: rgba(0, 0, 0, 0.05);
     }
 
     input:-webkit-autofill:active {

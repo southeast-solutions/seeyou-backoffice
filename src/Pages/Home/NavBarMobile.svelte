@@ -1,15 +1,16 @@
 <script>
     import { navigate } from "svelte-routing";
+    import { fade } from "svelte/transition";
     import {
         isAdmin,
         isTourOperator,
         clearAuthLocalStorage,
     } from "../../Services/AuthService";
     import { onMount } from "svelte";
-    import NavBarMobile from "./NavBarMobile.svelte";
 
     let showExperiences = false;
     let showUsers = false;
+    let menuActive = false;
 
     const onUsersPressed = () => {
         navigate("/users", { replace: false });
@@ -30,9 +31,13 @@
         showExperiences = isTourOperator();
         showUsers = isAdmin();
     });
+
+    const hamburgerClicked = () => {
+        menuActive = !menuActive;
+    };
 </script>
 
-<div class="nav-container">
+<div class="nav-container-mobile">
     <div class="logo-container">
         <img
             src="logo.png"
@@ -42,7 +47,16 @@
             height={"50px"}
         />
     </div>
-    <div class="buttons-container">
+    <div class="hamburger-container" on:click={() => hamburgerClicked()}>
+        {#if !menuActive}
+            <i class="fi  fi-rr-menu-burger" />
+        {:else}
+            <i class="fi  fi-rr-cross" />
+        {/if}
+    </div>
+</div>
+{#if menuActive}
+    <div class="menu-container" transition:fade={{ duration: 100 }}>
         {#if showUsers}
             <div class="nav-button" on:click={onUsersPressed}>
                 <i class="fi fi-rr-user-add" /> Users
@@ -62,13 +76,10 @@
             <i class="fi  fi-rr-sign-out" />Sign Out
         </div>
     </div>
-</div>
-<div class="mobile-nav">
-    <NavBarMobile />
-</div>
+{/if}
 
 <style>
-    .nav-container {
+    .nav-container-mobile {
         position: absolute;
         width: 100%;
         height: 60px;
@@ -78,52 +89,39 @@
         flex-direction: row;
         align-items: center;
         justify-content: space-between;
+        padding: 5px 10px;
+        color: white;
+        z-index: 10;
     }
-    .logo-container {
-        padding: 10px;
-    }
-    .buttons-container {
-        height: 100%;
+    .hamburger-container {
+        width: 50px;
+        height: 50px;
         display: flex;
-        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+
+        cursor: pointer;
+        user-select: none;
+    }
+    .menu-container {
+        position: absolute;
+        background-color: #e8e7e2;
+        top: 60px;
+        width: 100%;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.25);
+        z-index: 10;
     }
     .nav-button {
         transition: 0.5s;
         user-select: none;
         cursor: pointer;
-        height: 100%;
-        width: 150px;
+        height: 60px;
+        width: 100%;
         display: flex;
         justify-content: center;
         align-items: center;
         font-size: 20px;
         font-weight: 200;
-        color: white;
-    }
-    .mobile-nav {
-        display: none;
-    }
-    .nav-button > i {
-        height: 30px;
-        width: auto;
-        margin-right: 5px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    .nav-button:hover {
-        background-color: #019af6;
-        color: white;
-    }
-    @media only screen and (max-width: 600px) {
-        .nav-container {
-            display: none;
-        }
-        .mobile-nav {
-            display: block;
-            height: 60px;
-            width: 100%;
-            position: absolute;
-        }
+        color: #132d5e;
     }
 </style>

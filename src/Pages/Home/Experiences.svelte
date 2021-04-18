@@ -138,4 +138,21 @@
         font-weight: 200;
         height: 80px;
     }
+    @media only screen and (max-width: 600px) {
+        .home-page-container {
+            flex-direction: column;
+            height: auto;
+        }
+        .filters-container {
+            width: 100%;
+            height: auto;
+        }
+        .content-container {
+            width: 95%;
+            height: auto;
+        }
+        .center-content {
+            min-height: 200px;
+        }
+    }
 </style>

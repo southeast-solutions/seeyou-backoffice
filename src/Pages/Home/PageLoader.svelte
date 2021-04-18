@@ -1,9 +1,9 @@
 <script>
-    import { Shadow } from "svelte-loading-spinners";
+    import { Circle3 } from "svelte-loading-spinners";
 </script>
 
 <div class="center">
-    <Shadow size="60" color="#132d5e" unit="px" duration="2s" />
+    <Circle3 size="60" color="#132d5e" unit="px" duration="2s" />
 </div>
 
 <style>
@@ -13,5 +13,6 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        min-height: 300px;
     }
 </style>

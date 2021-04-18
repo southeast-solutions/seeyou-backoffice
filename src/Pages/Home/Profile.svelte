@@ -22,6 +22,7 @@
         NotificationDisplay,
         notifier,
     } from "@beyonk/svelte-notifications";
+    import Textarea from "../../SharedComponents/Textarea.svelte";
 
     let user = {};
 
@@ -61,6 +62,7 @@
         userInfo = await getUserData();
         console.log(userInfo);
         const mappedData = mapDataAfterUserType(userInfo);
+        console.log(mappedData);
         user = mappedData;
     });
     const previewImage = () => {
@@ -196,29 +198,47 @@
             </div>
 
             <div class="center-row">
-                <div class="form-row">
-                    <div class="half-row">
-                        <Input
-                            label={"Country"}
-                            value={user.country ? user.country : ""}
-                            className="half-row"
-                            name="pla"
-                            onChange={(e) => (user["country"] = e.target.value)}
-                        />
+                {#if user.userType === promoter || user.userType === concierge}
+                    <div class="form-row">
+                        <div class="half-row">
+                            <Input
+                                label={"Country"}
+                                value={user.country ? user.country : ""}
+                                className="half-row"
+                                name="pla"
+                                onChange={(e) =>
+                                    (user["country"] = e.target.value)}
+                            />
+                        </div>
+                        <div class="half-row">
+                            <Input
+                                label={"Foreign Languages"}
+                                value={user.foreignLanguages
+                                    ? user.foreignLanguages
+                                    : ""}
+                                className="half-row"
+                                name="pla"
+                                onChange={(e) =>
+                                    (user["foreignLanguages"] = e.target.value)}
+                            />
+                        </div>
                     </div>
-                    <div class="half-row">
-                        <Input
-                            label={"Foreign Languages"}
-                            value={user.foreignLanguages
-                                ? user.foreignLanguages
-                                : ""}
-                            className="half-row"
-                            name="pla"
-                            onChange={(e) =>
-                                (user["foreignLanguages"] = e.target.value)}
-                        />
+                {:else}
+                    <div class="form-row">
+                        <div class="full-row">
+                            <Input
+                                label={"Foreign Languages"}
+                                value={user.foreignLanguages
+                                    ? user.foreignLanguages
+                                    : ""}
+                                className="half-row"
+                                name="pla"
+                                onChange={(e) =>
+                                    (user["foreignLanguages"] = e.target.value)}
+                            />
+                        </div>
                     </div>
-                </div>
+                {/if}
             </div>
 
             {#if user.userType === tourOperator}
@@ -276,7 +296,7 @@
                 <div class="center-row">
                     <div class="form-row">
                         <div class="half-row">
-                            <Input
+                            <Textarea
                                 label={"Business Social Links"}
                                 className="half-row"
                                 name="pla"
@@ -286,7 +306,7 @@
                             />
                         </div>
                         <div class="half-row">
-                            <Input
+                            <Textarea
                                 label={"User Social Links"}
                                 className="half-row"
                                 name="pla"
@@ -315,7 +335,7 @@
                             />
                         </div>
                         <div class="half-row">
-                            <Input
+                            <Textarea
                                 label={"Social Links"}
                                 className="half-row"
                                 name="pla"
@@ -330,7 +350,7 @@
             {#if user.userType === promoter || user.userType === contentCreator}
                 <div class="center-row">
                     <div class="form-row">
-                        <Input
+                        <Textarea
                             label={"Disponibility Description"}
                             className="half-row"
                             name="pla"
@@ -348,8 +368,8 @@
             {#if user.userType === contentCreator}
                 <div class="center-row">
                     <div class="form-row">
-                        <div class="half-row">
-                            <Input
+                        <div class="full-row">
+                            <Textarea
                                 label={"Social Links"}
                                 className="half-row"
                                 name="pla"
@@ -358,26 +378,13 @@
                                 value={user.socialLinks ? user.socialLinks : ""}
                             />
                         </div>
-                        <div class="half-row">
-                            <Input
-                                label={"Disponibility Description"}
-                                className="half-row"
-                                name="pla"
-                                onChange={(e) =>
-                                    (user["disponibilityDescription"] =
-                                        e.target.value)}
-                                value={user.disponibilityDescription
-                                    ? user.disponiblityDescription
-                                    : ""}
-                            />
-                        </div>
                     </div>
                 </div>
             {/if}
             {#if user.userType === concierge}
                 <div class="center-row">
                     <div class="form-row">
-                        <Input
+                        <Textarea
                             label={"Social Links"}
                             className="half-row"
                             name="pla"
@@ -470,5 +477,24 @@
         position: absolute;
         left: 30px;
         bottom: 30px;
+    }
+    @media only screen and (max-width: 600px) {
+        .home-page-container {
+            padding: 80px 15px;
+            width: 100%;
+            height: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .left-card {
+            width: 80%;
+        }
+        .right-card {
+            margin: 20px 0px;
+            width: 100%;
+            padding: 20px;
+            min-width: auto;
+        }
     }
 </style>

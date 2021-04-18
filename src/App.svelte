@@ -6,8 +6,8 @@
 	import Users from "./Pages/Home/Users.svelte";
 	import Experiences from "./Pages/Home/Experiences.svelte";
 	import NotFound from "./Pages/NotFound.svelte";
-import Register2 from "./Pages/Auth/Register2.svelte";
-import ConfirmAccout from "./Pages/Auth/ConfirmAccout.svelte";
+	import Register2 from "./Pages/Auth/Register2.svelte";
+	import ConfirmAccout from "./Pages/Auth/ConfirmAccout.svelte";
 	export let url = "";
 </script>
 
@@ -20,16 +20,14 @@ import ConfirmAccout from "./Pages/Auth/ConfirmAccout.svelte";
 </svelte:head>
 <main>
 	<Router {url}>
-		<div>
-			<Route path="confirm-account" component={ConfirmAccout} />
-			<Route path="/login" component={Login} />
-			<Route path="/register" component={Register2} />
-			<Route path="/users" component={Users} />
-			<Route path="/experiences" component={Experiences} />
-			<Route path="/profile" component={Profile} />
-			<Route path="/" component={Profile} />
-			<Route component={NotFound} />
-		</div>
+		<Route path="confirm-account" component={ConfirmAccout} />
+		<Route path="/login" component={Login} />
+		<Route path="/register" component={Register2} />
+		<Route path="/users" component={Users} />
+		<Route path="/experiences" component={Experiences} />
+		<Route path="/profile" component={Profile} />
+		<Route path="/" component={Profile} />
+		<Route component={NotFound} />
 	</Router>
 </main>
 
@@ -39,5 +37,11 @@ import ConfirmAccout from "./Pages/Auth/ConfirmAccout.svelte";
 		width: 100vw;
 		overflow-x: auto;
 		overflow-y: hidden;
+	}
+	@media only screen and (max-width: 600px) {
+		main {
+			height: auto;
+			overflow-y: auto;
+		}
 	}
 </style>
